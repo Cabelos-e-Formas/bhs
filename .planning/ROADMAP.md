@@ -36,7 +36,7 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Team page: Gezi YAML + TeamPageSection + 3 locale pages + teampage.* translation keys
+- [x] 01-01-PLAN.md — Team page: Gezi YAML + TeamPageSection + 3 locale pages + teampage.* translation keys
 - [ ] 01-02-PLAN.md — Book page: BookPageSection + 3 locale pages + bookpage.* translation keys + Header nav fix
 
 ---
@@ -108,7 +108,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Team & Book Pages | 0/2 | Not started | - |
+| 1. Team & Book Pages | 1/2 | In progress | - |
 | 2. Mobile & Responsive Fixes | 0/? | Not started | - |
 | 3. Design & Animation Polish | 0/? | Not started | - |
 | 4. Code Quality | 0/? | Not started | - |
@@ -119,9 +119,9 @@ Plans:
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| REQ-101 | Phase 1 | Pending |
+| REQ-101 | Phase 1 | Complete (01-01) |
 | REQ-102 | Phase 1 | Pending |
-| REQ-601 | Phase 1 | Pending |
+| REQ-601 | Phase 1 | Complete (01-01) |
 | REQ-501 | Phase 2 | Pending |
 | REQ-502 | Phase 2 | Pending |
 | REQ-503 | Phase 2 | Pending |
@@ -139,4 +139,4 @@ Plans:
 
 ---
 
-*Last updated: 2026-03-14*
+*Last updated: 2026-03-14 (Phase 1 Plan 01 complete)*
