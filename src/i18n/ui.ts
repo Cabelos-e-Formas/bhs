@@ -138,6 +138,11 @@ export const ui: Record<keyof typeof languages, any> = {
     "servicespage.s11.title": "Manicure & Pedicure",
     "servicespage.s11.items": ["Manicure", "Pedicure", "Gel nails", "Acrylic nails", "Foot spa", "Gel enameling"],
 
+    // Team Page
+    "teampage.heading": "Our Team",
+    "teampage.subtitle": "Meet the specialists behind every transformation.",
+    "teampage.experience": "of experience",
+
     // Footer
     "footer.tagline":
       "Modern Brazilian techniques to bring out the best in you. Four units in Brazil, now in Naples, Florida.",
@@ -279,6 +284,11 @@ export const ui: Record<keyof typeof languages, any> = {
     "servicespage.s11.title": "Manicure e Pedicure",
     "servicespage.s11.items": ["Manicure", "Pedicure", "Unhas em Gel", "Unhas Acrílicas", "Foot Spa", "Esmaltação em Gel"],
 
+    // Team Page
+    "teampage.heading": "Nossa Equipe",
+    "teampage.subtitle": "Conheça as especialistas por trás de cada transformação.",
+    "teampage.experience": "de experiência",
+
     // Footer
     "footer.tagline":
       "Técnicas brasileiras modernas para revelar o melhor em você. Quatro unidades no Brasil, agora em Naples, Flórida.",
@@ -419,6 +429,11 @@ export const ui: Record<keyof typeof languages, any> = {
     "servicespage.s10.items": ["Maquillaje Social", "Maquillaje Express", "Maquillaje Lady", "Maquillaje Infantil", "Colocación de Pestañas"],
     "servicespage.s11.title": "Manicura y Pedicura",
     "servicespage.s11.items": ["Manicura", "Pedicura", "Uñas de Gel", "Uñas Acrílicas", "Foot Spa", "Esmaltado en Gel"],
+
+    // Team Page
+    "teampage.heading": "Nuestro Equipo",
+    "teampage.subtitle": "Conoce a las especialistas detrás de cada transformación.",
+    "teampage.experience": "de experiencia",
 
     // Footer
     "footer.tagline":

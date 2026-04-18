@@ -1,0 +1,9 @@
+id: google
+order: '03'
+label_en: Find us on Google
+label_pt: Nos encontre no Google
+label_sp: Encuéntranos en Google
+url: "https://www.google.com/search?q=Brazilian+Hair+Studio&stick=H4sIAAAAAAAA_-mgU1I1qLCwSEkySzI1trS0SDQ0SEmyMqhIMTJINEo0NTZNM09JMTGyWMQq6lSUWJWZk5mYp-CRmFmkEFxSmpKZDwBrxm25QQAAAA&hl=pt-BR&mat=CTRPwPyFeaRkElcBezTaATMbd-M4yOkVzKBW4OXYT_BuV-kQKVQ8oD7pUdMIhvEBjfC"
+icon: google
+subtitle: ""
+highlight: false
