@@ -1,0 +1,9 @@
+id: whatsapp
+order: '02'
+label_en: WhatsApp
+label_pt: WhatsApp
+label_sp: WhatsApp
+url: "https://api.whatsapp.com/send?phone=12393188366"
+icon: whatsapp
+subtitle: "(239) 318-8366"
+highlight: false

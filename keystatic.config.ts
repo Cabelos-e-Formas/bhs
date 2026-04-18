@@ -88,6 +88,34 @@ export default config({
 
   // ── Collections (listas dinâmicas) ─────────────────
   collections: {
+    linktreeLinks: collection({
+      label: 'Linktree · Links',
+      slugField: 'id',
+      path: 'src/content/linktree-links/*',
+      schema: {
+        id: fields.text({ label: 'ID (slug do arquivo)', defaultValue: '' }),
+        order: fields.text({ label: 'Ordem (ex: 01)', defaultValue: '01' }),
+        label_en: fields.text({ label: 'Rótulo (EN)' }),
+        label_pt: fields.text({ label: 'Rótulo (PT)' }),
+        label_sp: fields.text({ label: 'Rótulo (ES)' }),
+        url: fields.text({ label: 'URL' }),
+        icon: fields.select({
+          label: 'Ícone',
+          options: [
+            { label: 'Calendário', value: 'calendar' },
+            { label: 'WhatsApp', value: 'whatsapp' },
+            { label: 'Google', value: 'google' },
+            { label: 'Website (Globo)', value: 'website' },
+            { label: 'Instagram', value: 'instagram' },
+            { label: 'Facebook', value: 'facebook' },
+          ],
+          defaultValue: 'website',
+        }),
+        subtitle: fields.text({ label: 'Subtítulo (número, @handle, endereço)', defaultValue: '' }),
+        highlight: fields.checkbox({ label: 'Destacar (botão preenchido)', defaultValue: false }),
+      },
+    }),
+
     services: collection({
       label: 'Serviços',
       slugField: 'title_pt',
@@ -159,6 +187,18 @@ export default config({
 
   // ── Singletons (textos fixos por idioma) ───────────
   singletons: {
+    linktree: singleton({
+      label: 'Linktree',
+      path: 'src/content/linktree',
+      schema: {
+        profile_name: fields.text({ label: 'Nome do perfil (usado no <title>)', defaultValue: 'Brazilian Hair Studio' }),
+        tagline_en: fields.text({ label: 'Tagline (EN)', defaultValue: 'Modern Brazilian techniques · Naples, Florida' }),
+        tagline_pt: fields.text({ label: 'Tagline (PT)', defaultValue: 'Técnicas brasileiras modernas · Naples, Flórida' }),
+        tagline_sp: fields.text({ label: 'Tagline (ES)', defaultValue: 'Técnicas brasileñas modernas · Naples, Florida' }),
+      },
+    }),
+
+
     en: singleton({
       label: 'Inglês',
       path: 'src/content/i18n/en',
