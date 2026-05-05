@@ -12,7 +12,7 @@ const lang = getLangFromUrl(Astro.url);
 const data = await reader.singletons.linktree.read();
 const profileName = data?.profile_name ?? "Brazilian Hair Studio";
 const taglineKey = `tagline_${lang}` as keyof typeof data;
-const tagline = (data?.[taglineKey] as string | undefined) ?? data?.tagline_en ?? "Modern Brazilian techniques · Naples, Florida";
+const tagline = (data?.[taglineKey] as string | undefined) ?? data?.tagline_en ?? "Modern Brazilian techniques · Fort Myers, Florida";
 
 const linksRaw = await reader.collections.linktreeLinks.all();
 const links = linksRaw

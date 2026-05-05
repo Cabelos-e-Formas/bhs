@@ -95,11 +95,13 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.heading.serif": "Our",
     "units.heading.rest": "units",
     "units.usa.label": "First USA unit",
-    "units.usa.city": "Naples,",
+    "units.usa.city": "Fort Myers,",
     "units.usa.state": "Florida",
     "units.usa.country": "United States",
     "units.usa.desc":
       "Our first international unit, bringing authentic Brazilian beauty techniques to Southwest Florida. Open to the entire family.",
+    "units.usa.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
+    "units.usa.hours": "Mon – Sat · 9AM – 7PM",
     "units.brazil.label": "4 locations",
     "units.brazil.city": "Criciúma,",
     "units.brazil.state": "SC",
@@ -143,14 +145,27 @@ export const ui: Record<keyof typeof languages, any> = {
     "teampage.subtitle": "Meet the specialists behind every transformation.",
     "teampage.experience": "of experience",
 
+    // Appointment Page
+    "appointment.heading": "Book your Appointment",
+    "appointment.subtitle": "No forms, no waiting — just a call away.",
+    "appointment.invite": "Ready to transform?",
+    "appointment.invite.body": "Our team is here to give you an unforgettable experience. Reach out by phone and we'll take care of everything.",
+    "appointment.phone.label": "Call us",
+    "appointment.phone.hours": "Mon – Sat · 9 AM – 7 PM",
+    "appointment.phone.cta": "Call to Book",
+    "appointment.location.label": "Find us",
+    "appointment.location.city": "Fort Myers, Florida",
+    "appointment.location.country": "United States",
+    "appointment.location.note": "2950 Winkler Ave, Unit 301 · FL 33916",
+
     // Footer
     "footer.tagline":
-      "Modern Brazilian techniques to bring out the best in you. Four units in Brazil, now in Naples, Florida.",
+      "Modern Brazilian techniques to bring out the best in you. Four units in Brazil, now in Fort Myers, Florida.",
     "footer.nav.title": "Navigate",
     "footer.contact.title": "Contact",
-    "footer.contact.address": "Naples, Florida · USA",
+    "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Book Appointment",
-    "footer.est": "Naples, FL · Est. 25+ years",
+    "footer.est": "Fort Myers, FL · Est. 25+ years",
   },
 
   pt: {
@@ -241,11 +256,13 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.heading.serif": "Nossas",
     "units.heading.rest": "unidades",
     "units.usa.label": "Primeira unidade nos EUA",
-    "units.usa.city": "Naples,",
+    "units.usa.city": "Fort Myers,",
     "units.usa.state": "Flórida",
     "units.usa.country": "Estados Unidos",
     "units.usa.desc":
       "Nossa primeira unidade internacional, levando as autênticas técnicas brasileiras de beleza para o Sudoeste da Flórida. Aberta para toda a família.",
+    "units.usa.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
+    "units.usa.hours": "Seg – Sáb · 9h – 19h",
     "units.brazil.label": "4 localizações",
     "units.brazil.city": "Criciúma,",
     "units.brazil.state": "SC",
@@ -289,14 +306,27 @@ export const ui: Record<keyof typeof languages, any> = {
     "teampage.subtitle": "Conheça as especialistas por trás de cada transformação.",
     "teampage.experience": "de experiência",
 
+    // Appointment Page
+    "appointment.heading": "Agende seu Horário",
+    "appointment.subtitle": "Sem formulários, sem espera — só uma ligação.",
+    "appointment.invite": "Pronta para se transformar?",
+    "appointment.invite.body": "Nossa equipe está aqui para proporcionar uma experiência inesquecível. Entre em contato por telefone e cuidamos de tudo.",
+    "appointment.phone.label": "Ligue para nós",
+    "appointment.phone.hours": "Seg – Sáb · 9h – 19h",
+    "appointment.phone.cta": "Ligar para agendar",
+    "appointment.location.label": "Nos encontre",
+    "appointment.location.city": "Fort Myers, Flórida",
+    "appointment.location.country": "Estados Unidos",
+    "appointment.location.note": "2950 Winkler Ave, Unit 301 · FL 33916",
+
     // Footer
     "footer.tagline":
-      "Técnicas brasileiras modernas para revelar o melhor em você. Quatro unidades no Brasil, agora em Naples, Flórida.",
+      "Técnicas brasileiras modernas para revelar o melhor em você. Quatro unidades no Brasil, agora em Fort Myers, Flórida.",
     "footer.nav.title": "Navegar",
     "footer.contact.title": "Contato",
-    "footer.contact.address": "Naples, Flórida · EUA",
+    "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Agendar Horário",
-    "footer.est": "Naples, FL · Est. há 25+ anos",
+    "footer.est": "Fort Myers, FL · Est. há 25+ anos",
   },
 
   sp: {
@@ -387,11 +417,13 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.heading.serif": "Nuestras",
     "units.heading.rest": "unidades",
     "units.usa.label": "Primera unidad en EE.UU.",
-    "units.usa.city": "Naples,",
+    "units.usa.city": "Fort Myers,",
     "units.usa.state": "Florida",
     "units.usa.country": "Estados Unidos",
     "units.usa.desc":
       "Nuestra primera unidad internacional, llevando las auténticas técnicas brasileñas de belleza al suroeste de Florida. Abierta para toda la familia.",
+    "units.usa.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
+    "units.usa.hours": "Lun – Sáb · 9AM – 7PM",
     "units.brazil.label": "4 ubicaciones",
     "units.brazil.city": "Criciúma,",
     "units.brazil.state": "SC",
@@ -435,13 +467,26 @@ export const ui: Record<keyof typeof languages, any> = {
     "teampage.subtitle": "Conoce a las especialistas detrás de cada transformación.",
     "teampage.experience": "de experiencia",
 
+    // Appointment Page
+    "appointment.heading": "Reserve su Cita",
+    "appointment.subtitle": "Sin formularios, sin esperas — a solo una llamada.",
+    "appointment.invite": "¿Lista para transformarte?",
+    "appointment.invite.body": "Nuestro equipo está aquí para brindarte una experiencia inolvidable. Llámanos y nos encargamos de todo.",
+    "appointment.phone.label": "Llámenos",
+    "appointment.phone.hours": "Lun – Sáb · 9 am – 7 pm",
+    "appointment.phone.cta": "Llamar para reservar",
+    "appointment.location.label": "Encuéntrenos",
+    "appointment.location.city": "Fort Myers, Florida",
+    "appointment.location.country": "Estados Unidos",
+    "appointment.location.note": "2950 Winkler Ave, Unit 301 · FL 33916",
+
     // Footer
     "footer.tagline":
-      "Técnicas brasileñas modernas para sacar lo mejor de ti. Cuatro unidades en Brasil, ahora en Naples, Florida.",
+      "Técnicas brasileñas modernas para sacar lo mejor de ti. Cuatro unidades en Brasil, ahora en Fort Myers, Florida.",
     "footer.nav.title": "Navegar",
     "footer.contact.title": "Contacto",
-    "footer.contact.address": "Naples, Florida · EE.UU.",
+    "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Reservar Cita",
-    "footer.est": "Naples, FL · Est. hace 25+ años",
+    "footer.est": "Fort Myers, FL · Est. hace 25+ años",
   },
 } as const;

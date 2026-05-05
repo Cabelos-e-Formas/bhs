@@ -192,9 +192,9 @@ export default config({
       path: 'src/content/linktree',
       schema: {
         profile_name: fields.text({ label: 'Nome do perfil (usado no <title>)', defaultValue: 'Brazilian Hair Studio' }),
-        tagline_en: fields.text({ label: 'Tagline (EN)', defaultValue: 'Modern Brazilian techniques · Naples, Florida' }),
-        tagline_pt: fields.text({ label: 'Tagline (PT)', defaultValue: 'Técnicas brasileiras modernas · Naples, Flórida' }),
-        tagline_sp: fields.text({ label: 'Tagline (ES)', defaultValue: 'Técnicas brasileñas modernas · Naples, Florida' }),
+        tagline_en: fields.text({ label: 'Tagline (EN)', defaultValue: 'Modern Brazilian techniques · Fort Myers, Florida' }),
+        tagline_pt: fields.text({ label: 'Tagline (PT)', defaultValue: 'Técnicas brasileiras modernas · Fort Myers, Flórida' }),
+        tagline_sp: fields.text({ label: 'Tagline (ES)', defaultValue: 'Técnicas brasileñas modernas · Fort Myers, Florida' }),
       },
     }),
 
@@ -239,7 +239,7 @@ export default config({
         'units.heading.serif': 'Our',
         'units.heading.rest': 'units',
         'units.usa.label': 'First USA unit',
-        'units.usa.city': 'Naples,',
+        'units.usa.city': 'Fort Myers,',
         'units.usa.state': 'Florida',
         'units.usa.country': 'United States',
         'units.usa.desc':
@@ -252,12 +252,12 @@ export default config({
           'Our four original units in the Criciúma region of Santa Catarina, where it all began — 25 years of transforming beauty across Brazil.',
         'units.brazil.footer': 'Santa Catarina · Brazil',
         'footer.tagline':
-          'Modern Brazilian techniques to bring out the best in you. Four units in Brazil, now in Naples, Florida.',
+          'Modern Brazilian techniques to bring out the best in you. Four units in Brazil, now in Fort Myers, Florida.',
         'footer.nav.title': 'Navigate',
         'footer.contact.title': 'Contact',
-        'footer.contact.address': 'Naples, Florida · USA',
+        'footer.contact.address': '2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916',
         'footer.contact.book': 'Book Appointment',
-        'footer.est': 'Naples, FL · Est. 25+ years',
+        'footer.est': 'Fort Myers, FL · Est. 25+ years',
       }),
     }),
 
@@ -301,7 +301,7 @@ export default config({
         'units.heading.serif': 'Nossas',
         'units.heading.rest': 'unidades',
         'units.usa.label': 'Primeira unidade nos EUA',
-        'units.usa.city': 'Naples,',
+        'units.usa.city': 'Fort Myers,',
         'units.usa.state': 'Flórida',
         'units.usa.country': 'Estados Unidos',
         'units.usa.desc':
@@ -314,12 +314,12 @@ export default config({
           'Nossas quatro unidades originais na região de Criciúma, Santa Catarina, onde tudo começou — 25 anos transformando a beleza por todo o Brasil.',
         'units.brazil.footer': 'Santa Catarina · Brasil',
         'footer.tagline':
-          'Técnicas brasileiras modernas para revelar o melhor em você. Quatro unidades no Brasil, agora em Naples, Flórida.',
+          'Técnicas brasileiras modernas para revelar o melhor em você. Quatro unidades no Brasil, agora em Fort Myers, Flórida.',
         'footer.nav.title': 'Navegar',
         'footer.contact.title': 'Contato',
-        'footer.contact.address': 'Naples, Flórida · EUA',
+        'footer.contact.address': '2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916',
         'footer.contact.book': 'Agendar Horário',
-        'footer.est': 'Naples, FL · Est. há 25+ anos',
+        'footer.est': 'Fort Myers, FL · Est. há 25+ anos',
       }),
     }),
 
@@ -363,7 +363,7 @@ export default config({
         'units.heading.serif': 'Nuestras',
         'units.heading.rest': 'unidades',
         'units.usa.label': 'Primera unidad en EE.UU.',
-        'units.usa.city': 'Naples,',
+        'units.usa.city': 'Fort Myers,',
         'units.usa.state': 'Florida',
         'units.usa.country': 'Estados Unidos',
         'units.usa.desc':
@@ -376,12 +376,12 @@ export default config({
           'Nuestras cuatro unidades originales en la región de Criciúma, Santa Catarina, donde todo comenzó — 25 años transformando la belleza en todo Brasil.',
         'units.brazil.footer': 'Santa Catarina · Brasil',
         'footer.tagline':
-          'Técnicas brasileñas modernas para sacar lo mejor de ti. Cuatro unidades en Brasil, ahora en Naples, Florida.',
+          'Técnicas brasileñas modernas para sacar lo mejor de ti. Cuatro unidades en Brasil, ahora en Fort Myers, Florida.',
         'footer.nav.title': 'Navegar',
         'footer.contact.title': 'Contacto',
-        'footer.contact.address': 'Naples, Florida · EE.UU.',
+        'footer.contact.address': '2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916',
         'footer.contact.book': 'Reservar Cita',
-        'footer.est': 'Naples, FL · Est. hace 25+ años',
+        'footer.est': 'Fort Myers, FL · Est. hace 25+ años',
       }),
     }),
   },
