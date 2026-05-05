@@ -12,6 +12,12 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
+  redirects: {
+    '/': '/home',
+    '/pt': '/pt/home',
+    '/sp': '/sp/home',
+  },
+
   integrations: [icon(), react(), markdoc(), keystatic()],
 
   vite: {
