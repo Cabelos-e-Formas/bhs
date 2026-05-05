@@ -1,0 +1,167 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "../ui/Button.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section
+  id="appointment"
+  class="grid lg:grid-cols-[44fr_56fr] min-h-[calc(100vh-6rem)]"
+>
+
+  <!-- Left: Invitation (dark panel) -->
+  <div class="appt-left bg-accent-dark flex flex-col justify-center px-14 py-16 max-sm:px-8 max-sm:py-12 relative overflow-hidden border-b-3 lg:border-b-0 border-accent-dark">
+
+    <span
+      class="absolute -bottom-6 -right-4 font-serif italic select-none pointer-events-none leading-none"
+      style="font-size: clamp(6rem, 14vw, 13rem); color: rgba(237,235,223,0.04);"
+      aria-hidden="true"
+    >BHS</span>
+
+    <p
+      class="appt-eyebrow font-sans text-xs uppercase tracking-[0.3em] mb-6"
+      style="color: rgba(237,235,223,0.4);"
+    >
+      Brazilian Hair Studio · Fort Myers, FL
+    </p>
+
+    <h1
+      class="appt-heading font-serif italic text-beige-500 leading-[1.1] mb-5"
+      style="font-size: clamp(2.2rem, 3.8vw, 3.75rem);"
+    >
+      {t("appointment.invite")}
+    </h1>
+
+    <div
+      class="appt-rule mb-5"
+      style="width: 30px; height: 1px; background: rgba(237,235,223,0.2);"
+      role="separator"
+      aria-hidden="true"
+    ></div>
+
+    <p
+      class="appt-body font-sans leading-relaxed max-w-[300px]"
+      style="font-size: 14px; color: rgba(237,235,223,0.5);"
+    >
+      {t("appointment.invite.body")}
+    </p>
+  </div>
+
+  <!-- Right: Contact cards — side by side on sm+ -->
+  <div class="appt-right grid sm:grid-cols-2 bg-beige-500">
+
+    <!-- Phone card -->
+    <div class="appt-phone flex flex-col justify-center px-12 py-14 max-sm:px-8 max-sm:py-10 border-b-3 sm:border-b-0 sm:border-r-3 border-accent-dark">
+
+      <div class="appt-phone-icon mb-5 text-accent-dark">
+        <Icon name="material-symbols-light:call" class="w-8 h-8 opacity-50" />
+      </div>
+
+      <p class="appt-phone-label font-sans text-xs uppercase tracking-[0.28em] text-beige-700 mb-4">
+        {t("appointment.phone.label")}
+      </p>
+
+      <a
+        href="tel:+12393188366"
+        class="appt-phone-number font-serif italic text-accent-dark leading-none block mb-2 transition-opacity duration-200 hover:opacity-65"
+        style="font-size: clamp(1.65rem, 2.4vw, 2.4rem);"
+        aria-label="Call (239) 318-8366"
+      >
+        (239) 318-8366
+      </a>
+
+      <div class="appt-phone-hours flex items-center gap-1.5 mb-10">
+        <Icon name="material-symbols-light:schedule" class="w-3.5 h-3.5 text-beige-700 opacity-55 flex-shrink-0" />
+        <span class="font-sans text-xs uppercase tracking-wider text-beige-700">
+          {t("appointment.phone.hours")}
+        </span>
+      </div>
+
+      <div class="appt-phone-cta">
+        <Button href="tel:+12393188366" variant="dark" size="sm" icon="material-symbols-light:call-outline">
+          {t("appointment.phone.cta")}
+        </Button>
+      </div>
+
+    </div>
+
+    <!-- Location card -->
+    <div class="appt-location flex flex-col justify-center px-12 py-14 max-sm:px-8 max-sm:py-10">
+
+      <div class="appt-location-icon mb-5 text-accent-dark">
+        <Icon name="material-symbols-light:location-on" class="w-8 h-8 opacity-50" />
+      </div>
+
+      <p class="appt-location-label font-sans text-xs uppercase tracking-[0.28em] text-beige-700 mb-4">
+        {t("appointment.location.label")}
+      </p>
+
+      <p
+        class="appt-location-city font-serif italic text-accent-dark leading-tight mb-1"
+        style="font-size: clamp(1.65rem, 2.2vw, 2.15rem);"
+      >
+        {t("appointment.location.city")}
+      </p>
+
+      <p class="appt-location-country font-sans text-sm text-beige-700 tracking-wide mb-6">
+        {t("appointment.location.country")}
+      </p>
+
+      <p
+        class="appt-location-note font-sans text-xs uppercase tracking-[0.22em] text-beige-700"
+        style="opacity: 0.45;"
+      >
+        {t("appointment.location.note")}
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  window.addEventListener("load", () => {
+    gsap.from(
+      ["#appointment .appt-eyebrow", "#appointment .appt-heading", "#appointment .appt-rule", "#appointment .appt-body"],
+      {
+        opacity: 0,
+        x: -24,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        delay: 0.1,
+        clearProps: "opacity,transform",
+      }
+    );
+
+    gsap.from(
+      [
+        "#appointment .appt-phone-icon",
+        "#appointment .appt-phone-label",
+        "#appointment .appt-phone-number",
+        "#appointment .appt-phone-hours",
+        "#appointment .appt-phone-cta",
+        "#appointment .appt-location-icon",
+        "#appointment .appt-location-label",
+        "#appointment .appt-location-city",
+        "#appointment .appt-location-country",
+        "#appointment .appt-location-note",
+      ],
+      {
+        opacity: 0,
+        y: 20,
+        duration: 0.7,
+        stagger: 0.055,
+        ease: "power3.out",
+        delay: 0.2,
+        clearProps: "opacity,transform",
+      }
+    );
+  });
+</script>
