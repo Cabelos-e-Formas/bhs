@@ -12,7 +12,7 @@ interface Props {
 const { href, variant = "dark", size = "md", icon, class: className = "" } = Astro.props;
 const Tag = href ? "a" : "button";
 
-const base = "btn rounded-full border-2 font-medium relative overflow-hidden";
+const base = "btn inline-flex rounded-full border font-medium relative overflow-hidden";
 const sizes = {
   sm: "px-6 py-3 text-sm",
   md: "px-6 py-3 text-lg",
