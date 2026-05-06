@@ -1,5 +1,7 @@
 ---
 import Button from "../ui/Button.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+import CardGrid from "../ui/CardGrid.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../../keystatic.config";
@@ -13,22 +15,13 @@ const services = allServices.sort((a, b) => (a.entry.order ?? '').localeCompare(
 ---
 
 <section id="services-section" class="border-accent-dark border-b-3 overflow-hidden">
-  <div
-    class="px-8 py-16 max-sm:py-12 flex max-sm:flex-col items-end justify-between gap-8 border-accent-dark"
-  >
-    <h2
-      class="text-6xl font-light text-accent-dark max-sm:text-4xl services-heading"
-    >
-      <span class="font-serif italic">{t("services.heading")}</span>
-    </h2>
-    <p class="text-beige-700 max-w-md text-right max-sm:text-left services-desc">
+  <SectionHeader serifText={t("services.heading")} class="px-8 py-16 max-sm:py-12">
+    <p slot="right" class="text-beige-700 max-w-md text-right max-sm:text-left">
       {t("services.desc")}
     </p>
-  </div>
+  </SectionHeader>
 
-  <div
-    class="grid grid-cols-2 max-sm:grid-cols-1 gap-px bg-accent-dark services-grid"
-  >
+  <CardGrid cols="2" bordered={false} class="services-grid">
     {
       services.map((s) => (
         <div
@@ -49,7 +42,7 @@ const services = allServices.sort((a, b) => (a.entry.order ?? '').localeCompare(
         </div>
       ))
     }
-  </div>
+  </CardGrid>
 
   <div class="flex justify-center px-8 py-16 max-sm:py-12 services-cta">
     <Button href="tel:+12393188366" variant="dark" size="lg">
@@ -63,28 +56,6 @@ const services = allServices.sort((a, b) => (a.entry.order ?? '').localeCompare(
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".services-heading", {
-    scrollTrigger: {
-      trigger: "#services-section",
-      start: "top 80%",
-    },
-    opacity: 0,
-    x: -50,
-    duration: 0.9,
-    ease: "power3.out",
-  });
-
-  gsap.from(".services-desc", {
-    scrollTrigger: {
-      trigger: "#services-section",
-      start: "top 80%",
-    },
-    opacity: 0,
-    x: 50,
-    duration: 0.9,
-    ease: "power3.out",
-  });
 
   gsap.from(".service-card", {
     scrollTrigger: {

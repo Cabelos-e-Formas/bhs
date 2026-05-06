@@ -28,7 +28,7 @@ const navLinks = [
   id="site-header"
   class="h-24 flex items-center px-10 text-accent-dark text-xl fixed top-0 left-0 right-0 bg-beige-500 z-50"
 >
-  <a href="/" class="h-12 flex-none flex gap-4">
+  <a href={localePath(lang, "/home")} class="h-12 flex-none flex gap-4">
     <Image
       src={LogoSmallImg}
       alt="Brazilian Hair Studio"
@@ -44,7 +44,7 @@ const navLinks = [
   </a>
 
   <div class="ml-auto flex items-center gap-4">
-    <Button href="/appointment" variant="dark" size="sm" class="max-sm:hidden border!">
+    <Button href={localePath(lang, "/appointment")} variant="dark" size="sm" class="max-sm:hidden border!">
       {t("nav.book")}
     </Button>
 

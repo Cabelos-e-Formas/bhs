@@ -1,4 +1,6 @@
 ---
+import SectionHeader from "../ui/SectionHeader.astro";
+import CardGrid from "../ui/CardGrid.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -7,14 +9,15 @@ const t = useTranslations(lang);
 
 <section id="units-section" class="bg-accent-dark border-b-3 border-accent-dark overflow-hidden">
   <!-- Header -->
-  <div class="px-8 py-16 max-sm:py-12 border-b border-beige-700 units-header">
-    <h2 class="text-6xl font-light text-beige-500 max-sm:text-4xl">
-      <span class="font-serif italic">{t("units.heading.serif")}</span> {t("units.heading.rest")}
-    </h2>
-  </div>
+  <SectionHeader
+    serifText={t("units.heading.serif")}
+    restText={t("units.heading.rest")}
+    headingClass="text-beige-500"
+    class="px-8 py-16 max-sm:py-12 border-b border-beige-700"
+  />
 
   <!-- Units grid -->
-  <div class="grid grid-cols-2 max-sm:grid-cols-1 gap-px bg-beige-700">
+  <CardGrid cols="2" gapBg="bg-beige-700" bordered={false}>
 
     <!-- USA Unit -->
     <div class="units-card bg-accent-dark px-12 py-14 max-sm:px-8 max-sm:py-10 flex flex-col gap-6">
@@ -66,7 +69,7 @@ const t = useTranslations(lang);
       </p>
     </div>
 
-  </div>
+  </CardGrid>
 </section>
 
 <script>
@@ -74,17 +77,6 @@ const t = useTranslations(lang);
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".units-header", {
-    scrollTrigger: {
-      trigger: "#units-section",
-      start: "top 80%",
-    },
-    opacity: 0,
-    x: -50,
-    duration: 0.9,
-    ease: "power3.out",
-  });
 
   gsap.from(".units-card", {
     scrollTrigger: {

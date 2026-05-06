@@ -1,4 +1,6 @@
 ---
+import SectionHeader from "../ui/SectionHeader.astro";
+import CardGrid from "../ui/CardGrid.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../../keystatic.config";
@@ -11,18 +13,14 @@ const members = await reader.collections.team.all();
 ---
 
 <section id="team-section" class="border-accent-dark border-b-3 px-8 py-20 max-w-[100vw] overflow-hidden max-sm:py-12">
-  <!-- Header -->
-  <div class="flex max-sm:flex-col items-end justify-between gap-8 mb-16 max-sm:mb-10">
-    <h2 class="text-6xl font-light text-accent-dark max-sm:text-4xl team-heading">
-      <span class="font-serif italic">{t("team.heading.serif")}</span> {t("team.heading.rest")}
-    </h2>
-    <p class="text-beige-700 max-w-sm text-right max-sm:text-left team-desc">
+  <SectionHeader serifText={t("team.heading.serif")} restText={t("team.heading.rest")}>
+    <p slot="right" class="text-beige-700 max-w-sm text-right max-sm:text-left">
       {t("team.desc")}
     </p>
-  </div>
+  </SectionHeader>
 
   <!-- Cards -->
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-px bg-accent-dark border border-accent-dark">
+  <CardGrid>
     {
       members.map((member) => (
         <div class="team-card bg-beige-500 flex flex-col">
@@ -51,7 +49,7 @@ const members = await reader.collections.team.all();
         </div>
       ))
     }
-  </div>
+  </CardGrid>
 </section>
 
 <script>
@@ -59,28 +57,6 @@ const members = await reader.collections.team.all();
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
   gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".team-heading", {
-    scrollTrigger: {
-      trigger: "#team-section",
-      start: "top 80%",
-    },
-    opacity: 0,
-    x: -50,
-    duration: 0.9,
-    ease: "power3.out",
-  });
-
-  gsap.from(".team-desc", {
-    scrollTrigger: {
-      trigger: "#team-section",
-      start: "top 80%",
-    },
-    opacity: 0,
-    x: 50,
-    duration: 0.9,
-    ease: "power3.out",
-  });
 
   gsap.from(".team-card", {
     scrollTrigger: {

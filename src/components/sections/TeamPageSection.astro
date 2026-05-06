@@ -3,6 +3,7 @@ import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../../keystatic.config";
 import PageHero from "../ui/PageHero.astro";
+import CardGrid from "../ui/CardGrid.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -20,7 +21,7 @@ const members = await reader.collections.team.all();
 />
 
 <section id="team-page-grid" class="border-b-3 border-accent-dark px-8 py-20 max-sm:py-12">
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))] gap-px bg-accent-dark border border-accent-dark">
+  <CardGrid>
     {
       members.map((member) => (
         <div class="team-page-card bg-beige-500 flex flex-col">
@@ -52,7 +53,7 @@ const members = await reader.collections.team.all();
         </div>
       ))
     }
-  </div>
+  </CardGrid>
 </section>
 
 <script>

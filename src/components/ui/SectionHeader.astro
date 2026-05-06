@@ -1,0 +1,66 @@
+---
+interface Props {
+  serifText?: string;
+  restText?: string;
+  class?: string;
+  headingClass?: string;
+}
+
+const { serifText, restText, class: className, headingClass } = Astro.props;
+const hasRight = Astro.slots.has("right");
+---
+
+<div
+  class:list={[
+    "flex max-sm:flex-col items-end justify-between gap-8 mb-16 max-sm:mb-10",
+    className,
+  ]}
+  data-section-header
+>
+  <h2
+    class:list={["text-6xl font-light max-sm:text-4xl", headingClass ?? "text-accent-dark"]}
+    data-heading
+  >
+    {serifText && <span class="font-serif italic">{serifText}</span>}
+    {restText && ` ${restText}`}
+  </h2>
+  {
+    hasRight && (
+      <div data-right>
+        <slot name="right" />
+      </div>
+    )
+  }
+</div>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  document
+    .querySelectorAll<HTMLElement>("[data-section-header]")
+    .forEach((header) => {
+      const heading = header.querySelector("[data-heading]");
+      const right = header.querySelector("[data-right]");
+
+      gsap.from(heading, {
+        scrollTrigger: { trigger: header, start: "top 80%" },
+        opacity: 0,
+        x: -50,
+        duration: 0.9,
+        ease: "power3.out",
+      });
+
+      if (right) {
+        gsap.from(right, {
+          scrollTrigger: { trigger: header, start: "top 80%" },
+          opacity: 0,
+          x: 50,
+          duration: 0.9,
+          ease: "power3.out",
+        });
+      }
+    });
+</script>

@@ -3,7 +3,7 @@ import { getImage } from "astro:assets";
 import sunRay from "../../assets/sun-ray.png";
 import bhsLogoSmallDark from "../../assets/bhs-logo-small-light.png";
 import Button from "../ui/Button.astro";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { getLangFromUrl, useTranslations, localePath } from "../../i18n/utils";
 
 const optimizedSunRay = await getImage({ src: sunRay });
 const optimizedLogo = await getImage({ src: bhsLogoSmallDark });
@@ -62,7 +62,7 @@ const titleText = t("hero.title");
       </span>
     </h1>
     <div class="hero-button-wrapper overflow-hidden">
-      <Button variant="light">{t("hero.cta")}</Button>
+      <Button variant="light" href={localePath(lang, '/appointment')}>{t("hero.cta")}</Button>
     </div>
   </div>
 </section>

@@ -1,0 +1,29 @@
+---
+interface Props {
+  cols?: "auto" | "2";
+  gapBg?: string;
+  bordered?: boolean;
+  class?: string;
+}
+
+const {
+  cols = "auto",
+  gapBg = "bg-accent-dark",
+  bordered = true,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  class:list={[
+    "grid gap-px",
+    cols === "2"
+      ? "grid-cols-2 max-sm:grid-cols-1"
+      : "grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]",
+    gapBg,
+    bordered && "border border-accent-dark",
+    className,
+  ]}
+>
+  <slot />
+</div>
