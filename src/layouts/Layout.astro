@@ -2,7 +2,8 @@
 import { getImage } from "astro:assets";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import shareSource from "../assets/stock/blonde-balayage.jpg";
+import shareSource from "../assets/og-image.png";
+import salonPhoto from "../assets/hero-balayage.jpg";
 import { getLangFromUrl, useTranslations, localePath, unlocalizedPath, langs, langTags } from "../i18n/utils";
 import { contact } from "../data/contact";
 import lato400 from "@fontsource/lato/files/lato-latin-400-normal.woff2?url";
@@ -27,8 +28,14 @@ const alternates = langs.map((l) => ({ hreflang: langTags[l], href: new URL(loca
 const xDefault = new URL(localePath("en", path), site).href;
 
 // 1200×630 share image for link previews (WhatsApp, Instagram, Facebook, iMessage)
-const shareImage = await getImage({ src: shareSource, width: 1200, height: 630, fit: "cover", position: "top", format: "jpg" });
+// Link previews show the full logo on the brand green (1200×630, src/assets/og-image.png).
+// The hashed file name changes whenever the image does, so platforms re-fetch it.
+const shareImage = await getImage({ src: shareSource, format: "png" });
 const shareImageUrl = new URL(shareImage.src, site).href;
+
+// Structured data wants a real photo of the business, not the logo
+const salonImage = await getImage({ src: salonPhoto, width: 1086, format: "jpg" });
+const salonImageUrl = new URL(salonImage.src, site).href;
 
 const salon = {
   "@context": "https://schema.org",
@@ -36,7 +43,7 @@ const salon = {
   "@id": new URL("/#salon", site).href,
   name: "Brazilian Hair Studio",
   url: new URL("/", site).href,
-  image: shareImageUrl,
+  image: salonImageUrl,
   logo: new URL("/logo/bhs-logo.svg", site).href,
   description: t("meta.home.description"),
   telephone: "+1-239-318-8366",
@@ -88,8 +95,9 @@ const salon = {
     <meta property="og:image" content={shareImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={t("hero.photoAlt")} />
+    <meta property="og:image:alt" content="Brazilian Hair Studio logo" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={shareImageUrl} />
 
     <meta name="theme-color" content="#0e3b31" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
