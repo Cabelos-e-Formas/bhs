@@ -1,0 +1,10 @@
+# Permanent redirects for old URLs (Cloudflare static assets; evaluated before files).
+# Home moved to the locale roots; Spanish moved from /sp to /es.
+/home              /                301
+/pt/home           /pt              301
+/sp                /es              301
+/sp/home           /es              301
+/sp/about          /es/about        301
+/sp/services       /es/services     301
+/sp/appointment    /es/appointment  301
+/sp/linktree       /es/linktree     301

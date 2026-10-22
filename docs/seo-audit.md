@@ -50,7 +50,7 @@ domain, which does not serve this site.
 
 ## Owner checklist after launch
 
-1. Point `brazilian-hair-studio.com` (and `www`) at the Vercel project; pick one host and redirect the other.
+1. Point `brazilian-hair-studio.com` (and `www`) at the Cloudflare Worker (Custom Domains); add a Redirect Rule `www` → apex.
 2. Move or retire the "Recepção Virtual" page so the domain stops returning 200 for unknown URLs.
 3. Verify the domain in Google Search Console and Bing Webmaster Tools; submit `/sitemap-index.xml`.
 4. Validate structured data with the Rich Results Test.

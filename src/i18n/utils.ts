@@ -7,7 +7,8 @@ export const langs = Object.keys(ui) as Lang[];
 export const langTags: Record<Lang, string> = { en: 'en', pt: 'pt-BR', es: 'es' };
 
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/');
+  // Locale roots build as `pt.html`, so drop the extension before matching
+  const lang = (url.pathname.split('/')[1] ?? '').replace(/\.html$/, '');
   if (lang in ui) return lang as Lang;
   return defaultLang;
 }
@@ -23,8 +24,12 @@ export function localized<T extends Record<string, unknown>>(data: T, field: str
   return (data[`${field}_${lang}`] as string) || (data[`${field}_${defaultLang}`] as string) || '';
 }
 
-/** Strip the trailing slash (except for the root) so every URL has one canonical form. */
+/**
+ * One canonical form per URL: no `.html` (pages build as `about.html`), no `/index`,
+ * no trailing slash (except the root).
+ */
 function normalize(path: string) {
+  path = path.replace(/\.html$/, '').replace(/\/index$/, '/');
   return path.length > 1 ? path.replace(/\/+$/, '') : path;
 }
 

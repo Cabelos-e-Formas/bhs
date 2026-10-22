@@ -6,8 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev       # Start dev server (localhost:4321)
-npm run build     # Build for production
-npm run preview   # Not supported by the Vercel adapter — inspect .vercel/output/static instead
+npm run build     # Build static site to dist/
+npm run preview   # Build + serve dist/ with Wrangler (Cloudflare runtime: redirects, headers, 404)
+npm run deploy    # Build + deploy to Cloudflare (wrangler deploy)
 ```
 
 ---
@@ -36,9 +37,13 @@ src/data/contact.ts    ──► phone, address, social links (language-agnostic
 /pt/*  /es/* → same pages per locale
 ```
 
-Redirects (301) in `astro.config.mjs`: `/home → /`, `/pt/home → /pt`, `/sp/* → /es/*` (Spanish moved from `/sp` to `/es`).
+Redirects (301) in `public/_redirects`: `/home → /`, `/pt/home → /pt`, `/sp/* → /es/*` (Spanish moved from `/sp` to `/es`). The dev server doesn't apply them — use `npm run preview`.
 
-**Deployment:** Vercel (`@astrojs/vercel`), fully static. A move to Cloudflare is planned — the redirects and trailing-slash rule are currently emitted as Vercel config by the adapter, so re-create them (`public/_redirects`) when switching.
+**Deployment:** Cloudflare Workers with static assets (no adapter, no Worker script) — config in `wrangler.jsonc`:
+- `build.format: 'file'` builds `about.html`; `html_handling: "drop-trailing-slash"` serves it at `/about` and redirects `/about/` and `/about.html` there
+- `not_found_handling: "404-page"` serves `dist/404.html` with a real 404 status
+- `public/_headers` sets long-lived caching for `/_astro/*`, fonts and logos
+- Cloudflare build settings: build command `npm run build`, deploy command `npx wrangler deploy`; set `INSTAGRAM_ACCESS_TOKEN` as a build variable if used
 
 ---
 
@@ -52,7 +57,7 @@ Redirects (301) in `astro.config.mjs`: `/home → /`, `/pt/home → /pt`, `/sp/*
 | Animations | CSS + one small IntersectionObserver | `[data-reveal]` / `[data-count]` in `Layout.astro`; no GSAP/Lenis |
 | Icons | astro-icon | `material-symbols-light` iconify set |
 | SEO | `@astrojs/sitemap` | i18n alternates; `public/robots.txt` |
-| Adapter | @astrojs/vercel | static deployment |
+| Hosting | Cloudflare Workers static assets | `wrangler.jsonc`, `public/_redirects`, `public/_headers` |
 | Fonts | Lato (`@fontsource/lato`, 300/400/700) + Baskerville (local, else self-hosted BT) | Lato preloaded in `Layout.astro` |
 | Language | TypeScript | strict |
 
@@ -108,7 +113,8 @@ All handled in `src/layouts/Layout.astro` — every page passes `title` and `des
 - Open Graph / Twitter card with a generated 1200×630 share image
 - `HairSalon` JSON-LD (NAP, hours, sameAs). Do **not** add a self-serving `aggregateRating`.
 - `noindex` prop for utility pages (404); linktree sets its own `noindex`
-- `site` + `trailingSlash: 'never'` in `astro.config.mjs`; sitemap at `/sitemap-index.xml`
+- `site` + `trailingSlash: 'never'` + `build.format: 'file'` in `astro.config.mjs`; sitemap at `/sitemap-index.xml`
+- URL helpers in `src/i18n/utils.ts` strip `.html` / `/index` / trailing slashes, because `Astro.url.pathname` is `/pt/services.html` at build time with file output
 
 Audit and open items: `docs/seo-audit.md`.
 
@@ -191,7 +197,9 @@ src/
   pages/             # index, services, about, appointment, linktree, 404 + pt/ + es/
   styles/global.css  # Tailwind, fonts, .noise, .logo-mask, reveal utilities
 public/
-  fonts/  logo/  favicon.svg  favicon.ico  robots.txt
+  fonts/  logo/  favicon.svg  favicon.ico  apple-touch-icon.png  robots.txt
+  _redirects  _headers   # Cloudflare static-asset rules
+wrangler.jsonc       # Cloudflare deploy config
 docs/
   design-system.md   # Visual rules
   seo-audit.md       # SEO audit + owner checklist
