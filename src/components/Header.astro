@@ -2,16 +2,14 @@
 import { Icon } from "astro-icon/components";
 import Logo from "./ui/Logo.astro";
 import Button from "./ui/Button.astro";
-import { getLangFromUrl, useTranslations, localePath, switchLangPath, langTags, type Lang } from "../i18n/utils";
+import { getLangFromUrl, useTranslations, localePath, switchLangPath, langTags, langs } from "../i18n/utils";
+import { languages } from "../i18n/ui";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const langLinks = [
-  { code: "en", label: "EN", href: switchLangPath(Astro.url, "en") },
-  { code: "pt", label: "PT", href: switchLangPath(Astro.url, "pt") },
-  { code: "es", label: "ES", href: switchLangPath(Astro.url, "es") },
-];
+// Each language is named in itself (English · Português · Español) so people find their own
+const langLinks = langs.map((code) => ({ code, label: languages[code], href: switchLangPath(Astro.url, code) }));
 
 const navLinks = [
   { href: localePath(lang, "/"), label: t("nav.home") },
@@ -84,7 +82,8 @@ const navLinks = [
             {i > 0 && <span class="text-accent-dark/30" aria-hidden="true">|</span>}
             <a
               href={l.href}
-              hreflang={langTags[l.code as Lang]}
+              hreflang={langTags[l.code]}
+              lang={langTags[l.code]}
               aria-current={lang === l.code ? "true" : undefined}
               class={
                 lang === l.code
