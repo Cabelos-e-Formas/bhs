@@ -1,82 +1,220 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import blonde from "../../assets/stock/ash-blonde-waves.jpg";
+import color from "../../assets/stock/brunette-balayage.jpg";
+import smoothing from "../../assets/stock/stylist-blowdry.jpg";
+import styling from "../../assets/stock/curling-styling.jpg";
+import treatments from "../../assets/stock/blowout.jpg";
+import bridal from "../../assets/random-girl.jpg";
 import Button from "../ui/Button.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
-import CardGrid from "../ui/CardGrid.astro";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { createReader } from "@keystatic/core/reader";
-import keystaticConfig from "../../../keystatic.config";
+import { getCollection } from "astro:content";
+import { getLangFromUrl, useTranslations, localePath, localized } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const reader = createReader(process.cwd(), keystaticConfig);
-const allServices = await reader.collections.services.all();
-const services = allServices.sort((a, b) => (a.entry.order ?? '').localeCompare(b.entry.order ?? ''));
+// Photo per service, keyed by the entry slug (file name)
+const photos: Record<string, ImageMetadata> = {
+  "blonde-transformations": blonde,
+  "color-correction": color,
+  "brazilian-smoothing": smoothing,
+  "haircuts-styling": styling,
+  "hair-treatments": treatments,
+  "bridal-special-events": bridal,
+};
+
+const services = (await getCollection("services"))
+  .sort((a, b) => a.data.order.localeCompare(b.data.order))
+  .map(({ id, data }) => ({
+    photo: photos[id],
+    title: localized(data, "title", lang),
+    desc: localized(data, "desc", lang),
+  }));
 ---
 
-<section id="services-section" class="border-accent-dark border-b-3 overflow-hidden">
-  <SectionHeader serifText={t("services.heading")} class="px-8 py-16 max-sm:py-12">
-    <p slot="right" class="text-beige-700 max-w-md text-right max-sm:text-left">
+<section id="services-section" class="border-b-3 border-accent-dark">
+  <SectionHeader serifText={t("services.heading.serif")} restText={t("services.heading.rest")} class="px-10 max-sm:px-6 pt-24 max-sm:pt-14 mb-14! max-sm:mb-10!">
+    <p slot="right" class="text-beige-700 max-w-sm text-right max-sm:text-left leading-relaxed">
       {t("services.desc")}
     </p>
   </SectionHeader>
 
-  <CardGrid cols="2" bordered={false} class="services-grid">
+  <ul class="border-t border-accent-dark" data-svc-list>
     {
-      services.map((s) => (
-        <div
-          class={`service-card px-12 py-14 max-sm:px-8 max-sm:py-10 flex flex-col gap-5 ${s.entry.dark ? "bg-accent-dark" : "bg-beige-500"}`}
-        >
-          <span
-            class={`text-8xl font-serif italic leading-none select-none ${s.entry.dark ? "text-beige-500" : "text-accent-dark"}`}
-            style="opacity: 0.5;"
+      services.map((s, i) => (
+        <li class="border-b border-accent-dark" data-reveal style={`--d: ${i * 70}ms`}>
+          <a
+            href={localePath(lang, "/services")}
+            class="svc-row group relative grid grid-cols-[1fr_auto] md:grid-cols-[7fr_4fr] items-center gap-x-10 gap-y-2 px-10 max-sm:px-6 py-8 max-sm:py-6 overflow-hidden"
+            data-svc-row={i}
           >
-            {s.entry.order}
-          </span>
-          <h3 class={`text-2xl font-light tracking-wide ${s.entry.dark ? "text-beige-500" : "text-accent-dark"}`}>
-            {s.entry[`title_${lang}` as keyof typeof s.entry]}
-          </h3>
-          <p class="text-beige-700 leading-relaxed text-sm">
-            {s.entry[`desc_${lang}` as keyof typeof s.entry]}
-          </p>
-        </div>
+            <h3 class="relative z-10 max-md:col-start-1 max-md:row-start-1 font-light leading-none text-[clamp(1.75rem,4.4vw,4.75rem)] text-accent-dark transition-[color,transform] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-beige-500 group-focus-visible:text-beige-500 md:group-hover:translate-x-6">
+              {s.title}
+            </h3>
+            <p class="relative z-10 max-md:col-start-1 max-md:row-start-2 text-sm leading-relaxed text-beige-700 max-w-sm transition-colors duration-300 group-hover:text-beige-500/80 group-focus-visible:text-beige-500/80">
+              {s.desc}
+            </p>
+            {s.photo && (
+              <span class="md:hidden relative row-span-2 col-start-2 row-start-1 w-20 aspect-[4/5] overflow-hidden" aria-hidden="true">
+                <Image src={s.photo} alt="" widths={[160, 320]} sizes="5rem" loading="lazy" class="w-full h-full object-cover" />
+              </span>
+            )}
+          </a>
+        </li>
       ))
     }
-  </CardGrid>
+  </ul>
 
-  <div class="flex justify-center px-8 py-16 max-sm:py-12 services-cta">
-    <Button href="tel:+12393188366" variant="dark" size="lg">
-      {t("services.cta")}
-    </Button>
+  <div class="px-10 max-sm:px-6 py-14 max-sm:py-10 flex justify-end max-sm:justify-start">
+    <Button href={localePath(lang, "/services")} variant="dark">{t("services.all")}</Button>
   </div>
 </section>
 
+<!-- Cursor-following preview (fine pointers only) -->
+<div class="svc-cursor max-md:hidden" aria-hidden="true" data-svc-cursor>
+  <div class="svc-cursor-frame">
+    {
+      services.map((s, i) =>
+        s.photo ? (
+          <Image
+            src={s.photo}
+            alt=""
+            widths={[320, 560]}
+            sizes="18rem"
+            loading="lazy"
+            class="svc-cursor-img"
+            data-svc-img={i}
+          />
+        ) : null,
+      )
+    }
+  </div>
+</div>
+
+<style>
+  /* The button's fill sweep, at row scale */
+  .svc-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #0e3b31;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  .svc-row:hover::before,
+  .svc-row:focus-visible::before {
+    transform: scaleX(1);
+  }
+
+  /* Floating preview: positioned by the script, revealed with a wipe */
+  /* Layered between the row's fill (z auto) and the row text (z-10),
+     so titles read on top of the photo */
+  .svc-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    width: 18rem;
+    aspect-ratio: 4 / 5;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .svc-cursor-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    clip-path: inset(50% 50% 50% 50%);
+    transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  .svc-cursor[data-active] .svc-cursor-frame {
+    clip-path: inset(0 0 0 0);
+  }
+  /* Forest tint keeps the row text readable on top of the photo */
+  .svc-cursor-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 59, 49, 0.35);
+  }
+  .svc-cursor-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.15);
+    transition:
+      opacity 0.35s ease,
+      transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+  .svc-cursor-img[data-current] {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .svc-row::before,
+    .svc-cursor-frame,
+    .svc-cursor-img {
+      transition: none !important;
+    }
+  }
+</style>
+
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  const list = document.querySelector<HTMLElement>("[data-svc-list]");
+  const cursor = document.querySelector<HTMLElement>("[data-svc-cursor]");
 
-  gsap.registerPlugin(ScrollTrigger);
+  if (list && cursor && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const images = cursor.querySelectorAll<HTMLElement>("[data-svc-img]");
+    const ease = reduceMotion ? 1 : 0.16;
 
-  gsap.from(".service-card", {
-    scrollTrigger: {
-      trigger: ".services-grid",
-      start: "top 80%",
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.7,
-    stagger: 0.15,
-    ease: "power3.out",
-  });
+    let targetX = 0;
+    let targetY = 0;
+    let x = 0;
+    let y = 0;
+    let frame = 0;
 
-  gsap.from(".services-cta", {
-    scrollTrigger: {
-      trigger: ".services-cta",
-      start: "top 90%",
-    },
-    opacity: 0,
-    scale: 0.9,
-    duration: 0.6,
-    ease: "back.out(1.5)",
-  });
+    const render = () => {
+      x += (targetX - x) * ease;
+      y += (targetY - y) * ease;
+      // Tilt with horizontal velocity, capped
+      const tilt = reduceMotion ? 0 : Math.max(-12, Math.min(12, (targetX - x) * 0.08));
+      cursor.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) rotate(${tilt}deg)`;
+      frame = Math.abs(targetX - x) > 0.3 || Math.abs(targetY - y) > 0.3 ? requestAnimationFrame(render) : 0;
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(render);
+    };
+
+    const show = (index: string) => {
+      cursor.toggleAttribute("data-active", true);
+      images.forEach((img) => img.toggleAttribute("data-current", img.dataset.svcImg === index));
+    };
+
+    list.addEventListener("pointerenter", (e) => {
+      // Start at the pointer instead of flying in from the corner
+      x = targetX = e.clientX;
+      y = targetY = e.clientY;
+      schedule();
+    });
+
+    list.addEventListener("pointermove", (e) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      schedule();
+    });
+
+    list.addEventListener("pointerleave", () => cursor.toggleAttribute("data-active", false));
+
+    list.querySelectorAll<HTMLElement>("[data-svc-row]").forEach((row) => {
+      row.addEventListener("pointerenter", () => show(row.dataset.svcRow!));
+    });
+  }
 </script>

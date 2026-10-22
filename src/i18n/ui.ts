@@ -1,95 +1,142 @@
 export const languages = {
   en: "English",
   pt: "Português",
-  sp: "Español",
+  es: "Español",
 } as const;
 
 export const defaultLang = "en" as const;
 
 export const ui: Record<keyof typeof languages, any> = {
   en: {
+    // Meta (title ≤ ~60 chars, description ≤ ~160)
+    "meta.home.title": "Hair Salon in Fort Myers, FL | Brazilian Hair Studio",
+    "meta.home.description": "Blonde specialists in Fort Myers, FL: balayage, color correction, Brazilian blowout and bridal hair. 25+ years of Brazilian expertise. Call (239) 318-8366.",
+    "meta.services.title": "Hair Services in Fort Myers | Brazilian Hair Studio",
+    "meta.services.description": "Balayage and highlights, color correction, Brazilian blowout and keratin, haircuts, treatments, bridal styling, makeup and nails at our Fort Myers salon.",
+    "meta.about.title": "About Mirela de Bem & Our Salon | Brazilian Hair Studio",
+    "meta.about.description": "Founded by Mirela de Bem after 25+ years and four salons in southern Brazil, Brazilian Hair Studio brings Brazilian hair expertise to Fort Myers, FL.",
+    "meta.appointment.title": "Book an Appointment in Fort Myers | Brazilian Hair Studio",
+    "meta.appointment.description": "Book at Brazilian Hair Studio, 2950 Winkler Ave, Fort Myers. Call (239) 318-8366 or message us on WhatsApp. Open Monday to Saturday, 9 AM to 7 PM.",
+    "meta.notfound.title": "Page not found | Brazilian Hair Studio",
+    "meta.notfound.description": "This page doesn't exist. Go back to the Brazilian Hair Studio home page or call (239) 318-8366.",
+    "a11y.skip": "Skip to content",
+    "notfound.heading": "Page not found",
+    "notfound.body": "The page you're looking for doesn't exist or has moved.",
+    "notfound.cta": "Back to home",
+    "clients.reviewsLink": "Read our reviews on Google",
+    "clients.prev": "Previous review",
+    "clients.next": "Next review",
+    "clients.region": "Client reviews",
+    "instagram.follow": "Follow us on Instagram",
+
+    // Redesign
+    "hero.photoAlt": "Long, glossy blonde balayage after a salon appointment",
+    "about.heading.serif": "Beautiful hair",
+    "about.heading.rest": "creates confidence",
+    "about.link": "Read our story",
+    "services.heading.serif": "What we",
+    "services.heading.rest": "do best",
+    "visit.address": "Address",
+    "visit.hours": "Hours",
+    "visit.phone": "Phone",
+    "visit.directions": "Get directions",
+    "servicespage.jump": "Service categories",
+    "aboutus.story": "Brazilian Hair Studio was founded by Mirela de Bem after building a successful beauty career and four salons in southern Brazil. Today our Fort Myers location brings that experience, Brazilian technique and a personal approach to every client.",
+    "aboutus.photoAlt": "A stylist creating an updo for a seated client",
+    "aboutus.timeline.serif": "From Içara",
+    "aboutus.timeline.rest": "to Fort Myers",
+
     // Nav
     "nav.home": "Home",
     "nav.about": "About us",
     "nav.services": "Services",
-    "nav.team": "Team",
     "nav.book": "Book your Appointment",
+    "nav.menu": "Toggle menu",
+    "nav.label": "Main",
+    "nav.language": "Language",
 
     // Hero
-    "hero.highlight": "Brazilian",
-    "hero.titleBefore": "",
-    "hero.title": "technique to bring out the best in you",
+    "hero.highlight": "Transformations",
+    "hero.titleBefore": "Luxury Hair",
+    "hero.title": "in Fort Myers",
+    "hero.subline": "Blonde Specialists · Color Correction · Brazilian Smoothing · Personalized Beauty",
     "hero.cta": "Book your appointment",
 
     // About
-    "about.heading": "We focus on the best for you!",
+    "about.heading": "Beautiful hair creates confidence",
     "about.body":
-      "We are a company with more than 25 years of experience, with four units in Brazil and now the first unit in the USA. Our purpose is to raise your self-esteem and bring out the best in you! We are specialists in hair transformation using the techniques of visagism and personal coloring. In our history we have already assisted more than 2000 brides in our four units with the Bridal Day, both in the salon and in other environments of your choice, such as beaches, hotels, castles, and fields. In our salon you have beauty services for your entire family. Female Production, Male Production, Baby's First Haircut with certificate, Sweet Sixteen, Bride and Bridesmaids Day Production, Eyebrow Services, Eyelash Extension, Microblading, Manicure, Pedicure and Foot Spa among others. We are ready and happy to receive you in our salon, where you will get to know our services and techniques, providing you with an unforgettable experience.",
+      "At Brazilian Hair Studio, we believe beautiful hair creates confidence. For over 25 years, we have helped women transform their image through personalized consultations, advanced color techniques, healthy hair treatments, and luxury salon experiences. Every service is tailored to your unique beauty, lifestyle, and goals.",
+    "about.photoAlt": "Sunlit blonde hair with soft, natural movement",
 
     // About Us (page)
-    "aboutus.heading": "About Us",
-    "aboutus.subtitle": "Our history of transforming beauty since 1999",
+    "aboutus.heading": "Bringing out the best in you",
+    "aboutus.subtitle": "Founded by Mirela de Bem — 25+ years of Brazilian beauty expertise, now in Fort Myers.",
     "aboutus.stats.clients": "clients served",
     "aboutus.stats.new": "new clients in 2021",
     "aboutus.stats.professionals": "professionals",
     "aboutus.cta": "Book your appointment",
+    "aboutus.pullquote": "Our philosophy is simple: understand each client and create a look that enhances her natural beauty.",
+    "aboutus.stats.caption": "2021 — across all four units",
 
     // Numbers
     "numbers.years": "years of experience",
-    "numbers.brides": "brides served",
-    "numbers.units": "salon units",
-    "numbers.specialists": "specialists",
+    "numbers.reviews": "five-star reviews",
+    "numbers.clients": "clients served annually",
+    "numbers.bridal": "bridal hairstyles created",
 
     // Services
     "services.heading": "Services",
     "services.desc":
-      "Our consultancy uses the visagism technique — evaluating your skin subtone, temperature, and personal contrast to craft a look that truly brings out the best in you.",
+      "Blonde specialists, color correction, Brazilian smoothing and more — every service tailored to your unique beauty, lifestyle, and goals.",
     "services.cta": "Book your appointment → (239) 318-8366",
-    "services.01.title": "Bride Production",
+    "services.all": "See all services",
+    "services.01.title": "Blonde Transformations",
     "services.01.desc":
-      "Complete bridal styling tailored to your vision. With over 2,000 brides served, we create unforgettable looks in salons, beaches, hotels, castles, and destinations of your choice.",
-    "services.02.title": "Godmother Production",
+      "Custom highlights, balayage, babylights, dimensional blondes and luxury blonding services.",
+    "services.02.title": "Color Correction",
     "services.02.desc":
-      "Sophisticated, elegant looks for godmothers that complement the ceremony while celebrating your own unique style and grace.",
-    "services.03.title": "Sweet Sixteen",
+      "Professional correction of unwanted tones, uneven color and previous color challenges.",
+    "services.03.title": "Brazilian Smoothing",
     "services.03.desc":
-      "Make this milestone unforgettable. We create youthful, radiant looks perfectly suited for your Sweet Sixteen celebration.",
-    "services.04.title": "Graduation Production",
+      "Reduce frizz and improve manageability while maintaining healthy and beautiful hair.",
+    "services.04.title": "Haircuts & Styling",
     "services.04.desc":
-      "Step into your future looking your absolute best. Polished, elegant styling to honor this achievement and everything ahead.",
+      "Precision cuts and styling designed for your face shape, personality and lifestyle.",
+    "services.05.title": "Hair Treatments",
+    "services.05.desc":
+      "Deep hydration, reconstruction and strengthening treatments for healthier hair.",
+    "services.06.title": "Bridal & Special Events",
+    "services.06.desc":
+      "Elegant styling for weddings, photoshoots, graduations and unforgettable celebrations.",
 
-    // Team
-    "team.heading.serif": "Meet our",
-    "team.heading.rest": "team",
-    "team.desc":
-      "A dedicated team focused on agility and care — respecting the personal style, expectations, and needs of each client.",
-    "team.experience": "experience",
-    "team.mb.role": "CEO & Hairdresser",
-    "team.mb.bio":
-      "Founder of Brazilian Hair Studio, Mirela brings 25 years of expertise in hair chemistry, color correction, and visagism. Trained by Pivot Point, L'Oréal, Keune, and Schwarzkopf — and author of over 2,000 bridal hairstyles.",
-    "team.gs.role": "Facial Esthetician",
-    "team.gs.bio":
-      "Gezi specializes in advanced facial treatments including skinbooster, peeling, microdermabrasion, dermaplaning, eyebrow micropigmentation, and eyelash extensions, bringing radiance to every client.",
-    "team.fa.role": "Hairdresser & Colorist",
-    "team.fa.bio":
-      "Blonde hair specialist with 9 years of professional experience, Francieli delivers advanced diagnostic hair treatments, personalized color formulations, and precision cuts tailored to each client.",
 
     // Clients
     "clients.heading.serif": "What our",
     "clients.heading.rest": "clients say",
     "clients.cta": "Book your appointment",
+    "clients.rating": "Rated 5 out of 5 stars",
+
+    // Instagram
+    "instagram.heading.serif": "Follow",
+    "instagram.heading.rest": "our work",
+    "instagram.desc": "Fresh color, cuts and bridal looks, straight from the salon.",
+    "instagram.post": "View post on Instagram",
     "clients.t1.quote":
-      "Mirela and her team made my wedding day absolutely perfect. My hair stayed flawless from the ceremony through the last dance. I've never felt more beautiful.",
-    "clients.t1.name": "Amanda R.",
-    "clients.t1.occasion": "Bride",
+      "My highlights have never looked so natural. The entire experience was incredible.",
+    "clients.t1.name": "★★★★★",
+    "clients.t1.occasion": "Highlights",
     "clients.t2.quote":
-      "For my daughter's Sweet Sixteen, they created such a magical look. The visagism consultation beforehand made all the difference — she felt like herself, only elevated.",
-    "clients.t2.name": "Patricia M.",
-    "clients.t2.occasion": "Mother of the debutante",
+      "The team transformed my hair and my confidence. I finally found my salon in Fort Myers.",
+    "clients.t2.name": "★★★★★",
+    "clients.t2.occasion": "Hair transformation",
     "clients.t3.quote":
-      "Francieli completely transformed my hair. The color correction was seamless and the cut frames my face in a way I never thought possible. I'm a client for life.",
-    "clients.t3.name": "Julia S.",
-    "clients.t3.occasion": "Hair transformation",
+      "Professional, welcoming and extremely talented. Highly recommended.",
+    "clients.t3.name": "★★★★★",
+    "clients.t3.occasion": "Salon experience",
+    "clients.t4.quote":
+      "From consultation to final result, everything exceeded my expectations.",
+    "clients.t4.name": "★★★★★",
+    "clients.t4.occasion": "Color & consultation",
 
     // Units
     "units.heading.serif": "Our",
@@ -99,21 +146,23 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.usa.state": "Florida",
     "units.usa.country": "United States",
     "units.usa.desc":
-      "Our first international unit, bringing authentic Brazilian beauty techniques to Southwest Florida. Open to the entire family.",
+      "Our Fort Myers location proudly serves Southwest Florida with personalized hair transformations, advanced color services, Brazilian smoothing treatments and luxury beauty experiences.",
     "units.usa.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "units.usa.hours": "Mon – Sat · 9AM – 7PM",
-    "units.brazil.label": "4 locations",
+    "units.usa.photoAlt": "Inside the salon, a stylist working with a client",
+    "units.brazil.label": "Our Brazilian heritage",
     "units.brazil.city": "Criciúma,",
     "units.brazil.state": "SC",
     "units.brazil.country": "Brazil",
     "units.brazil.desc":
-      "Our four original units in the Criciúma region of Santa Catarina, where it all began — 25 years of transforming beauty across Brazil.",
+      "Built upon more than 25 years of beauty expertise developed through successful salon operations in Southern Brazil — creativity and advanced techniques we now bring to Fort Myers.",
     "units.brazil.footer": "Santa Catarina · Brazil",
 
     // Services Page
-    "servicespage.heading": "Our Services",
+    "servicespage.heading": "Salon services in Fort Myers",
     "servicespage.subtitle": "Everything you need to look and feel your best — all under one roof.",
     "servicespage.cta": "Book your appointment → (239) 318-8366",
+    "servicespage.pullquote": "Ready to transform? Get in touch and book your appointment.",
     "servicespage.cat1": "Hair",
     "servicespage.cat2": "Makeup & Production",
     "servicespage.cat3": "Nails",
@@ -140,13 +189,9 @@ export const ui: Record<keyof typeof languages, any> = {
     "servicespage.s11.title": "Manicure & Pedicure",
     "servicespage.s11.items": ["Manicure", "Pedicure", "Gel nails", "Acrylic nails", "Foot spa", "Gel enameling"],
 
-    // Team Page
-    "teampage.heading": "Our Team",
-    "teampage.subtitle": "Meet the specialists behind every transformation.",
-    "teampage.experience": "of experience",
 
     // Appointment Page
-    "appointment.heading": "Book your Appointment",
+    "appointment.heading": "Book a hair appointment in Fort Myers, FL",
     "appointment.subtitle": "No forms, no waiting — just a call away.",
     "appointment.invite": "Ready to transform?",
     "appointment.invite.body": "Our team is here to give you an unforgettable experience. Reach out by phone and we'll take care of everything.",
@@ -160,97 +205,145 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Footer
     "footer.tagline":
-      "Modern Brazilian techniques to bring out the best in you. Four units in Brazil, now in Fort Myers, Florida.",
+      "Luxury Brazilian hair transformations — blonde, color and smoothing specialists. Rooted in 25+ years of Brazilian beauty expertise, now in Fort Myers, Florida.",
     "footer.nav.title": "Navigate",
     "footer.contact.title": "Contact",
     "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Book Appointment",
     "footer.est": "Fort Myers, FL · Est. 25+ years",
+    "footer.rights": "All rights reserved.",
   },
 
   pt: {
+    // Meta (title ≤ ~60 chars, description ≤ ~160)
+    "meta.home.title": "Salão Brasileiro em Fort Myers, FL | Brazilian Hair Studio",
+    "meta.home.description": "Especialistas em loiros em Fort Myers, FL: mechas, correção de cor, progressiva brasileira e noivas. Mais de 25 anos de experiência. Ligue (239) 318-8366.",
+    "meta.services.title": "Serviços de Cabelo em Fort Myers | Brazilian Hair Studio",
+    "meta.services.description": "Mechas e balayage, correção de cor, progressiva e queratina, cortes, tratamentos, noivas, maquiagem e unhas no nosso salão brasileiro em Fort Myers, FL.",
+    "meta.about.title": "Sobre Mirela de Bem e o Salão | Brazilian Hair Studio",
+    "meta.about.description": "Fundado por Mirela de Bem após 25+ anos e quatro salões no Sul do Brasil, o Brazilian Hair Studio leva a técnica brasileira a Fort Myers, Flórida.",
+    "meta.appointment.title": "Agende seu Horário em Fort Myers | Brazilian Hair Studio",
+    "meta.appointment.description": "Agende no Brazilian Hair Studio, 2950 Winkler Ave, Fort Myers. Ligue (239) 318-8366 ou fale pelo WhatsApp. Aberto de segunda a sábado, das 9h às 19h.",
+    "meta.notfound.title": "Página não encontrada | Brazilian Hair Studio",
+    "meta.notfound.description": "Esta página não existe. Volte para o início do Brazilian Hair Studio ou ligue (239) 318-8366.",
+    "a11y.skip": "Pular para o conteúdo",
+    "notfound.heading": "Página não encontrada",
+    "notfound.body": "A página que você procura não existe ou mudou de endereço.",
+    "notfound.cta": "Voltar ao início",
+    "clients.reviewsLink": "Veja nossas avaliações no Google",
+    "clients.prev": "Avaliação anterior",
+    "clients.next": "Próxima avaliação",
+    "clients.region": "Avaliações de clientes",
+    "instagram.follow": "Siga-nos no Instagram",
+
+    // Redesign
+    "hero.photoAlt": "Loiro balayage longo e brilhante depois de um atendimento no salão",
+    "about.heading.serif": "Cabelos bonitos",
+    "about.heading.rest": "geram confiança",
+    "about.link": "Conheça nossa história",
+    "services.heading.serif": "O que fazemos",
+    "services.heading.rest": "de melhor",
+    "visit.address": "Endereço",
+    "visit.hours": "Horário",
+    "visit.phone": "Telefone",
+    "visit.directions": "Como chegar",
+    "servicespage.jump": "Categorias de serviços",
+    "aboutus.story": "O Brazilian Hair Studio foi fundado por Mirela de Bem após construir uma carreira de sucesso e quatro salões no Sul do Brasil. Hoje, nossa unidade em Fort Myers leva essa experiência, a técnica brasileira e um atendimento personalizado a cada cliente.",
+    "aboutus.photoAlt": "Profissional fazendo um penteado preso em uma cliente",
+    "aboutus.timeline.serif": "De Içara",
+    "aboutus.timeline.rest": "a Fort Myers",
+
     // Nav
     "nav.home": "Início",
     "nav.about": "Sobre nós",
     "nav.services": "Serviços",
-    "nav.team": "Equipe",
     "nav.book": "Agende seu Horário",
+    "nav.menu": "Abrir menu",
+    "nav.label": "Principal",
+    "nav.language": "Idioma",
 
     // Hero
-    "hero.highlight": "Brasileira",
-    "hero.titleBefore": "técnica",
-    "hero.title": "para revelar o melhor em você",
+    "hero.highlight": "Capilares",
+    "hero.titleBefore": "Transformações",
+    "hero.title": "de luxo em Fort Myers",
+    "hero.subline": "Especialistas em Mechas · Correção de Cor · Alisamentos Brasileiros · Beleza Personalizada",
     "hero.cta": "Agende seu horário",
 
     // About
-    "about.heading": "Focamos no melhor para você!",
+    "about.heading": "Cabelos bonitos geram confiança",
     "about.body":
-      "Somos uma empresa com mais de 25 anos de experiência, com quatro unidades no Brasil e agora a primeira unidade nos EUA. Nosso propósito é elevar sua autoestima e revelar o melhor em você! Somos especialistas em transformação capilar utilizando as técnicas de visagismo e colorimetria pessoal. Em nossa história, já atendemos mais de 2000 noivas em nossas quatro unidades com o Dia da Noiva, tanto no salão quanto em outros ambientes de sua escolha, como praias, hotéis, castelos e campos. Em nosso salão você conta com serviços de beleza para toda a família. Produção Feminina, Produção Masculina, Primeiro Corte do Bebê com certificado, Debutante, Produção de Noiva e Madrinhas, Serviços de Sobrancelha, Extensão de Cílios, Microblading, Manicure, Pedicure e Foot Spa entre outros. Estamos prontos e felizes em recebê-la em nosso salão, onde você conhecerá nossos serviços e técnicas, proporcionando uma experiência inesquecível.",
+      "No Brazilian Hair Studio, acreditamos que cabelos bonitos geram confiança. Há mais de 25 anos, ajudamos mulheres a transformarem sua imagem por meio de consultorias personalizadas, técnicas avançadas de coloração, tratamentos capilares saudáveis e experiências exclusivas de salão. Cada atendimento é desenvolvido de acordo com sua beleza, estilo de vida e objetivos.",
+    "about.photoAlt": "Cabelo loiro iluminado pelo sol, com movimento natural",
 
     // About Us (page)
-    "aboutus.heading": "Sobre Nós",
-    "aboutus.subtitle": "Nossa história de transformar a beleza desde 1999",
+    "aboutus.heading": "Revelando o melhor em você",
+    "aboutus.subtitle": "Fundado por Mirela de Bem — mais de 25 anos de expertise brasileira em beleza, agora em Fort Myers.",
     "aboutus.stats.clients": "clientes atendidos",
     "aboutus.stats.new": "novos clientes em 2021",
     "aboutus.stats.professionals": "profissionais",
     "aboutus.cta": "Agende seu horário",
+    "aboutus.pullquote": "Nossa filosofia é simples: entender cada cliente e criar um visual que valorize sua beleza natural.",
+    "aboutus.stats.caption": "2021 — somando as quatro unidades",
 
     // Numbers
     "numbers.years": "anos de experiência",
-    "numbers.brides": "noivas atendidas",
-    "numbers.units": "unidades",
-    "numbers.specialists": "especialistas",
+    "numbers.reviews": "avaliações 5 estrelas",
+    "numbers.clients": "clientes atendidos por ano",
+    "numbers.bridal": "produções de noivas",
 
     // Services
     "services.heading": "Serviços",
     "services.desc":
-      "Nossa consultoria utiliza a técnica de visagismo — avaliando seu subtom de pele, temperatura e contraste pessoal para criar um look que verdadeiramente revela o melhor em você.",
+      "Especialistas em mechas, correção de cor, alisamentos brasileiros e muito mais — cada serviço desenvolvido para sua beleza, estilo de vida e objetivos.",
     "services.cta": "Agende seu horário → (239) 318-8366",
-    "services.01.title": "Produção de Noiva",
+    "services.all": "Ver todos os serviços",
+    "services.01.title": "Transformações Loiras",
     "services.01.desc":
-      "Penteados nupciais completos adaptados à sua visão. Com mais de 2.000 noivas atendidas, criamos looks inesquecíveis em salões, praias, hotéis, castelos e destinos de sua escolha.",
-    "services.02.title": "Produção de Madrinha",
+      "Mechas, balayage, babylights e técnicas modernas para criar o loiro ideal.",
+    "services.02.title": "Correção de Cor",
     "services.02.desc":
-      "Looks sofisticados e elegantes para madrinhas que complementam a cerimônia enquanto celebram seu estilo único e graça.",
-    "services.03.title": "Debutante",
+      "Correção profissional de tons indesejados e desafios de coloração anteriores.",
+    "services.03.title": "Alisamento Brasileiro",
     "services.03.desc":
-      "Torne esse momento inesquecível. Criamos looks jovens e radiantes perfeitamente adequados para a sua festa de debutante.",
-    "services.04.title": "Produção de Formatura",
+      "Redução do frizz e cabelos mais saudáveis e disciplinados.",
+    "services.04.title": "Cortes e Finalização",
     "services.04.desc":
-      "Entre no seu futuro com a melhor aparência possível. Estilo refinado e elegante para honrar essa conquista e tudo que está por vir.",
+      "Cortes e finalizações personalizados para seu estilo de vida.",
+    "services.05.title": "Tratamentos Capilares",
+    "services.05.desc":
+      "Hidratação profunda, reconstrução e fortalecimento capilar.",
+    "services.06.title": "Noivas e Eventos Especiais",
+    "services.06.desc":
+      "Produções elegantes para casamentos, formaturas e celebrações inesquecíveis.",
 
-    // Team
-    "team.heading.serif": "Conheça nossa",
-    "team.heading.rest": "equipe",
-    "team.desc":
-      "Uma equipe dedicada, focada em agilidade e cuidado — respeitando o estilo pessoal, as expectativas e as necessidades de cada cliente.",
-    "team.experience": "de experiência",
-    "team.mb.role": "CEO & Cabeleireira",
-    "team.mb.bio":
-      "Fundadora do Brazilian Hair Studio, Mirela traz 25 anos de expertise em química capilar, correção de cor e visagismo. Formada pela Pivot Point, L'Oréal, Keune e Schwarzkopf — e autora de mais de 2.000 penteados nupciais.",
-    "team.gs.role": "Esteticista Facial",
-    "team.gs.bio":
-      "Gezi é especialista em tratamentos faciais avançados, incluindo skinbooster, peeling, microdermoabrasão, dermaplaning, micropigmentação de sobrancelha e extensão de cílios, trazendo luminosidade para cada cliente.",
-    "team.fa.role": "Cabeleireira & Colorista",
-    "team.fa.bio":
-      "Especialista em cabelos loiros com 9 anos de experiência profissional, Francieli realiza tratamentos capilares diagnósticos avançados, colorações personalizadas e cortes de precisão adaptados a cada cliente.",
 
     // Clients
     "clients.heading.serif": "O que nossas",
     "clients.heading.rest": "clientes dizem",
     "clients.cta": "Agende seu horário",
+    "clients.rating": "Nota 5 de 5 estrelas",
+
+    // Instagram
+    "instagram.heading.serif": "Acompanhe",
+    "instagram.heading.rest": "nosso trabalho",
+    "instagram.desc": "Cores, cortes e noivas, direto do salão.",
+    "instagram.post": "Ver publicação no Instagram",
     "clients.t1.quote":
-      "Mirela e sua equipe tornaram meu dia do casamento absolutamente perfeito. Meu cabelo ficou impecável da cerimônia até a última dança. Nunca me senti tão bonita.",
-    "clients.t1.name": "Amanda R.",
-    "clients.t1.occasion": "Noiva",
+      "Minhas mechas nunca ficaram tão naturais. Toda a experiência foi incrível.",
+    "clients.t1.name": "★★★★★",
+    "clients.t1.occasion": "Mechas",
     "clients.t2.quote":
-      "Para a festa de 15 anos da minha filha, elas criaram um visual tão mágico. A consultoria de visagismo antes fez toda a diferença — ela se sentiu ela mesma, só que ainda melhor.",
-    "clients.t2.name": "Patricia M.",
-    "clients.t2.occasion": "Mãe da debutante",
+      "A equipe transformou meu cabelo e minha autoestima. Finalmente encontrei meu salão em Fort Myers.",
+    "clients.t2.name": "★★★★★",
+    "clients.t2.occasion": "Transformação capilar",
     "clients.t3.quote":
-      "Francieli transformou completamente meu cabelo. A correção de cor foi impecável e o corte emoldura meu rosto de uma forma que nunca pensei ser possível. Sou cliente para sempre.",
-    "clients.t3.name": "Julia S.",
-    "clients.t3.occasion": "Transformação capilar",
+      "Profissionais acolhedoras e extremamente talentosas. Super recomendo.",
+    "clients.t3.name": "★★★★★",
+    "clients.t3.occasion": "Experiência no salão",
+    "clients.t4.quote":
+      "Da consultoria ao resultado final, tudo superou minhas expectativas.",
+    "clients.t4.name": "★★★★★",
+    "clients.t4.occasion": "Cor e consultoria",
 
     // Units
     "units.heading.serif": "Nossas",
@@ -260,21 +353,23 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.usa.state": "Flórida",
     "units.usa.country": "Estados Unidos",
     "units.usa.desc":
-      "Nossa primeira unidade internacional, levando as autênticas técnicas brasileiras de beleza para o Sudoeste da Flórida. Aberta para toda a família.",
+      "Nossa unidade em Fort Myers atende o Sudoeste da Flórida com transformações capilares personalizadas, serviços avançados de coloração, alisamentos brasileiros e experiências premium de beleza.",
     "units.usa.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "units.usa.hours": "Seg – Sáb · 9h – 19h",
-    "units.brazil.label": "4 localizações",
+    "units.usa.photoAlt": "Interior do salão, com uma profissional atendendo uma cliente",
+    "units.brazil.label": "Nossa herança brasileira",
     "units.brazil.city": "Criciúma,",
     "units.brazil.state": "SC",
     "units.brazil.country": "Brasil",
     "units.brazil.desc":
-      "Nossas quatro unidades originais na região de Criciúma, Santa Catarina, onde tudo começou — 25 anos transformando a beleza por todo o Brasil.",
+      "Construída sobre mais de 25 anos de experiência desenvolvida através de operações de sucesso no Sul do Brasil — criatividade e técnicas avançadas que agora trazemos para Fort Myers.",
     "units.brazil.footer": "Santa Catarina · Brasil",
 
     // Services Page
-    "servicespage.heading": "Nossos Serviços",
+    "servicespage.heading": "Serviços do salão em Fort Myers",
     "servicespage.subtitle": "Tudo que você precisa para se sentir e parecer o melhor de si — tudo em um só lugar.",
     "servicespage.cta": "Agende seu horário → (239) 318-8366",
+    "servicespage.pullquote": "Pronta para se transformar? Entre em contato e agende seu horário.",
     "servicespage.cat1": "Cabelo",
     "servicespage.cat2": "Maquiagem e Produção",
     "servicespage.cat3": "Unhas",
@@ -301,13 +396,9 @@ export const ui: Record<keyof typeof languages, any> = {
     "servicespage.s11.title": "Manicure e Pedicure",
     "servicespage.s11.items": ["Manicure", "Pedicure", "Unhas em Gel", "Unhas Acrílicas", "Foot Spa", "Esmaltação em Gel"],
 
-    // Team Page
-    "teampage.heading": "Nossa Equipe",
-    "teampage.subtitle": "Conheça as especialistas por trás de cada transformação.",
-    "teampage.experience": "de experiência",
 
     // Appointment Page
-    "appointment.heading": "Agende seu Horário",
+    "appointment.heading": "Agende seu horário em Fort Myers, FL",
     "appointment.subtitle": "Sem formulários, sem espera — só uma ligação.",
     "appointment.invite": "Pronta para se transformar?",
     "appointment.invite.body": "Nossa equipe está aqui para proporcionar uma experiência inesquecível. Entre em contato por telefone e cuidamos de tudo.",
@@ -321,97 +412,145 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Footer
     "footer.tagline":
-      "Técnicas brasileiras modernas para revelar o melhor em você. Quatro unidades no Brasil, agora em Fort Myers, Flórida.",
+      "Transformações capilares brasileiras de luxo — especialistas em loiros, cor e alisamento. Com mais de 25 anos de expertise brasileira em beleza, agora em Fort Myers, Flórida.",
     "footer.nav.title": "Navegar",
     "footer.contact.title": "Contato",
     "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Agendar Horário",
     "footer.est": "Fort Myers, FL · Est. há 25+ anos",
+    "footer.rights": "Todos os direitos reservados.",
   },
 
-  sp: {
+  es: {
+    // Meta (title ≤ ~60 chars, description ≤ ~160)
+    "meta.home.title": "Salón de Belleza en Fort Myers, FL | Brazilian Hair Studio",
+    "meta.home.description": "Especialistas en rubios en Fort Myers, FL: balayage, corrección de color, alisado brasileño y novias. Más de 25 años de experiencia. Llama al (239) 318-8366.",
+    "meta.services.title": "Servicios de Peluquería en Fort Myers | Brazilian Hair Studio",
+    "meta.services.description": "Balayage y mechas, corrección de color, alisado brasileño y keratina, cortes, tratamientos, novias, maquillaje y uñas en nuestro salón de Fort Myers, FL.",
+    "meta.about.title": "Sobre Mirela de Bem y el Salón | Brazilian Hair Studio",
+    "meta.about.description": "Fundado por Mirela de Bem tras 25+ años y cuatro salones en el sur de Brasil, Brazilian Hair Studio lleva la técnica brasileña a Fort Myers, Florida.",
+    "meta.appointment.title": "Reserva tu Cita en Fort Myers | Brazilian Hair Studio",
+    "meta.appointment.description": "Reserva en Brazilian Hair Studio, 2950 Winkler Ave, Fort Myers. Llama al (239) 318-8366 o escríbenos por WhatsApp. Abierto de lunes a sábado, de 9 a 19 h.",
+    "meta.notfound.title": "Página no encontrada | Brazilian Hair Studio",
+    "meta.notfound.description": "Esta página no existe. Vuelve al inicio de Brazilian Hair Studio o llama al (239) 318-8366.",
+    "a11y.skip": "Saltar al contenido",
+    "notfound.heading": "Página no encontrada",
+    "notfound.body": "La página que buscas no existe o cambió de dirección.",
+    "notfound.cta": "Volver al inicio",
+    "clients.reviewsLink": "Lee nuestras reseñas en Google",
+    "clients.prev": "Reseña anterior",
+    "clients.next": "Reseña siguiente",
+    "clients.region": "Reseñas de clientes",
+    "instagram.follow": "Síguenos en Instagram",
+
+    // Redesign
+    "hero.photoAlt": "Balayage rubio largo y brillante después de una cita en el salón",
+    "about.heading.serif": "El cabello hermoso",
+    "about.heading.rest": "genera confianza",
+    "about.link": "Conoce nuestra historia",
+    "services.heading.serif": "Lo que mejor",
+    "services.heading.rest": "hacemos",
+    "visit.address": "Dirección",
+    "visit.hours": "Horario",
+    "visit.phone": "Teléfono",
+    "visit.directions": "Cómo llegar",
+    "servicespage.jump": "Categorías de servicios",
+    "aboutus.story": "Brazilian Hair Studio fue fundado por Mirela de Bem tras construir una exitosa carrera en belleza y cuatro salones en el sur de Brasil. Hoy, nuestra sede en Fort Myers lleva esa experiencia, la técnica brasileña y una atención personalizada a cada clienta.",
+    "aboutus.photoAlt": "Una estilista haciendo un recogido a una clienta",
+    "aboutus.timeline.serif": "De Içara",
+    "aboutus.timeline.rest": "a Fort Myers",
+
     // Nav
     "nav.home": "Inicio",
     "nav.about": "Sobre nosotros",
     "nav.services": "Servicios",
-    "nav.team": "Equipo",
     "nav.book": "Reserva tu Cita",
+    "nav.menu": "Abrir menú",
+    "nav.label": "Principal",
+    "nav.language": "Idioma",
 
     // Hero
-    "hero.highlight": "Brasileña",
-    "hero.titleBefore": "técnica",
-    "hero.title": "para sacar lo mejor de ti",
+    "hero.highlight": "Capilares",
+    "hero.titleBefore": "Transformaciones",
+    "hero.title": "de lujo en Fort Myers",
+    "hero.subline": "Especialistas en Mechas · Corrección de Color · Alisados Brasileños · Belleza Personalizada",
     "hero.cta": "Reserva tu cita",
 
     // About
-    "about.heading": "¡Nos enfocamos en lo mejor para ti!",
+    "about.heading": "El cabello hermoso genera confianza",
     "about.body":
-      "Somos una empresa con más de 25 años de experiencia, con cuatro unidades en Brasil y ahora la primera unidad en EE.UU. Nuestro propósito es elevar tu autoestima y sacar lo mejor de ti. Somos especialistas en transformación capilar utilizando las técnicas de visagismo y colorimetría personal. En nuestra historia ya hemos atendido a más de 2000 novias en nuestras cuatro unidades con el Día de la Novia, tanto en el salón como en otros entornos de tu elección, como playas, hoteles, castillos y campos. En nuestro salón tienes servicios de belleza para toda la familia. Producción Femenina, Producción Masculina, Primer Corte del Bebé con certificado, Quinceañera, Producción de Novia y Damas de Honor, Servicios de Cejas, Extensión de Pestañas, Microblading, Manicure, Pedicure y Foot Spa entre otros. Estamos listos y felices de recibirte en nuestro salón, donde conocerás nuestros servicios y técnicas, brindándote una experiencia inolvidable.",
+      "En Brazilian Hair Studio, creemos que el cabello hermoso genera confianza. Desde hace más de 25 años, ayudamos a las mujeres a transformar su imagen a través de asesorías personalizadas, técnicas avanzadas de coloración, tratamientos capilares saludables y experiencias exclusivas de salón. Cada servicio se adapta a tu belleza, estilo de vida y objetivos únicos.",
+    "about.photoAlt": "Cabello rubio iluminado por el sol, con movimiento natural",
 
     // About Us (page)
-    "aboutus.heading": "Sobre Nosotros",
-    "aboutus.subtitle": "Nuestra historia de transformar la belleza desde 1999",
+    "aboutus.heading": "Sacando lo mejor de ti",
+    "aboutus.subtitle": "Fundado por Mirela de Bem — más de 25 años de experiencia brasileña en belleza, ahora en Fort Myers.",
     "aboutus.stats.clients": "clientes atendidos",
     "aboutus.stats.new": "nuevos clientes en 2021",
     "aboutus.stats.professionals": "profesionales",
     "aboutus.cta": "Reserva tu cita",
+    "aboutus.pullquote": "Nuestra filosofía es simple: entender a cada cliente y crear un look que realce su belleza natural.",
+    "aboutus.stats.caption": "2021 — sumando las cuatro unidades",
 
     // Numbers
     "numbers.years": "años de experiencia",
-    "numbers.brides": "novias atendidas",
-    "numbers.units": "unidades",
-    "numbers.specialists": "especialistas",
+    "numbers.reviews": "reseñas 5 estrellas",
+    "numbers.clients": "clientes atendidos por año",
+    "numbers.bridal": "producciones de novias",
 
     // Services
     "services.heading": "Servicios",
     "services.desc":
-      "Nuestra consultoría utiliza la técnica del visagismo — evaluando tu subtono de piel, temperatura y contraste personal para crear un look que verdaderamente saca lo mejor de ti.",
+      "Especialistas en mechas, corrección de color, alisados brasileños y más — cada servicio adaptado a tu belleza, estilo de vida y objetivos.",
     "services.cta": "Reserva tu cita → (239) 318-8366",
-    "services.01.title": "Producción de Novia",
+    "services.all": "Ver todos los servicios",
+    "services.01.title": "Transformaciones Rubias",
     "services.01.desc":
-      "Estilismo nupcial completo adaptado a tu visión. Con más de 2.000 novias atendidas, creamos looks inolvidables en salones, playas, hoteles, castillos y destinos de tu elección.",
-    "services.02.title": "Producción de Madrina",
+      "Mechas personalizadas, balayage, babylights y rubios dimensionales con servicios de luxe.",
+    "services.02.title": "Corrección de Color",
     "services.02.desc":
-      "Looks sofisticados y elegantes para madrinas que complementan la ceremonia mientras celebran tu estilo único y tu gracia personal.",
-    "services.03.title": "Quinceañera",
+      "Corrección profesional de tonos no deseados, color disparejo y desafíos de coloraciones anteriores.",
+    "services.03.title": "Alisado Brasileño",
     "services.03.desc":
-      "Haz que este hito sea inolvidable. Creamos looks juveniles y radiantes perfectamente adecuados para tu celebración de quinceañera.",
-    "services.04.title": "Producción de Graduación",
+      "Reduce el frizz y mejora la manejabilidad manteniendo un cabello sano y hermoso.",
+    "services.04.title": "Cortes y Peinado",
     "services.04.desc":
-      "Entra en tu futuro con la mejor apariencia posible. Estilo refinado y elegante para honrar este logro y todo lo que está por venir.",
+      "Cortes de precisión y peinado diseñados para tu rostro, personalidad y estilo de vida.",
+    "services.05.title": "Tratamientos Capilares",
+    "services.05.desc":
+      "Hidratación profunda, reconstrucción y fortalecimiento para un cabello más saludable.",
+    "services.06.title": "Novias y Eventos Especiales",
+    "services.06.desc":
+      "Peinados elegantes para bodas, sesiones de fotos, graduaciones y celebraciones inolvidables.",
 
-    // Team
-    "team.heading.serif": "Conoce a nuestro",
-    "team.heading.rest": "equipo",
-    "team.desc":
-      "Un equipo dedicado enfocado en agilidad y cuidado — respetando el estilo personal, las expectativas y las necesidades de cada cliente.",
-    "team.experience": "de experiencia",
-    "team.mb.role": "CEO & Estilista",
-    "team.mb.bio":
-      "Fundadora de Brazilian Hair Studio, Mirela aporta 25 años de experiencia en química capilar, corrección de color y visagismo. Formada por Pivot Point, L'Oréal, Keune y Schwarzkopf — y autora de más de 2.000 peinados nupciales.",
-    "team.gs.role": "Esteticista Facial",
-    "team.gs.bio":
-      "Gezi se especializa en tratamientos faciales avanzados que incluyen skinbooster, peeling, microdermoabrasión, dermaplaning, micropigmentación de cejas y extensiones de pestañas, aportando luminosidad a cada cliente.",
-    "team.fa.role": "Estilista & Colorista",
-    "team.fa.bio":
-      "Especialista en cabello rubio con 9 años de experiencia profesional, Francieli realiza tratamientos capilares diagnósticos avanzados, formulaciones de color personalizadas y cortes de precisión adaptados a cada cliente.",
 
     // Clients
     "clients.heading.serif": "Lo que nuestros",
     "clients.heading.rest": "clientes dicen",
     "clients.cta": "Reserva tu cita",
+    "clients.rating": "Calificación de 5 de 5 estrellas",
+
+    // Instagram
+    "instagram.heading.serif": "Sigue",
+    "instagram.heading.rest": "nuestro trabajo",
+    "instagram.desc": "Color, cortes y novias, directo del salón.",
+    "instagram.post": "Ver publicación en Instagram",
     "clients.t1.quote":
-      "Mirela y su equipo hicieron que mi día de bodas fuera absolutamente perfecto. Mi cabello se mantuvo impecable desde la ceremonia hasta el último baile. Nunca me he sentido tan hermosa.",
-    "clients.t1.name": "Amanda R.",
-    "clients.t1.occasion": "Novia",
+      "Mis mechas nunca se vieron tan naturales. Toda la experiencia fue increíble.",
+    "clients.t1.name": "★★★★★",
+    "clients.t1.occasion": "Mechas",
     "clients.t2.quote":
-      "Para la quinceañera de mi hija, crearon un look tan mágico. La consulta de visagismo de antemano marcó toda la diferencia — se sintió ella misma, pero elevada.",
-    "clients.t2.name": "Patricia M.",
-    "clients.t2.occasion": "Madre de la quinceañera",
+      "El equipo transformó mi cabello y mi confianza. Por fin encontré mi salón en Fort Myers.",
+    "clients.t2.name": "★★★★★",
+    "clients.t2.occasion": "Transformación capilar",
     "clients.t3.quote":
-      "Francieli transformó por completo mi cabello. La corrección de color fue impecable y el corte enmarca mi rostro de una manera que nunca creí posible. Soy cliente de por vida.",
-    "clients.t3.name": "Julia S.",
-    "clients.t3.occasion": "Transformación capilar",
+      "Profesionales, acogedoras y sumamente talentosas. Muy recomendado.",
+    "clients.t3.name": "★★★★★",
+    "clients.t3.occasion": "Experiencia en el salón",
+    "clients.t4.quote":
+      "Desde la consulta hasta el resultado final, todo superó mis expectativas.",
+    "clients.t4.name": "★★★★★",
+    "clients.t4.occasion": "Color y consultoría",
 
     // Units
     "units.heading.serif": "Nuestras",
@@ -421,21 +560,23 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.usa.state": "Florida",
     "units.usa.country": "Estados Unidos",
     "units.usa.desc":
-      "Nuestra primera unidad internacional, llevando las auténticas técnicas brasileñas de belleza al suroeste de Florida. Abierta para toda la familia.",
+      "Nuestra unidad en Fort Myers atiende al suroeste de Florida con transformaciones capilares personalizadas, servicios avanzados de coloración, alisados brasileños y experiencias premium de belleza.",
     "units.usa.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "units.usa.hours": "Lun – Sáb · 9AM – 7PM",
-    "units.brazil.label": "4 ubicaciones",
+    "units.usa.photoAlt": "Interior del salón, con una estilista atendiendo a una clienta",
+    "units.brazil.label": "Nuestra herencia brasileña",
     "units.brazil.city": "Criciúma,",
     "units.brazil.state": "SC",
     "units.brazil.country": "Brasil",
     "units.brazil.desc":
-      "Nuestras cuatro unidades originales en la región de Criciúma, Santa Catarina, donde todo comenzó — 25 años transformando la belleza en todo Brasil.",
+      "Construida sobre más de 25 años de experiencia desarrollada a través de operaciones de salón exitosas en el sur de Brasil — creatividad y técnicas avanzadas que ahora llevamos a Fort Myers.",
     "units.brazil.footer": "Santa Catarina · Brasil",
 
     // Services Page
-    "servicespage.heading": "Nuestros Servicios",
+    "servicespage.heading": "Servicios del salón en Fort Myers",
     "servicespage.subtitle": "Todo lo que necesitas para verte y sentirte en tu mejor versión — bajo un mismo techo.",
     "servicespage.cta": "Reserva tu cita → (239) 318-8366",
+    "servicespage.pullquote": "¿Lista para transformarte? Contáctanos y reserva tu cita.",
     "servicespage.cat1": "Cabello",
     "servicespage.cat2": "Maquillaje y Producción",
     "servicespage.cat3": "Uñas",
@@ -462,13 +603,9 @@ export const ui: Record<keyof typeof languages, any> = {
     "servicespage.s11.title": "Manicura y Pedicura",
     "servicespage.s11.items": ["Manicura", "Pedicura", "Uñas de Gel", "Uñas Acrílicas", "Foot Spa", "Esmaltado en Gel"],
 
-    // Team Page
-    "teampage.heading": "Nuestro Equipo",
-    "teampage.subtitle": "Conoce a las especialistas detrás de cada transformación.",
-    "teampage.experience": "de experiencia",
 
     // Appointment Page
-    "appointment.heading": "Reserve su Cita",
+    "appointment.heading": "Reserva tu cita en Fort Myers, FL",
     "appointment.subtitle": "Sin formularios, sin esperas — a solo una llamada.",
     "appointment.invite": "¿Lista para transformarte?",
     "appointment.invite.body": "Nuestro equipo está aquí para brindarte una experiencia inolvidable. Llámanos y nos encargamos de todo.",
@@ -482,11 +619,12 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Footer
     "footer.tagline":
-      "Técnicas brasileñas modernas para sacar lo mejor de ti. Cuatro unidades en Brasil, ahora en Fort Myers, Florida.",
+      "Transformaciones capilares brasileñas de lujo — especialistas en rubios, color y alisado. Con más de 25 años de experiencia brasileña en belleza, ahora en Fort Myers, Florida.",
     "footer.nav.title": "Navegar",
     "footer.contact.title": "Contacto",
     "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Reservar Cita",
     "footer.est": "Fort Myers, FL · Est. hace 25+ años",
+    "footer.rights": "Todos los derechos reservados.",
   },
 } as const;

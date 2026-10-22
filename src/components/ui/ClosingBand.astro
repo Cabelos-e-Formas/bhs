@@ -1,0 +1,27 @@
+---
+import Logo from "./Logo.astro";
+import Button from "./Button.astro";
+import { getLangFromUrl, useTranslations, localePath } from "../../i18n/utils";
+import { contact } from "../../data/contact";
+
+interface Props {
+  quote: string;
+}
+
+const { quote } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section class="relative bg-accent-dark border-b-3 border-accent-dark overflow-hidden px-8 py-28 max-sm:py-20">
+  <div class="absolute -right-32 top-1/2 -translate-y-1/2 h-[140%] opacity-[0.06] text-beige-500 pointer-events-none" aria-hidden="true">
+    <Logo variant="mark" class="h-full" />
+  </div>
+  <div class="relative max-w-3xl mx-auto flex flex-col items-center text-center gap-10" data-reveal>
+    <p class="font-serif italic text-beige-500 leading-snug text-[clamp(1.75rem,3.2vw,2.75rem)]">{quote}</p>
+    <div class="flex flex-wrap justify-center items-center gap-x-8 gap-y-4">
+      <Button href={localePath(lang, "/appointment")} variant="light">{t("hero.cta")}</Button>
+      <a href={contact.tel} class="text-beige-500/80 hover:text-beige-500 font-serif italic text-2xl transition-colors">{contact.phone}</a>
+    </div>
+  </div>
+</section>

@@ -1,92 +1,70 @@
 ---
-import SectionHeader from "../ui/SectionHeader.astro";
-import CardGrid from "../ui/CardGrid.astro";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { Image } from "astro:assets";
+import salonPhoto from "../../assets/stock/salon-interior.jpg";
+import Button from "../ui/Button.astro";
+import { getLangFromUrl, useTranslations, localePath } from "../../i18n/utils";
+import { contact } from "../../data/contact";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const labelClass = "text-beige-700 text-xs uppercase tracking-widest";
+const city = (t("units.usa.city") as string).replace(/,\s*$/, "");
 ---
 
-<section id="units-section" class="bg-accent-dark border-b-3 border-accent-dark overflow-hidden">
-  <!-- Header -->
-  <SectionHeader
-    serifText={t("units.heading.serif")}
-    restText={t("units.heading.rest")}
-    headingClass="text-beige-500"
-    class="px-8 py-16 max-sm:py-12 border-b border-beige-700"
-  />
+<section id="units-section" class="border-b-3 border-accent-dark overflow-hidden">
+  <!-- Oversized city line -->
+  <div class="px-10 max-sm:px-6 pt-24 max-sm:pt-14 pb-10 max-sm:pb-6">
+    <p class={`${labelClass} mb-6`}>{t("units.usa.label")}</p>
+    <h2 class="text-accent-dark leading-[0.85] tracking-[-0.02em]">
+      <span class="block font-serif italic text-[clamp(4rem,16.5vw,19rem)]">{city}</span>
+      <span class="block -mt-[0.05em] lg:pl-[32vw] font-light text-[clamp(2.5rem,7vw,8rem)]">{t("units.usa.state")}</span>
+    </h2>
+  </div>
 
-  <!-- Units grid -->
-  <CardGrid cols="2" gapBg="bg-beige-700" bordered={false}>
+  <div class="grid lg:grid-cols-[5fr_7fr] gap-px bg-accent-dark border-t border-accent-dark">
+    <!-- Photo -->
+    <div class="bg-accent-dark relative max-lg:h-96 max-sm:h-72 lg:min-h-[34rem] overflow-hidden">
+      <Image
+        src={salonPhoto}
+        alt={t("units.usa.photoAlt")}
+        widths={[480, 800, 1100]}
+        sizes="(min-width: 1024px) 42vw, 100vw"
+        loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+    </div>
 
-    <!-- USA Unit -->
-    <div class="units-card bg-accent-dark px-12 py-14 max-sm:px-8 max-sm:py-10 flex flex-col gap-6">
-      <div class="flex flex-col gap-1">
-        <p class="text-beige-700 text-xs uppercase tracking-widest">{t("units.usa.label")}</p>
-        <h3 class="text-4xl font-light text-beige-500">
-          {t("units.usa.city")} <span class="font-serif italic">{t("units.usa.state")}</span>
-        </h3>
-        <p class="text-beige-700 text-sm mt-1">{t("units.usa.country")}</p>
-      </div>
-
-      <div class="w-12 h-px bg-beige-700" />
-
-      <p class="text-beige-700 text-sm leading-relaxed">
+    <!-- Info -->
+    <div class="bg-beige-500 flex flex-col">
+      <p class="px-10 max-sm:px-6 py-12 max-sm:py-10 text-accent-dark font-light text-xl leading-relaxed max-w-[40rem]">
         {t("units.usa.desc")}
       </p>
 
-      <div class="flex flex-col gap-1">
-        <p class="text-beige-700 text-sm">{t("units.usa.address")}</p>
-        <p class="text-beige-700 text-sm">{t("units.usa.hours")}</p>
+      <dl class="grid grid-cols-3 max-md:grid-cols-1 gap-px bg-accent-dark border-y border-accent-dark">
+        <div class="bg-beige-500 px-10 max-sm:px-6 py-8 flex flex-col gap-2">
+          <dt class={labelClass}>{t("visit.address")}</dt>
+          <dd class="text-accent-dark">
+            <a href={contact.maps} target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-4">
+              {contact.street}<br />{contact.city}
+            </a>
+          </dd>
+        </div>
+        <div class="bg-beige-500 px-10 max-sm:px-6 py-8 flex flex-col gap-2">
+          <dt class={labelClass}>{t("visit.hours")}</dt>
+          <dd class="text-accent-dark">{t("units.usa.hours")}</dd>
+        </div>
+        <div class="bg-beige-500 px-10 max-sm:px-6 py-8 flex flex-col gap-2">
+          <dt class={labelClass}>{t("visit.phone")}</dt>
+          <dd><a href={contact.tel} class="text-accent-dark font-serif italic text-2xl hover:opacity-70 transition-opacity">{contact.phone}</a></dd>
+        </div>
+      </dl>
+
+      <div class="px-10 max-sm:px-6 py-10 flex flex-wrap gap-4 mt-auto">
+        <Button href={localePath(lang, "/appointment")} variant="dark">{t("hero.cta")}</Button>
+        <Button href={contact.maps} variant="dark" target="_blank" rel="noopener noreferrer">{t("visit.directions")}</Button>
       </div>
-
-      <a
-        href="tel:+12393188366"
-        class="mt-auto text-beige-500 text-sm hover:text-beige-700 transition-colors duration-200"
-      >
-        (239) 318-8366 &rarr;
-      </a>
     </div>
+  </div>
 
-    <!-- Brazil Units -->
-    <div class="units-card bg-accent-dark px-12 py-14 max-sm:px-8 max-sm:py-10 flex flex-col gap-6">
-      <div class="flex flex-col gap-1">
-        <p class="text-beige-700 text-xs uppercase tracking-widest">{t("units.brazil.label")}</p>
-        <h3 class="text-4xl font-light text-beige-500">
-          {t("units.brazil.city")} <span class="font-serif italic">{t("units.brazil.state")}</span>
-        </h3>
-        <p class="text-beige-700 text-sm mt-1">{t("units.brazil.country")}</p>
-      </div>
-
-      <div class="w-12 h-px bg-beige-700" />
-
-      <p class="text-beige-700 text-sm leading-relaxed">
-        {t("units.brazil.desc")}
-      </p>
-
-      <p class="mt-auto text-beige-700 text-sm">
-        {t("units.brazil.footer")}
-      </p>
-    </div>
-
-  </CardGrid>
 </section>
-
-<script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".units-card", {
-    scrollTrigger: {
-      trigger: "#units-section",
-      start: "top 70%",
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.8,
-    stagger: 0.2,
-    ease: "power3.out",
-  });
-</script>

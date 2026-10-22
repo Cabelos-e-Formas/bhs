@@ -1,4 +1,6 @@
 ---
+import Logo from "./Logo.astro";
+
 interface Props {
   id: string;
   bgText: string;
@@ -7,42 +9,51 @@ interface Props {
   subtitle: string;
 }
 
-const { id, bgText, eyebrow, heading, subtitle } = Astro.props;
+const { id, eyebrow, heading, subtitle } = Astro.props;
 ---
 
-<section
-  id={id}
-  class="page-hero relative bg-accent-dark border-b-3 border-accent-dark px-8 py-36 max-sm:py-24 text-center overflow-hidden"
->
-  <span
-    class="absolute inset-0 flex items-center justify-center text-[22vw] font-serif italic text-beige-500 opacity-[0.04] select-none pointer-events-none leading-none"
-    aria-hidden="true">{bgText}</span
-  >
-  <p class="page-hero-eyebrow relative text-beige-700 text-xs uppercase tracking-[0.3em] mb-6">
-    {eyebrow}
-  </p>
-  <h1 class="page-hero-heading relative text-7xl max-sm:text-5xl font-serif italic text-beige-500 leading-tight">
-    {heading}
-  </h1>
-  <p class="page-hero-subtitle relative text-beige-700 mt-6 text-lg max-w-xl mx-auto">
-    {subtitle}
-  </p>
+<section id={id} class="page-hero relative bg-accent-dark text-beige-500 border-b-3 border-accent-dark overflow-hidden">
+  <div class="absolute -right-32 -top-20 h-[130%] opacity-[0.07] pointer-events-none" aria-hidden="true">
+    <Logo variant="mark" class="h-full" />
+  </div>
+
+  <div class="relative px-10 max-sm:px-6 pt-24 max-sm:pt-14 pb-16 max-sm:pb-10">
+    <p class="ph-fade text-xs uppercase tracking-[0.3em] text-beige-500/70 mb-10 max-sm:mb-6" style="--d: 100ms">{eyebrow}</p>
+    <h1 class="font-serif italic leading-[0.95] tracking-[-0.01em] text-[clamp(3.5rem,10vw,11.5rem)] max-w-[12ch]">
+      <span class="ph-mask"><span class="ph-rise" style="--d: 150ms">{heading}</span></span>
+    </h1>
+  </div>
+
+  <div class="relative border-t border-beige-500/20 px-10 max-sm:px-6 py-8 grid md:grid-cols-2 gap-6">
+    <span class="max-md:hidden" aria-hidden="true"></span>
+    <p class="ph-fade text-beige-500/80 text-lg font-light leading-relaxed max-w-xl" style="--d: 600ms">{subtitle}</p>
+  </div>
 </section>
 
-<script>
-  import { gsap } from "gsap";
-
-  // Scope to the last rendered hero so multiple instances don't collide
-  const hero = document.querySelector<HTMLElement>(".page-hero:last-of-type");
-  if (hero) {
-    const eyebrow = hero.querySelector(".page-hero-eyebrow");
-    const heading = hero.querySelector(".page-hero-heading");
-    const subtitle = hero.querySelector(".page-hero-subtitle");
-
-    window.addEventListener("load", () => {
-      gsap.from(eyebrow, { opacity: 0, y: 20, duration: 0.7, ease: "power3.out" });
-      gsap.from(heading, { opacity: 0, y: 40, duration: 1, delay: 0.15, ease: "power3.out" });
-      gsap.from(subtitle, { opacity: 0, y: 30, duration: 0.8, delay: 0.3, ease: "power3.out" });
-    });
+<style>
+  .ph-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
   }
-</script>
+  .ph-rise {
+    display: inline-block;
+    animation: ph-rise 1.2s cubic-bezier(0.19, 1, 0.22, 1) var(--d) backwards;
+  }
+  .ph-fade {
+    animation: ph-fade 0.9s ease-out var(--d) backwards;
+  }
+  @keyframes ph-rise {
+    from { transform: translateY(105%); }
+  }
+  @keyframes ph-fade {
+    from { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ph-rise,
+    .ph-fade {
+      animation: none;
+    }
+  }
+</style>

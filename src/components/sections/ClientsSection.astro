@@ -1,60 +1,114 @@
 ---
-import Button from "../ui/Button.astro";
 import SectionHeader from "../ui/SectionHeader.astro";
-import CardGrid from "../ui/CardGrid.astro";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { createReader } from "@keystatic/core/reader";
-import keystaticConfig from "../../../keystatic.config";
+import { getCollection } from "astro:content";
+import { getLangFromUrl, useTranslations, localized } from "../../i18n/utils";
+import { contact } from "../../data/contact";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const reader = createReader(process.cwd(), keystaticConfig);
-const testimonials = await reader.collections.clients.all();
+const reviews = (await getCollection("clients"))
+  .sort((a, b) => a.id.localeCompare(b.id))
+  .map(({ data }) => ({
+    quote: localized(data, "quote", lang),
+    occasion: localized(data, "occasion", lang),
+  }));
+
+const stars = "★★★★★";
+const arrowClass =
+  "w-14 h-14 rounded-full border border-beige-500/40 text-beige-500 flex items-center justify-center hover:bg-beige-500 hover:text-accent-dark transition-colors duration-300 disabled:opacity-30 disabled:pointer-events-none";
 ---
 
-<section id="clients-section" class="border-accent-dark border-b-3 px-8 py-20 max-w-[100vw] overflow-hidden max-sm:py-12">
-  <SectionHeader serifText={t("clients.heading.serif")} restText={t("clients.heading.rest")}>
-    <Button slot="right" href="tel:+12393188366" variant="dark" size="sm" class="whitespace-nowrap">
-      {t("clients.cta")}
-    </Button>
+<section id="clients-section" class="bg-accent-dark border-b-3 border-accent-dark relative overflow-hidden">
+  <SectionHeader
+    serifText={t("clients.heading.serif")}
+    restText={t("clients.heading.rest")}
+    headingClass="text-beige-500"
+    class="relative px-10 max-sm:px-6 pt-24 max-sm:pt-14 mb-14! max-sm:mb-10!"
+  >
+    <div slot="right" class="flex items-end gap-10 max-sm:gap-6">
+      <a
+        href={contact.googleReviews}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group flex items-baseline gap-3 text-beige-500"
+        aria-label={`325+ ${t("numbers.reviews")}. ${t("clients.reviewsLink")}`}
+      >
+        <span class="font-serif italic text-7xl max-sm:text-5xl leading-none">325+</span>
+        <span class="flex flex-col gap-1 text-xs uppercase tracking-widest text-beige-500/70 max-w-36">
+          {t("numbers.reviews")}
+          <span class="normal-case tracking-normal text-sm font-serif italic text-beige-500 underline underline-offset-4 decoration-beige-500/40 group-hover:decoration-beige-500">Google</span>
+        </span>
+      </a>
+      <div class="flex gap-3 max-sm:hidden">
+        <button type="button" class={arrowClass} data-reviews-prev aria-label={t("clients.prev")} disabled>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        </button>
+        <button type="button" class={arrowClass} data-reviews-next aria-label={t("clients.next")}>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+    </div>
   </SectionHeader>
 
-  <CardGrid>
+  <ul
+    class="reviews-track relative flex gap-px bg-beige-500/15 border-y border-beige-500/15 overflow-x-auto snap-x snap-mandatory overscroll-x-contain"
+    tabindex="0"
+    role="region"
+    aria-label={t("clients.region")}
+    data-reviews-track
+  >
     {
-      testimonials.map((item) => (
-        <div class="testimonial-card bg-beige-500 px-10 py-12 max-sm:px-8 max-sm:py-10 flex flex-col gap-6">
-          <span class="font-serif italic text-accent-dark leading-none select-none" style="font-size: 5rem; line-height: 1; opacity: 0.15;">&ldquo;</span>
-          <p class="text-accent-dark text-sm leading-relaxed -mt-6">
-            {item.entry[`quote_${lang}` as keyof typeof item.entry]}
-          </p>
-          <div class="mt-auto flex flex-col gap-1 pt-6 border-t border-accent-dark" style="border-color: rgba(14,59,49,0.15);">
-            <p class="text-accent-dark font-medium text-sm">{item.entry.name}</p>
-            <p class="text-beige-700 text-xs uppercase tracking-widest">
-              {item.entry[`occasion_${lang}` as keyof typeof item.entry]}
-            </p>
-          </div>
-        </div>
+      reviews.map((r, i) => (
+        <li class="snap-start shrink-0 w-[44vw] max-lg:w-[70vw] max-sm:w-[86vw] bg-accent-dark">
+          <figure class="h-full px-10 max-sm:px-6 py-14 max-sm:py-10 flex flex-col gap-10 max-sm:gap-6" data-reveal style={`--d: ${i * 120}ms`}>
+            <div class="flex items-center justify-between text-beige-500/60 text-sm">
+              <span class="tracking-[0.3em]" aria-label={t("clients.rating")}>{stars}</span>
+              <span class="font-serif italic tabular-nums" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")} / {String(reviews.length).padStart(2, "0")}
+              </span>
+            </div>
+            <blockquote class="font-serif italic text-beige-500 leading-[1.2] text-[clamp(1.75rem,2.9vw,3rem)]">
+              &ldquo;{r.quote}&rdquo;
+            </blockquote>
+            <figcaption class="mt-auto text-xs uppercase tracking-widest text-beige-500/70">{r.occasion}</figcaption>
+          </figure>
+        </li>
       ))
     }
-  </CardGrid>
+  </ul>
+
+  <div class="h-16 max-sm:h-10"></div>
 </section>
 
+<style>
+  .reviews-track {
+    scrollbar-width: none;
+    scroll-padding-inline: 0;
+  }
+  .reviews-track::-webkit-scrollbar {
+    display: none;
+  }
+  .reviews-track:focus-visible {
+    outline: 2px solid #edebdf;
+    outline-offset: -4px;
+  }
+</style>
+
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  const track = document.querySelector<HTMLElement>("[data-reviews-track]");
+  const prev = document.querySelector<HTMLButtonElement>("[data-reviews-prev]");
+  const next = document.querySelector<HTMLButtonElement>("[data-reviews-next]");
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".testimonial-card", {
-    scrollTrigger: {
-      trigger: "#clients-section",
-      start: "top 70%",
-    },
-    opacity: 0,
-    y: 50,
-    duration: 0.8,
-    stagger: 0.2,
-    ease: "power3.out",
-  });
+  if (track && prev && next) {
+    const step = () => (track.querySelector("li")?.getBoundingClientRect().width ?? track.clientWidth) + 1;
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+    };
+    prev.addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+    next.addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+    track.addEventListener("scroll", update, { passive: true });
+    update();
+  }
 </script>

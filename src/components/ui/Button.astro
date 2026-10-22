@@ -7,9 +7,10 @@ interface Props {
   size?: "sm" | "md" | "lg";
   icon?: string;
   class?: string;
+  [key: string]: unknown;
 }
 
-const { href, variant = "dark", size = "md", icon, class: className = "" } = Astro.props;
+const { href, variant = "dark", size = "md", icon, class: className = "", ...rest } = Astro.props;
 const Tag = href ? "a" : "button";
 
 const base = "btn inline-flex rounded-full border font-medium relative overflow-hidden";
@@ -24,10 +25,10 @@ const variants = {
 };
 ---
 
-<Tag href={href} class:list={[base, sizes[size], variants[variant], className]}>
+<Tag href={href} class:list={[base, sizes[size], variants[variant], className]} {...rest}>
   <span class="relative z-10 transition-colors duration-300 flex items-center gap-2">
     <slot />
-    {icon && <Icon name={icon} class="w-5 h-5" />}
+    {icon && <Icon name={icon} class="w-5 h-5" aria-hidden="true" />}
   </span>
 </Tag>
 
@@ -42,7 +43,8 @@ const variants = {
     z-index: 0;
   }
 
-  .btn:hover::before {
+  .btn:hover::before,
+  .btn:focus-visible::before {
     transform: scaleX(1);
   }
 
@@ -50,7 +52,8 @@ const variants = {
     background-color: #0e3b31; /* accent-dark */
   }
 
-  .btn-dark:hover span {
+  .btn-dark:hover span,
+  .btn-dark:focus-visible span {
     color: #edebdf; /* beige-500 */
   }
 
@@ -58,7 +61,14 @@ const variants = {
     background-color: #edebdf; /* beige-500 */
   }
 
-  .btn-light:hover span {
+  .btn-light:hover span,
+  .btn-light:focus-visible span {
     color: #0e3b31; /* accent-dark */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn::before {
+      transition: none;
+    }
   }
 </style>

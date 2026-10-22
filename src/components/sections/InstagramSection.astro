@@ -1,0 +1,102 @@
+---
+import { Image } from "astro:assets";
+import Logo from "../ui/Logo.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { contact } from "../../data/contact";
+import { getLatestPosts } from "../../lib/instagram";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const posts = await getLatestPosts(6);
+
+const socials = [
+  { name: "Instagram", handle: "@brazilian.hairstudio", href: contact.instagram },
+  { name: "Facebook", handle: "@brazilianhairstudio", href: contact.facebook },
+];
+---
+
+<section id="instagram-section" class="border-b-3 border-accent-dark overflow-hidden">
+  <!-- Handle marquee (decorative; the links are in the cells below) -->
+  <div class="py-6 max-sm:py-4 text-accent-dark" aria-hidden="true">
+    <div class="marquee" style="--marquee-speed: 38s">
+      {
+        [0, 1].map(() => (
+          <div class="flex items-center shrink-0">
+            {[...socials, ...socials].map((s) => (
+              <>
+                <span class="font-serif italic leading-none whitespace-nowrap text-[clamp(2.25rem,4.5vw,4.5rem)] px-8" translate="no">{s.handle}</span>
+                <Logo variant="mark" class="h-[clamp(1.5rem,2.6vw,2.75rem)] shrink-0 opacity-60" />
+              </>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Social links -->
+  <ul class="grid md:grid-cols-[2fr_1fr_1fr] gap-px bg-accent-dark border-t border-accent-dark">
+    <li class="bg-beige-500 px-10 max-sm:px-6 py-8 flex items-center">
+      <p class="text-beige-700 max-w-md leading-relaxed">{t("instagram.desc")}</p>
+    </li>
+    {
+      socials.map((s) => (
+        <li class="bg-beige-500">
+          <a href={s.href} target="_blank" rel="noopener noreferrer" class="social-cell group relative flex flex-col gap-1 h-full px-10 max-sm:px-6 py-8 overflow-hidden">
+            <span class="relative z-10 text-xs uppercase tracking-widest text-beige-700 transition-colors duration-300 group-hover:text-beige-500/70 group-focus-visible:text-beige-500/70">
+              {s.name}
+            </span>
+            <span class="relative z-10 font-serif italic text-2xl text-accent-dark transition-colors duration-300 group-hover:text-beige-500 group-focus-visible:text-beige-500" translate="no">
+              {s.handle}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  {
+    posts.length > 0 && (
+      <ul class="grid grid-cols-6 max-lg:grid-cols-3 max-sm:grid-cols-2 gap-px bg-accent-dark border-t border-accent-dark">
+        {posts.map((post, i) => (
+          <li class="bg-accent-dark overflow-hidden" data-reveal="wipe" style={`--d: ${i * 80}ms`}>
+            <a href={post.permalink} target="_blank" rel="noopener noreferrer" class="group block overflow-hidden" aria-label={post.caption || t("instagram.post")}>
+              <Image
+                src={post.image}
+                inferSize
+                widths={[320, 640]}
+                sizes="(min-width: 1024px) 17vw, (min-width: 640px) 33vw, 50vw"
+                alt=""
+                loading="lazy"
+                class="aspect-square w-full object-cover transition-opacity duration-500 group-hover:opacity-80"
+              />
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</section>
+
+<style>
+  /* Same fill sweep as the buttons and the services rows */
+  .social-cell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #0e3b31;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+  .social-cell:hover::before,
+  .social-cell:focus-visible::before {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .social-cell::before {
+      transition: none;
+    }
+  }
+</style>

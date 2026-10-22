@@ -2,8 +2,11 @@
 import "../../styles/global.css";
 import Layout from "../../layouts/Layout.astro";
 import AboutUsSection from "../../components/sections/AboutUsSection.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const t = useTranslations(getLangFromUrl(Astro.url));
 ---
 
-<Layout>
+<Layout title={t("meta.about.title")} description={t("meta.about.description")}>
   <AboutUsSection />
 </Layout>
