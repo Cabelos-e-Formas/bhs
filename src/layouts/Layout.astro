@@ -1,24 +1,117 @@
 ---
+import { getImage } from "astro:assets";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import { getLangFromUrl } from "../i18n/utils";
+import shareSource from "../assets/stock/blonde-balayage.jpg";
+import { getLangFromUrl, useTranslations, localePath, unlocalizedPath, langs, langTags } from "../i18n/utils";
+import { contact } from "../data/contact";
+import lato400 from "@fontsource/lato/files/lato-latin-400-normal.woff2?url";
+import lato300 from "@fontsource/lato/files/lato-latin-300-normal.woff2?url";
 
+interface Props {
+  title: string;
+  description: string;
+  /** Keep the page out of search results (404, utility pages) */
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const site = Astro.site!;
+
+// Canonical + hreflang: every page lists itself and its two translations
+const path = unlocalizedPath(Astro.url);
+const canonical = new URL(localePath(lang, path), site).href;
+const alternates = langs.map((l) => ({ hreflang: langTags[l], href: new URL(localePath(l, path), site).href }));
+const xDefault = new URL(localePath("en", path), site).href;
+
+// 1200×630 share image for link previews (WhatsApp, Instagram, Facebook, iMessage)
+const shareImage = await getImage({ src: shareSource, width: 1200, height: 630, fit: "cover", position: "top", format: "jpg" });
+const shareImageUrl = new URL(shareImage.src, site).href;
+
+const salon = {
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "@id": new URL("/#salon", site).href,
+  name: "Brazilian Hair Studio",
+  url: new URL("/", site).href,
+  image: shareImageUrl,
+  logo: new URL("/logo/bhs-logo.svg", site).href,
+  description: t("meta.home.description"),
+  telephone: "+1-239-318-8366",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: contact.street,
+    addressLocality: "Fort Myers",
+    addressRegion: "FL",
+    postalCode: "33916",
+    addressCountry: "US",
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "09:00",
+      closes: "19:00",
+    },
+  ],
+  hasMap: contact.maps,
+  areaServed: [
+    { "@type": "City", name: "Fort Myers" },
+    { "@type": "AdministrativeArea", name: "Southwest Florida" },
+  ],
+  knowsLanguage: ["en", "pt", "es"],
+  founder: { "@type": "Person", name: "Mirela de Bem" },
+  sameAs: [contact.instagram, contact.facebook],
+};
 ---
 
 <!doctype html>
-<html lang={lang} class="noise">
+<html lang={langTags[lang]} class="noise">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {!noindex && alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={xDefault} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Brazilian Hair Studio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={langTags[lang].replace("-", "_")} />
+    <meta property="og:image" content={shareImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t("hero.photoAlt")} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#0e3b31" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preload" href={lato400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={lato300} as="font" type="font/woff2" crossorigin />
+    <script type="application/ld+json" set:html={JSON.stringify(salon)} />
     <meta name="generator" content={Astro.generator} />
-    <title>Brazilian Hair Studio</title>
+    <script is:inline>document.documentElement.classList.add("js");</script>
   </head>
   <body class="bg-beige-500 pt-24">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:bg-accent-dark focus:text-beige-500 focus:px-4 focus:py-2 focus:rounded-full"
+    >
+      {t("a11y.skip")}
+    </a>
     <Header />
-    <slot />
+    <main id="main">
+      <slot />
+    </main>
     <Footer />
   </body>
 </html>
@@ -33,22 +126,35 @@ const lang = getLangFromUrl(Astro.url);
 </style>
 
 <script>
-  import Lenis from "lenis";
+  // Scroll reveal for [data-reveal] + count-up for [data-count] (replaces GSAP/ScrollTrigger)
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-  });
-
-  lenis.on("scroll", ({ scroll }: { scroll: number }) => {
-    window.dispatchEvent(new CustomEvent("lenis-scroll", { detail: { scroll } }));
-  });
-
-  function raf(time: number) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
+  function countUp(el: HTMLElement) {
+    const target = Number(el.dataset.count);
+    const fmt = new Intl.NumberFormat(document.documentElement.lang);
+    if (reduceMotion || !target) return;
+    const start = performance.now();
+    const duration = 2000;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / duration);
+      el.textContent = fmt.format(Math.floor(target * (1 - Math.pow(1 - p, 2))));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
 
-  requestAnimationFrame(raf);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target as HTMLElement;
+        el.classList.add("is-visible");
+        el.querySelectorAll<HTMLElement>("[data-count]").forEach(countUp);
+        observer.unobserve(el);
+      }
+    },
+    { rootMargin: "0px 0px -15% 0px" },
+  );
+
+  document.querySelectorAll("[data-reveal]").forEach((el) => observer.observe(el));
 </script>

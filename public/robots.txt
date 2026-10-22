@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://brazilian-hair-studio.com/sitemap-index.xml

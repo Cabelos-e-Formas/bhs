@@ -1,10 +1,8 @@
 ---
-import { Image } from "astro:assets";
 import { Icon } from "astro-icon/components";
-import LogoImg from "../assets/bhs-logo.png";
-import LogoSmallImg from "../assets/bhs-logo-small-dark.png";
+import Logo from "./ui/Logo.astro";
 import Button from "./ui/Button.astro";
-import { getLangFromUrl, useTranslations, localePath, switchLangPath } from "../i18n/utils";
+import { getLangFromUrl, useTranslations, localePath, switchLangPath, langTags, type Lang } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -12,76 +10,61 @@ const t = useTranslations(lang);
 const langLinks = [
   { code: "en", label: "EN", href: switchLangPath(Astro.url, "en") },
   { code: "pt", label: "PT", href: switchLangPath(Astro.url, "pt") },
-  { code: "sp", label: "SP", href: switchLangPath(Astro.url, "sp") },
+  { code: "es", label: "ES", href: switchLangPath(Astro.url, "es") },
 ];
 
 const navLinks = [
-  { href: localePath(lang, "/home"), label: t("nav.home") },
+  { href: localePath(lang, "/"), label: t("nav.home") },
   { href: localePath(lang, "/about"), label: t("nav.about") },
   { href: localePath(lang, "/services"), label: t("nav.services") },
-  { href: localePath(lang, "/team"), label: t("nav.team") },
   { href: localePath(lang, "/appointment"), label: t("nav.book") },
 ];
 ---
 
 <header
   id="site-header"
-  class="h-24 flex items-center px-10 text-accent-dark text-xl fixed top-0 left-0 right-0 bg-beige-500 z-50"
+  class="h-24 flex items-center px-10 max-sm:px-6 text-accent-dark text-xl fixed top-0 left-0 right-0 bg-beige-500 z-50"
+  data-top
 >
-  <a href={localePath(lang, "/home")} class="h-12 flex-none flex gap-4">
-    <Image
-      src={LogoSmallImg}
-      alt="Brazilian Hair Studio"
-      class="h-full w-auto object-contain"
-      loading="eager"
-    />
-    <Image
-      src={LogoImg}
-      alt="Brazilian Hair Studio"
-      class="max-sm:hidden h-full w-auto object-contain"
-      loading="eager"
-    />
+  <a href={localePath(lang, "/")} class="h-12 flex-none flex items-center gap-4" aria-label="Brazilian Hair Studio">
+    <Logo variant="mark" class="h-11" />
+    <Logo variant="wordmark" class="h-10 max-sm:hidden" />
   </a>
 
   <div class="ml-auto flex items-center gap-4">
-    <Button href={localePath(lang, "/appointment")} variant="dark" size="sm" class="max-sm:hidden border!">
+    <Button href={localePath(lang, "/appointment")} variant="dark" size="sm" class="max-sm:hidden">
       {t("nav.book")}
     </Button>
 
-  <button
-    id="menu-toggle"
-    class="p-2"
-    aria-label="Toggle menu"
-    aria-expanded="false"
-    aria-controls="nav-overlay"
-  >
-    <div class="relative w-8 h-8">
-      <Icon id="icon-menu" name="material-symbols-light:menu" class="w-8 h-8 absolute inset-0" />
-      <Icon id="icon-close" name="material-symbols-light:close" class="w-8 h-8 absolute inset-0" />
-    </div>
-  </button>
+    <button
+      id="menu-toggle"
+      type="button"
+      class="p-2"
+      aria-label={t("nav.menu")}
+      aria-expanded="false"
+      aria-controls="nav-overlay"
+    >
+      <span class="relative block w-8 h-8">
+        <Icon id="icon-menu" name="material-symbols-light:menu" class="w-8 h-8 absolute inset-0" aria-hidden="true" />
+        <Icon id="icon-close" name="material-symbols-light:close" class="w-8 h-8 absolute inset-0" aria-hidden="true" />
+      </span>
+    </button>
   </div>
 </header>
 
 <!-- Full-screen nav overlay (sits behind the header) -->
-<div
-  id="nav-overlay"
-  class="fixed inset-0 z-40 pointer-events-none"
-  aria-hidden="true"
->
+<div id="nav-overlay" class="fixed inset-0 z-40 pointer-events-none overscroll-contain" inert>
   <div id="nav-bg" class="absolute inset-0 bg-beige-500"></div>
 
-  <div
-    class="relative h-full flex flex-col justify-center px-16 max-sm:px-10 pt-24 pb-12"
-  >
-    <nav class="flex flex-col gap-2">
+  <div class="relative h-full flex flex-col justify-center px-16 max-sm:px-10 pt-24 pb-12">
+    <nav class="flex flex-col gap-2" aria-label={t("nav.label")}>
       {
-        navLinks.map((link) => (
-          <a href={link.href} class="nav-item group flex items-baseline gap-3">
-            <span class="text-accent-dark/30 font-sans text-sm w-6 text-right group-hover:text-accent-dark/60 transition-colors">
-              {String(navLinks.indexOf(link) + 1).padStart(2, "0")}
+        navLinks.map((link, i) => (
+          <a href={link.href} class="nav-item group flex items-baseline gap-3" style={`--i: ${i}`}>
+            <span class="text-accent-dark/40 font-sans text-sm w-6 text-right group-hover:text-accent-dark/70 transition-colors" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
             </span>
-        <span class="text-accent-dark font-serif italic leading-none group-hover:text-beige-700 transition-colors" style="font-size: clamp(4rem, 9vw, 4.5rem);">
+            <span class="text-accent-dark font-serif italic leading-none group-hover:text-beige-700 transition-colors" style="font-size: clamp(3rem, 9vw, 4.5rem);">
               {link.label}
             </span>
           </a>
@@ -91,17 +74,22 @@ const navLinks = [
 
     <div
       class="nav-item flex items-center gap-3 mt-12 pt-6 border-t border-accent-dark/20 text-sm"
+      style={`--i: ${navLinks.length}`}
+      aria-label={t("nav.language")}
+      role="group"
     >
       {
         langLinks.map((l, i) => (
           <>
-            {i > 0 && <span class="text-accent-dark/30">|</span>}
+            {i > 0 && <span class="text-accent-dark/30" aria-hidden="true">|</span>}
             <a
               href={l.href}
+              hreflang={langTags[l.code as Lang]}
+              aria-current={lang === l.code ? "true" : undefined}
               class={
                 lang === l.code
                   ? "font-semibold text-accent-dark"
-                  : "text-accent-dark/40 hover:text-accent-dark transition-colors"
+                  : "text-accent-dark/60 hover:text-accent-dark transition-colors"
               }
             >
               {l.label}
@@ -113,111 +101,161 @@ const navLinks = [
   </div>
 </div>
 
-<script>
-  import { gsap } from "gsap";
+<style>
+  /* Same motion as the previous GSAP timelines, done with CSS transitions */
+  #nav-bg {
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.15s;
+  }
+  .nav-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.25s ease-in calc((5 - var(--i)) * 40ms),
+      transform 0.25s ease-in calc((5 - var(--i)) * 40ms);
+  }
+  #nav-overlay[data-open] #nav-bg {
+    transform: scaleX(1);
+    transition: transform 0.65s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  #nav-overlay[data-open] .nav-item {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) calc(400ms + var(--i) * 80ms),
+      transform 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) calc(400ms + var(--i) * 80ms);
+  }
 
+  #icon-menu,
+  #icon-close {
+    transition:
+      opacity 0.2s ease-in,
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  #icon-close {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.5);
+  }
+  #menu-toggle[aria-expanded="true"] #icon-menu {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+  #menu-toggle[aria-expanded="true"] #icon-close {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.1s;
+  }
+
+  #site-header {
+    transition:
+      transform 0.35s ease,
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+  #site-header[data-hidden] {
+    transform: translateY(-100%);
+  }
+
+  /* At the very top the bar inverts to forest, continuing the green hero below it */
+  #site-header[data-top] {
+    background-color: #0e3b31;
+    color: #edebdf;
+  }
+  #site-header[data-top] :global(.btn) {
+    color: #edebdf;
+    border-color: #edebdf;
+  }
+  #site-header[data-top] :global(.btn::before) {
+    background-color: #edebdf;
+  }
+  #site-header[data-top] :global(.btn:hover span),
+  #site-header[data-top] :global(.btn:focus-visible span) {
+    color: #0e3b31;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #nav-bg,
+    .nav-item,
+    #icon-menu,
+    #icon-close,
+    #site-header {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
   const toggle = document.getElementById("menu-toggle")!;
   const overlay = document.getElementById("nav-overlay")!;
-  const navBg = document.getElementById("nav-bg")!;
-  const iconMenu = document.getElementById("icon-menu")!;
-  const iconClose = document.getElementById("icon-close")!;
   const header = document.getElementById("site-header")!;
-  const navItems = gsap.utils.toArray<HTMLElement>(".nav-item");
 
   let isOpen = false;
+  let closeTimer: number | undefined;
 
-  // Initial states
-  gsap.set(navBg, { scaleX: 0, transformOrigin: "right" });
-  gsap.set(navItems, { opacity: 0, y: 32 });
-  gsap.set(iconClose, { opacity: 0, rotate: -45, scale: 0.5 });
+  // Inverted (forest) bar only while at the very top and the menu is closed
+  const updateTop = () => header.toggleAttribute("data-top", window.scrollY < 10 && !isOpen);
 
-  function animateToClose() {
-    gsap.killTweensOf([iconMenu, iconClose]);
-    gsap.to(iconMenu, { opacity: 0, rotate: 90, scale: 0.5, duration: 0.2, ease: "power2.in" });
-    gsap.to(iconClose, { opacity: 1, rotate: 0, scale: 1, duration: 0.25, ease: "back.out(1.5)", delay: 0.1 });
-  }
+  function setOpen(next: boolean) {
+    isOpen = next;
+    updateTop();
+    toggle.setAttribute("aria-expanded", String(next));
+    document.body.style.overflow = next ? "hidden" : "";
+    window.clearTimeout(closeTimer);
 
-  function animateToMenu() {
-    gsap.killTweensOf([iconMenu, iconClose]);
-    gsap.to(iconClose, { opacity: 0, rotate: 45, scale: 0.5, duration: 0.2, ease: "power2.in" });
-    gsap.to(iconMenu, { opacity: 1, rotate: 0, scale: 1, duration: 0.25, ease: "back.out(1.5)", delay: 0.1 });
-  }
-
-  function openMenu() {
-    isOpen = true;
-    overlay.classList.remove("pointer-events-none");
-    overlay.setAttribute("aria-hidden", "false");
-    toggle.setAttribute("aria-expanded", "true");
-    animateToClose();
-    document.body.style.overflow = "hidden";
-
-    gsap.killTweensOf([navBg, ...navItems]);
-
-    gsap
-      .timeline()
-      .to(navBg, { scaleX: 1, duration: 0.65, ease: "power3.inOut" })
-      .to(
-        navItems,
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power3.out" },
-        "-=0.25",
-      );
-  }
-
-  function closeMenu() {
-    isOpen = false;
-    toggle.setAttribute("aria-expanded", "false");
-    animateToMenu();
-    document.body.style.overflow = "";
-
-    gsap.killTweensOf([navBg, ...navItems]);
-
-    gsap
-      .timeline({
-        onComplete: () => {
-          overlay.classList.add("pointer-events-none");
-          overlay.setAttribute("aria-hidden", "true");
-        },
-      })
-      .to(navItems, {
-        opacity: 0,
-        y: 20,
-        duration: 0.25,
-        stagger: { each: 0.04, from: "end" },
-        ease: "power2.in",
-      })
-      .to(
-        navBg,
-        { scaleX: 0, duration: 0.5, ease: "power3.inOut", transformOrigin: "right" },
-        "-=0.1",
-      );
-  }
-
-  toggle.addEventListener("click", () => (isOpen ? closeMenu() : openMenu()));
-
-  // Hide header on scroll down, show on scroll up
-  let lastScroll = 0;
-  let hidden = false;
-
-  window.addEventListener("lenis-scroll", (e) => {
-    const scroll = (e as CustomEvent).detail.scroll;
-    const delta = scroll - lastScroll;
-    lastScroll = scroll;
-
-    if (scroll < 80) {
-      if (hidden) {
-        gsap.to(header, { y: 0, duration: 0.35, ease: "power2.out" });
-        hidden = false;
-      }
-      return;
+    if (next) {
+      overlay.inert = false;
+      overlay.classList.remove("pointer-events-none");
+      overlay.toggleAttribute("data-open", true);
+    } else {
+      overlay.toggleAttribute("data-open", false);
+      // Let the exit transition finish before disabling the overlay
+      closeTimer = window.setTimeout(() => {
+        overlay.classList.add("pointer-events-none");
+        overlay.inert = true;
+      }, 700);
     }
+  }
 
-    if (delta > 0 && !hidden) {
-      if (isOpen) closeMenu();
-      gsap.to(header, { y: "-100%", duration: 0.35, ease: "power2.in" });
-      hidden = true;
-    } else if (delta < 0 && hidden) {
-      gsap.to(header, { y: 0, duration: 0.35, ease: "power2.out" });
-      hidden = false;
+  toggle.addEventListener("click", () => setOpen(!isOpen));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && isOpen) {
+      setOpen(false);
+      toggle.focus();
     }
   });
+
+  // Hide header on scroll down, show on scroll up
+  let lastScroll = window.scrollY;
+  let ticking = false;
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const scroll = window.scrollY;
+        const delta = scroll - lastScroll;
+        lastScroll = scroll;
+        ticking = false;
+        updateTop();
+
+        if (scroll < 80) {
+          header.toggleAttribute("data-hidden", false);
+        } else if (delta > 0 && !header.hasAttribute("data-hidden")) {
+          if (isOpen) setOpen(false);
+          header.toggleAttribute("data-hidden", true);
+        } else if (delta < 0) {
+          header.toggleAttribute("data-hidden", false);
+        }
+      });
+    },
+    { passive: true },
+  );
+
+  updateTop();
+
+  // Keyboard users tabbing into the hidden header bring it back
+  header.addEventListener("focusin", () => header.toggleAttribute("data-hidden", false));
 </script>

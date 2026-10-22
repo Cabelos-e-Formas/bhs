@@ -1,0 +1,28 @@
+---
+/**
+ * Brand logo from /public/logo, tinted with the current text color.
+ * The SVG is a cached static file, so it isn't inlined into every page.
+ */
+interface Props {
+  variant?: "mark" | "wordmark" | "stacked";
+  class?: string;
+  label?: string;
+}
+
+const { variant = "mark", class: className, label } = Astro.props;
+
+const files = {
+  mark: { src: "/logo/bhs-mark.svg", ratio: "624 / 420" },
+  wordmark: { src: "/logo/bhs-wordmark.svg", ratio: "616 / 217" },
+  stacked: { src: "/logo/bhs-logo.svg", ratio: "624 / 732" },
+};
+const { src, ratio } = files[variant];
+---
+
+<span
+  class:list={["logo-mask", className]}
+  style={`--logo: url('${src}'); aspect-ratio: ${ratio};`}
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+></span>

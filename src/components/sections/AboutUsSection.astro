@@ -1,25 +1,31 @@
 ---
-import Button from "../ui/Button.astro";
+import { Image } from "astro:assets";
+import stylistPhoto from "../../assets/stock/stylist-updo.jpg";
 import PageHero from "../ui/PageHero.astro";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { createReader } from "@keystatic/core/reader";
-import keystaticConfig from "../../../keystatic.config";
+import ClosingBand from "../ui/ClosingBand.astro";
+import { getCollection } from "astro:content";
+import { getLangFromUrl, useTranslations, langTags, localized } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const fmt = new Intl.NumberFormat(langTags[lang]);
 
-const reader = createReader(process.cwd(), keystaticConfig);
-const allHistory = await reader.collections.history.all();
-const milestones = allHistory.sort((a, b) =>
-  (a.entry.year ?? "").localeCompare(b.entry.year ?? "")
-);
+const milestones = (await getCollection("history"))
+  .sort((a, b) => a.data.year.localeCompare(b.data.year))
+  .map(({ data }) => ({
+    year: data.year,
+    title: localized(data, "title", lang),
+    desc: localized(data, "desc", lang),
+    image: data.image,
+  }));
 
-const pullQuotes = {
-  en: "More than 25 years transforming beauty — one client at a time.",
-  pt: "Mais de 25 anos transformando a beleza — uma cliente de cada vez.",
-  sp: "Más de 25 años transformando la belleza — un cliente a la vez.",
-};
-const pullQuote = pullQuotes[lang];
+const stats = [
+  { target: 23006, label: t("aboutus.stats.clients") },
+  { target: 4299, label: t("aboutus.stats.new") },
+  { target: 54, label: t("aboutus.stats.professionals") },
+];
+
+const gutter = "px-10 max-sm:px-6";
 ---
 
 <PageHero
@@ -30,196 +36,74 @@ const pullQuote = pullQuotes[lang];
   subtitle={t("aboutus.subtitle")}
 />
 
-<!-- Timeline -->
-<section id="aboutus-timeline" class="border-b-3 border-accent-dark max-w-screen overflow-hidden">
-  {
-    milestones.map((m, i) => {
-      const isEven = i % 2 === 0;
-      const title = m.entry[`title_${lang}` as keyof typeof m.entry] as string;
-      const desc = m.entry[`desc_${lang}` as keyof typeof m.entry] as string;
-      const image = m.entry.image as string | null | undefined;
-
-      return (
-        <div
-          class={`timeline-item grid sm:grid-cols-12 max-sm:grid-cols-1 border-b-3 border-accent-dark last:border-b-0`}
-        >
-          {/* Image column */}
-          <div
-            class={`relative sm:col-span-5 min-h-72 max-sm:min-h-52 overflow-hidden timeline-img ${isEven ? "sm:order-1" : "sm:order-2"}`}
-          >
-            {image ? (
-              <div class="w-full h-full absolute inset-0">
-                <img
-                  src={image}
-                  alt={title}
-                  class="w-full h-full object-cover"
-                />
-                <div class="absolute inset-0 bg-accent-dark/40" />
-              </div>
-            ) : (
-              <div class="w-full h-full min-h-72 max-sm:min-h-52 bg-accent-dark/5 border-r border-dashed border-accent-dark/20 flex items-center justify-center">
-                <span class="text-[9rem] max-sm:text-[6rem] font-serif italic text-accent-dark/10 leading-none select-none">
-                  {m.entry.year}
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Content column */}
-          <div
-            class={`sm:col-span-7 px-12 py-16 max-sm:px-8 max-sm:py-10 flex flex-col justify-center gap-5 timeline-content ${isEven ? "sm:order-2" : "sm:order-1"}`}
-          >
-            <span class="inline-block self-start text-xs font-sans uppercase tracking-widest bg-accent-dark text-beige-500 px-3 py-1">
-              {m.entry.year}
-            </span>
-            <h3 class="text-3xl max-sm:text-2xl font-light text-accent-dark">
-              {title}
-            </h3>
-            <p class="text-beige-700 leading-relaxed">{desc}</p>
-          </div>
-        </div>
-      );
-    })
-  }
-</section>
-
-<!-- Stats -->
-<section
-  id="aboutus-stats"
-  class="bg-accent-dark border-b-3 border-accent-dark px-8 py-24 max-sm:py-16"
->
-  <p
-    class="text-center text-beige-700 text-xs uppercase tracking-[0.25em] mb-14 max-sm:mb-10"
-  >
-    2021 — across all four units
-  </p>
-  <div
-    class="grid grid-cols-3 max-sm:grid-cols-1 gap-12 max-sm:gap-10 max-w-4xl mx-auto"
-  >
-    <div class="stat-item flex flex-col items-center text-center gap-3">
-      <span
-        class="text-7xl max-sm:text-5xl font-serif italic text-beige-500 leading-none stat-count"
-        data-target="23006">0</span
-      >
-      <p class="text-beige-700 text-xs uppercase tracking-widest">
-        {t("aboutus.stats.clients")}
+<!-- Founding statement -->
+<section class="border-b-3 border-accent-dark">
+  <div class="grid lg:grid-cols-[7fr_5fr] gap-px bg-accent-dark">
+    <div class={`bg-beige-500 ${gutter} py-24 max-sm:py-14 flex flex-col justify-center gap-10`}>
+      <p class="font-serif italic text-accent-dark leading-snug text-[clamp(1.75rem,3vw,2.75rem)] max-w-[24ch]" data-reveal>
+        {t("aboutus.pullquote")}
+      </p>
+      <p class="text-beige-700 leading-relaxed max-w-[36rem]" data-reveal style="--d: 150ms">
+        {t("aboutus.story")}
       </p>
     </div>
-
-    <div class="stat-item flex flex-col items-center text-center gap-3">
-      <span
-        class="text-7xl max-sm:text-5xl font-serif italic text-beige-500 leading-none stat-count"
-        data-target="4299">0</span
-      >
-      <p class="text-beige-700 text-xs uppercase tracking-widest">
-        {t("aboutus.stats.new")}
-      </p>
-    </div>
-
-    <div class="stat-item flex flex-col items-center text-center gap-3">
-      <span
-        class="text-7xl max-sm:text-5xl font-serif italic text-beige-500 leading-none stat-count"
-        data-target="54">0</span
-      >
-      <p class="text-beige-700 text-xs uppercase tracking-widest">
-        {t("aboutus.stats.professionals")}
-      </p>
+    <div class="bg-beige-500 relative max-lg:h-96 max-sm:h-80 overflow-hidden" data-reveal="wipe">
+      <Image
+        src={stylistPhoto}
+        alt={t("aboutus.photoAlt")}
+        widths={[480, 800, 1100]}
+        sizes="(min-width: 1024px) 42vw, 100vw"
+        loading="lazy"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section
-  class="bg-beige-500 px-8 py-24 max-sm:py-16 flex flex-col items-center gap-8 aboutus-cta"
->
-  <p class="font-serif italic text-2xl max-sm:text-xl text-accent-dark text-center max-w-lg leading-snug">
-    {pullQuote}
-  </p>
-  <Button href="tel:+12393188366" variant="dark" size="lg">
-    {t("aboutus.cta")} &rarr; (239) 318-8366
-  </Button>
+<!-- Timeline -->
+<section id="aboutus-timeline" class="border-b-3 border-accent-dark">
+  <h2 class={`${gutter} pt-24 max-sm:pt-14 pb-14 max-sm:pb-10 text-accent-dark font-light leading-[1] text-[clamp(2.5rem,7vw,7.5rem)]`} data-reveal="mask">
+    <span class="line-mask"><span class="font-serif italic">{t("aboutus.timeline.serif")}</span></span>
+    <span class="line-mask"><span style="--ld: 120ms">{t("aboutus.timeline.rest")}</span></span>
+  </h2>
+
+  <ol class="grid gap-px bg-accent-dark border-t border-accent-dark">
+    {
+      milestones.map((m) => (
+        <li class="grid md:grid-cols-[4fr_8fr] gap-px bg-accent-dark">
+          <div class={`bg-beige-500 ${gutter} md:pr-10 pt-12 max-sm:pt-10 md:pb-12`} data-reveal="mask">
+            <p class="font-serif italic text-accent-dark leading-none text-[clamp(3.5rem,9vw,9rem)] tabular-nums"><span class="line-mask"><span>{m.year}</span></span></p>
+          </div>
+          <div class="bg-beige-500 px-12 max-sm:px-8 py-12 max-sm:pt-4 max-sm:pb-10 flex flex-col gap-4">
+            <h3 class="text-accent-dark font-light text-3xl max-sm:text-2xl" data-reveal style="--d: 120ms">{m.title}</h3>
+            <p class="text-beige-700 leading-relaxed max-w-[42rem]" data-reveal style="--d: 220ms">{m.desc}</p>
+            {m.image && (
+              <img src={m.image} alt={m.title} width="640" height="400" loading="lazy" decoding="async" class="mt-4 w-full max-w-xl aspect-[16/10] object-cover" />
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
 </section>
 
-<script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+<!-- 2021 in numbers -->
+<section id="aboutus-stats" class="border-b-3 border-accent-dark" data-reveal>
+  <dl class="grid grid-cols-[3fr_3fr_3fr_3fr] max-md:grid-cols-1 gap-px bg-accent-dark">
+    <div class={`bg-beige-500 ${gutter} md:pr-10 py-10 flex items-center`}>
+      <p class="text-beige-700 text-xs uppercase tracking-widest leading-relaxed">{t("aboutus.stats.caption")}</p>
+    </div>
+    {
+      stats.map((s) => (
+        <div class="bg-beige-500 px-10 max-sm:px-8 py-10 flex flex-col-reverse gap-3">
+          <dt class="text-beige-700 text-xs uppercase tracking-widest">{s.label}</dt>
+          <dd class="font-serif italic text-accent-dark leading-none text-6xl max-sm:text-5xl tabular-nums" data-count={s.target}>
+            {fmt.format(s.target)}
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  window.addEventListener("load", () => {
-    // Timeline rows — image slides from its side, content fades up
-    document.querySelectorAll<HTMLElement>(".timeline-item").forEach((row, i) => {
-      const img = row.querySelector(".timeline-img");
-      const content = row.querySelector(".timeline-content");
-      const isEven = i % 2 === 0;
-
-      if (img) {
-        gsap.from(img, {
-          scrollTrigger: { trigger: row, start: "top 90%" },
-          opacity: 0,
-          x: isEven ? -60 : 60,
-          duration: 0.9,
-          ease: "power3.out",
-        });
-      }
-
-      if (content) {
-        gsap.from(content, {
-          scrollTrigger: { trigger: row, start: "top 90%" },
-          opacity: 0,
-          y: 40,
-          duration: 0.8,
-          delay: 0.15,
-          ease: "power3.out",
-        });
-      }
-    });
-
-    // Stats — fade in items
-    gsap.from(".stat-item", {
-      scrollTrigger: {
-        trigger: "#aboutus-stats",
-        start: "top 90%",
-      },
-      opacity: 0,
-      y: 30,
-      duration: 0.7,
-      stagger: 0.15,
-      ease: "power3.out",
-    });
-
-    // Stats — count-up animation
-    document.querySelectorAll<HTMLElement>(".stat-count").forEach((el) => {
-      const target = parseInt(el.dataset.target ?? "0");
-      const obj = { value: 0 };
-
-      gsap.to(obj, {
-        scrollTrigger: {
-          trigger: "#aboutus-stats",
-          start: "top 90%",
-        },
-        value: target,
-        duration: 2,
-        ease: "power2.out",
-        onUpdate() {
-          el.textContent = Math.floor(obj.value).toLocaleString();
-        },
-      });
-    });
-
-    // CTA — scale-up entrance
-    gsap.from(".aboutus-cta", {
-      scrollTrigger: {
-        trigger: ".aboutus-cta",
-        start: "top 95%",
-      },
-      opacity: 0,
-      scale: 0.97,
-      duration: 0.7,
-      ease: "power3.out",
-    });
-
-    // Recalculate all trigger positions after full layout paint
-    ScrollTrigger.refresh();
-  });
-</script>
+<ClosingBand quote={t("servicespage.pullquote")} />

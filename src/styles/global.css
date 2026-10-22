@@ -1,100 +1,179 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900&display=swap");
+/* Lato, self-hosted (same family as before, no render-blocking Google Fonts request) */
+@import "@fontsource/lato/300.css";
+@import "@fontsource/lato/400.css";
+@import "@fontsource/lato/700.css";
 
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+/* Baskerville: the system face where installed (macOS), self-hosted everywhere else */
 @font-face {
-  font-family: "Baskerville Normal";
+  font-family: "Baskerville";
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
+  font-display: swap;
   src:
-    local("Baskerville Normal"),
-    url("/fonts/baskvl.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Baskerville Regular";
-  font-style: normal;
-  font-weight: normal;
-  src:
-    local("Baskerville Regular"),
-    url("/fonts/baskervi.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Baskerville Light-Italic";
-  font-style: italic;
-  font-weight: 300;
-  src:
-    local("Baskerville Light-Italic"),
-    url("/fonts/BASKE10.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Baskerville Light";
-  font-style: normal;
-  font-weight: 300;
-  src:
-    local("Baskerville Light"),
-    url("/fonts/BASKE9.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Baskerville Bold";
-  font-style: normal;
-  font-weight: bold;
-  src:
-    local("Baskerville Bold"),
-    url("/fonts/BASKE1.woff") format("woff");
-}
-
-@font-face {
-  font-family: "Baskerville BT Roman";
-  font-style: normal;
-  font-weight: normal;
-  src:
-    local("Baskerville BT Roman"),
+    local("Baskerville"),
     url("/fonts/BaskervilleBT.woff") format("woff");
 }
 
 @font-face {
-  font-family: "Baskerville BT Italic";
+  font-family: "Baskerville";
   font-style: italic;
-  font-weight: normal;
+  font-weight: 400;
+  font-display: swap;
   src:
-    local("Baskerville BT Italic"),
+    local("Baskerville Italic"),
     url("/fonts/BaskervilleItalicBT.woff") format("woff");
 }
 
-@font-face {
-  font-family: "Baskerville BT Bold";
-  font-style: normal;
-  font-weight: bold;
-  src:
-    local("Baskerville BT Bold"),
-    url("/fonts/BaskervilleBoldBT.woff") format("woff");
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
 
-@font-face {
-  font-family: "Baskerville BT Bold Italic";
-  font-style: italic;
-  font-weight: bold;
-  src:
-    local("Baskerville BT Bold Italic"),
-    url("/fonts/BaskervilleBoldItalicBT.woff") format("woff");
+  body {
+    touch-action: manipulation;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
 }
 
 @layer components {
-  .noise {}
-
+  /*
+   * Paper noise. Same look as before, but the SVG turbulence is rendered once on a
+   * 240px tile and repeated, instead of being re-filtered across the whole viewport.
+   */
   .noise::before {
     content: "";
     position: fixed;
     opacity: 0.7;
     inset: 0;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
     pointer-events: none;
     z-index: 9999;
   }
+
+  /* Brand logo files in /public/logo, tinted with currentColor through a mask */
+  .logo-mask {
+    display: block;
+    background-color: currentColor;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+  }
 }
 
+/* ── Scroll reveal ───────────────────────────────────────────────
+ * Replaces the per-section GSAP fades. Content is only hidden once JS
+ * has run (html.js), so nothing stays invisible without JavaScript.
+ * Stagger with style="--d: 150ms".
+ */
+html.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(var(--rx, 0), var(--ry, 30px), 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) var(--d, 0ms),
+    transform 0.8s cubic-bezier(0.215, 0.61, 0.355, 1) var(--d, 0ms);
+}
+html.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal="left"] { --rx: -50px; --ry: 0; }
+[data-reveal="right"] { --rx: 50px; --ry: 0; }
+
+/* Masked line rise: <h2 data-reveal="mask"><span class="line-mask"><span>…</span></span></h2>
+ * The container stays put; each line slides up out of its own mask (as in the hero). */
+.line-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.1em; /* keeps italic descenders inside the mask */
+  margin-bottom: -0.1em;
+}
+.line-mask > span {
+  display: inline-block;
+}
+html.js [data-reveal="mask"] {
+  opacity: 1;
+  transform: none;
+}
+html.js [data-reveal="mask"] .line-mask > span {
+  transform: translateY(110%);
+  transition: transform 1.1s cubic-bezier(0.19, 1, 0.22, 1) var(--ld, 0ms);
+}
+html.js [data-reveal="mask"].is-visible .line-mask > span {
+  transform: none;
+}
+
+/* Image wipe: the frame uncovers bottom-up while the photo settles from a slight zoom */
+html.js [data-reveal="wipe"] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.3s cubic-bezier(0.77, 0, 0.175, 1) var(--d, 0ms);
+}
+html.js [data-reveal="wipe"] img {
+  transform: scale(1.2);
+  transition: transform 1.8s cubic-bezier(0.19, 1, 0.22, 1) var(--d, 0ms);
+}
+html.js [data-reveal="wipe"].is-visible {
+  clip-path: inset(0 0 0 0);
+}
+html.js [data-reveal="wipe"].is-visible img {
+  transform: none;
+}
+
+/* Infinite marquee: duplicate the track content once; it loops by -50% */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-speed, 40s) linear infinite;
+}
+.marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* On-load entrance (heroes) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--from, 30px));
+  }
+}
+.rise {
+  animation: rise 0.9s cubic-bezier(0.215, 0.61, 0.355, 1) var(--d, 0ms) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  html.js [data-reveal],
+  html.js [data-reveal="wipe"],
+  html.js [data-reveal="wipe"] img,
+  html.js [data-reveal="mask"] .line-mask > span {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .rise,
+  .marquee {
+    animation: none;
+  }
+}

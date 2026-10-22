@@ -2,10 +2,7 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{astro,js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     fontFamily: {
@@ -20,7 +17,7 @@ const config: Config = {
           700: "#686464",
         },
         accent: {
-          DEFAULT: "##6e9876",
+          DEFAULT: "#6e9876",
           dark: "#0e3b31",
         },
       },

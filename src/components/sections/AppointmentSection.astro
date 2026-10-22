@@ -1,167 +1,105 @@
 ---
 import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import panelPhoto from "../../assets/stock/stylist-blowdry.jpg";
 import Button from "../ui/Button.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { contact } from "../../data/contact";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const labelClass = "font-sans text-xs uppercase tracking-[0.28em] text-beige-700 mb-4";
 ---
 
-<section
-  id="appointment"
-  class="grid lg:grid-cols-[44fr_56fr] min-h-[calc(100vh-6rem)]"
->
-
-  <!-- Left: Invitation (dark panel) -->
-  <div class="appt-left bg-accent-dark flex flex-col justify-center px-14 py-16 max-sm:px-8 max-sm:py-12 relative overflow-hidden border-b-3 lg:border-b-0 border-accent-dark">
+<section id="appointment" class="grid lg:grid-cols-[44fr_56fr] min-h-[calc(100svh-6rem)]">
+  <!-- Left: Invitation (dark panel over photo) -->
+  <div class="bg-accent-dark flex flex-col justify-center px-14 py-16 max-sm:px-8 max-sm:py-12 relative overflow-hidden border-b-3 lg:border-b-0 border-accent-dark">
+    <Image
+      src={panelPhoto}
+      alt=""
+      widths={[640, 1000, 1400]}
+      sizes="(min-width: 1024px) 44vw, 100vw"
+      loading="eager"
+      class="absolute inset-0 w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-accent-dark/85" aria-hidden="true"></div>
 
     <span
       class="absolute -bottom-6 -right-4 font-serif italic select-none pointer-events-none leading-none"
-      style="font-size: clamp(6rem, 14vw, 13rem); color: rgba(237,235,223,0.04);"
-      aria-hidden="true"
-    >BHS</span>
-
-    <p
-      class="appt-eyebrow font-sans text-xs uppercase tracking-[0.3em] mb-6"
-      style="color: rgba(237,235,223,0.4);"
+      style="font-size: clamp(6rem, 14vw, 13rem); color: rgba(237,235,223,0.06);"
+      aria-hidden="true">BHS</span
     >
-      Brazilian Hair Studio · Fort Myers, FL
-    </p>
 
-    <h1
-      class="appt-heading font-serif italic text-beige-500 leading-[1.1] mb-5"
-      style="font-size: clamp(2.2rem, 3.8vw, 3.75rem);"
-    >
-      {t("appointment.invite")}
+    <h1 class="rise relative font-sans text-xs uppercase tracking-[0.3em] mb-6 text-beige-500/70" style="--from: 0; --d: 100ms">
+      {t("appointment.heading")}
     </h1>
 
-    <div
-      class="appt-rule mb-5"
-      style="width: 30px; height: 1px; background: rgba(237,235,223,0.2);"
-      role="separator"
-      aria-hidden="true"
-    ></div>
+    <p class="rise relative font-serif italic text-beige-500 leading-[1.1] mb-5" style="font-size: clamp(2.2rem, 3.8vw, 3.75rem); --d: 200ms">
+      {t("appointment.invite")}
+    </p>
 
-    <p
-      class="appt-body font-sans leading-relaxed max-w-[300px]"
-      style="font-size: 14px; color: rgba(237,235,223,0.5);"
-    >
+    <div class="rise relative mb-5 w-[30px] h-px bg-beige-500/30" style="--d: 300ms" aria-hidden="true"></div>
+
+    <p class="rise relative font-sans leading-relaxed max-w-[300px] text-sm text-beige-500/75" style="--d: 400ms">
       {t("appointment.invite.body")}
     </p>
   </div>
 
   <!-- Right: Contact cards — side by side on sm+ -->
-  <div class="appt-right grid sm:grid-cols-2 bg-beige-500">
-
+  <div class="grid sm:grid-cols-2 bg-beige-500">
     <!-- Phone card -->
-    <div class="appt-phone flex flex-col justify-center px-12 py-14 max-sm:px-8 max-sm:py-10 border-b-3 sm:border-b-0 sm:border-r-2 border-accent-dark">
-
-      <div class="appt-phone-icon mb-5 text-accent-dark">
-        <Icon name="material-symbols-light:call" class="w-8 h-8 opacity-50" />
+    <div class="flex flex-col justify-center px-12 py-14 max-sm:px-8 max-sm:py-10 border-b-3 sm:border-b-0 sm:border-r-2 border-accent-dark">
+      <div class="rise mb-5 text-accent-dark" style="--d: 200ms">
+        <Icon name="material-symbols-light:call" class="w-8 h-8 opacity-60" aria-hidden="true" />
       </div>
 
-      <p class="appt-phone-label font-sans text-xs uppercase tracking-[0.28em] text-beige-700 mb-4">
-        {t("appointment.phone.label")}
-      </p>
+      <h2 class={`rise ${labelClass}`} style="--d: 260ms">{t("appointment.phone.label")}</h2>
 
       <a
-        href="tel:+12393188366"
-        class="appt-phone-number font-serif italic text-accent-dark leading-none block mb-2 transition-opacity duration-200 hover:opacity-65"
-        style="font-size: clamp(1.65rem, 2.4vw, 2.4rem);"
-        aria-label="Call (239) 318-8366"
+        href={contact.tel}
+        class="rise font-serif italic text-accent-dark leading-none block mb-2 transition-opacity duration-200 hover:opacity-65 w-fit"
+        style="font-size: clamp(1.65rem, 2.4vw, 2.4rem); --d: 320ms"
       >
-        (239) 318-8366
+        {contact.phone}
       </a>
 
-      <div class="appt-phone-hours flex items-center gap-1.5 mb-10">
-        <Icon name="material-symbols-light:schedule" class="w-3.5 h-3.5 text-beige-700 opacity-55 flex-shrink-0" />
-        <span class="font-sans text-xs uppercase tracking-wider text-beige-700">
-          {t("appointment.phone.hours")}
-        </span>
+      <div class="rise flex items-center gap-1.5 mb-10" style="--d: 380ms">
+        <Icon name="material-symbols-light:schedule" class="w-3.5 h-3.5 text-beige-700 flex-shrink-0" aria-hidden="true" />
+        <span class="font-sans text-xs uppercase tracking-wider text-beige-700">{t("appointment.phone.hours")}</span>
       </div>
 
-      <div class="appt-phone-cta">
-        <Button href="tel:+12393188366" variant="dark" size="sm" >
-          {t("appointment.phone.cta")}
-        </Button>
+      <div class="rise flex flex-wrap gap-3" style="--d: 440ms">
+        <Button href={contact.tel} variant="dark" size="sm">{t("appointment.phone.cta")}</Button>
+        <Button href={contact.whatsapp} variant="dark" size="sm" target="_blank" rel="noopener noreferrer">WhatsApp</Button>
       </div>
-
     </div>
 
     <!-- Location card -->
-    <div class="appt-location flex flex-col justify-center px-12 py-14 max-sm:px-8 max-sm:py-10">
-
-      <div class="appt-location-icon mb-5 text-accent-dark">
-        <Icon name="material-symbols-light:location-on" class="w-8 h-8 opacity-50" />
+    <div class="flex flex-col justify-center px-12 py-14 max-sm:px-8 max-sm:py-10">
+      <div class="rise mb-5 text-accent-dark" style="--d: 500ms">
+        <Icon name="material-symbols-light:location-on" class="w-8 h-8 opacity-60" aria-hidden="true" />
       </div>
 
-      <p class="appt-location-label font-sans text-xs uppercase tracking-[0.28em] text-beige-700 mb-4">
-        {t("appointment.location.label")}
-      </p>
+      <h2 class={`rise ${labelClass}`} style="--d: 560ms">{t("appointment.location.label")}</h2>
 
-      <p
-        class="appt-location-city font-serif italic text-accent-dark leading-tight mb-1"
-        style="font-size: clamp(1.65rem, 2.2vw, 2.15rem);"
-      >
+      <p class="rise font-serif italic text-accent-dark leading-tight mb-1" style="font-size: clamp(1.65rem, 2.2vw, 2.15rem); --d: 620ms">
         {t("appointment.location.city")}
       </p>
 
-      <p class="appt-location-country font-sans text-sm text-beige-700 tracking-wide mb-6">
+      <p class="rise font-sans text-sm text-beige-700 tracking-wide mb-6" style="--d: 680ms">
         {t("appointment.location.country")}
       </p>
 
-      <p
-        class="appt-location-note font-sans text-xs uppercase tracking-[0.22em] text-beige-700"
-        style="opacity: 0.45;"
+      <a
+        href={contact.maps}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rise font-sans text-xs uppercase tracking-[0.22em] text-beige-700 hover:text-accent-dark underline underline-offset-4 w-fit transition-colors"
+        style="--d: 740ms"
       >
         {t("appointment.location.note")}
-      </p>
-
+      </a>
     </div>
   </div>
 </section>
-
-<script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  gsap.registerPlugin(ScrollTrigger);
-
-  window.addEventListener("load", () => {
-    gsap.from(
-      ["#appointment .appt-eyebrow", "#appointment .appt-heading", "#appointment .appt-rule", "#appointment .appt-body"],
-      {
-        opacity: 0,
-        x: -24,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        delay: 0.1,
-        clearProps: "opacity,transform",
-      }
-    );
-
-    gsap.from(
-      [
-        "#appointment .appt-phone-icon",
-        "#appointment .appt-phone-label",
-        "#appointment .appt-phone-number",
-        "#appointment .appt-phone-hours",
-        "#appointment .appt-phone-cta",
-        "#appointment .appt-location-icon",
-        "#appointment .appt-location-label",
-        "#appointment .appt-location-city",
-        "#appointment .appt-location-country",
-        "#appointment .appt-location-note",
-      ],
-      {
-        opacity: 0,
-        y: 20,
-        duration: 0.7,
-        stagger: 0.055,
-        ease: "power3.out",
-        delay: 0.2,
-        clearProps: "opacity,transform",
-      }
-    );
-  });
-</script>

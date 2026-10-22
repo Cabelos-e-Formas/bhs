@@ -1,26 +1,18 @@
 ---
-import { createReader } from "@keystatic/core/reader";
-import keystaticConfig from "../../keystatic.config";
-import { Image } from "astro:assets";
-import LogoImg from "../assets/bhs-logo.png";
-import { getLangFromUrl } from "../i18n/utils";
+import { getCollection } from "astro:content";
+import Logo from "./ui/Logo.astro";
+import { getLangFromUrl, localized, langTags } from "../i18n/utils";
 import "../styles/global.css";
 
-const reader = createReader(process.cwd(), keystaticConfig);
 const lang = getLangFromUrl(Astro.url);
 
-const data = await reader.singletons.linktree.read();
-const profileName = data?.profile_name ?? "Brazilian Hair Studio";
-const taglineKey = `tagline_${lang}` as keyof typeof data;
-const tagline = (data?.[taglineKey] as string | undefined) ?? data?.tagline_en ?? "Modern Brazilian techniques · Fort Myers, Florida";
+const [profile] = await getCollection("linktree");
+const profileName = profile?.data.profile_name ?? "Brazilian Hair Studio";
+const tagline = profile ? localized(profile.data, "tagline", lang) : "";
 
-const linksRaw = await reader.collections.linktreeLinks.all();
-const links = linksRaw
-  .sort((a, b) => a.entry.order.localeCompare(b.entry.order))
-  .map(({ entry }) => {
-    const label: string = entry[`label_${lang}` as keyof typeof entry] as string ?? entry.label_en ?? '';
-    return { entry, label };
-  });
+const links = (await getCollection("linktreeLinks"))
+  .sort((a, b) => a.data.order.localeCompare(b.data.order))
+  .map(({ data: entry }) => ({ entry, label: localized(entry, "label", lang) }));
 
 const iconMap: Record<string, string> = {
   calendar: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
@@ -34,17 +26,20 @@ const iconMap: Record<string, string> = {
 const locales = [
   { code: "en", label: "EN", href: "/linktree" },
   { code: "pt", label: "PT", href: "/pt/linktree" },
-  { code: "sp", label: "ES", href: "/sp/linktree" },
+  { code: "es", label: "ES", href: "/es/linktree" },
 ];
 ---
 
 <!DOCTYPE html>
-<html lang={lang} class="noise">
+<html lang={langTags[lang]} class="noise">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0e3b31" />
     <title>{profileName}</title>
+    <meta name="description" content={tagline} />
+    <!-- Link-in-bio page: useful for social profiles, not for search -->
+    <meta name="robots" content="noindex, follow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <style>
@@ -62,6 +57,15 @@ const locales = [
       main {
         position: relative;
         z-index: 1;
+      }
+      .ltree-item {
+        animation: ltree-in 0.55s cubic-bezier(0.215, 0.61, 0.355, 1) calc(50ms + var(--n, 0) * 70ms) both;
+      }
+      @keyframes ltree-in {
+        from { opacity: 0; transform: translateY(18px); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ltree-item { animation: none; }
       }
       .ltree-link {
         position: relative;
@@ -97,12 +101,7 @@ const locales = [
 
         <!-- Logo -->
         <div class="ltree-item mb-4">
-          <Image
-            src={LogoImg}
-            alt={profileName}
-            class="h-[56px] w-auto"
-            style="filter: brightness(0) invert(1); opacity: 0.88;"
-          />
+          <Logo variant="stacked" class="h-[120px] text-beige-500 opacity-90" />
         </div>
 
         <!-- Profile name (visible heading for accessibility) -->
@@ -140,15 +139,15 @@ const locales = [
 
         <!-- Links -->
         <ul class="w-full flex flex-col gap-3" role="list">
-          {links.map(({ entry, label }) => {
+          {links.map(({ entry, label }, i) => {
             return (
               <li>
                 <a
                   href={entry.url}
                   target={entry.url.startsWith("tel:") ? "_self" : "_blank"}
                   rel={entry.url.startsWith("tel:") ? undefined : "noopener noreferrer"}
-                  class="ltree-item ltree-link group flex items-center gap-4 px-5 transition-all duration-300 w-full text-accent-dark"
-                  style="background-color: #edebdf; border-radius: 14px; padding-top: 17px; padding-bottom: 17px;"
+                  class="ltree-item ltree-link group flex items-center gap-4 px-5 transition-colors duration-300 w-full text-accent-dark"
+                  style={`background-color: #edebdf; border-radius: 14px; padding-top: 17px; padding-bottom: 17px; --n: ${i + 5};`}
                 >
                   <!-- Icon -->
                   <span
@@ -183,7 +182,7 @@ const locales = [
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="flex-shrink-0 transition-all duration-300 group-hover:translate-x-0.5 opacity-35 group-hover:opacity-65"
+                    class="flex-shrink-0 transition-[transform,opacity] duration-300 group-hover:translate-x-0.5 opacity-35 group-hover:opacity-65"
                     style="width: 16px; height: 16px;"
                     aria-hidden="true"
                   >
@@ -208,16 +207,3 @@ const locales = [
   </body>
 </html>
 
-<script>
-  import { gsap } from "gsap";
-
-  gsap.from(".ltree-item", {
-    opacity: 0,
-    y: 18,
-    duration: 0.55,
-    stagger: 0.07,
-    ease: "power3.out",
-    delay: 0.05,
-    clearProps: "opacity,transform",
-  });
-</script>

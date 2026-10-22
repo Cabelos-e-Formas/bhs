@@ -1,0 +1,24 @@
+---
+import "../../styles/global.css";
+import Layout from "../../layouts/Layout.astro";
+import HeroSection from "../../components/sections/HeroSection.astro";
+import AboutSection from "../../components/sections/AboutSection.astro";
+import NumbersSection from "../../components/sections/NumbersSection.astro";
+import ServicesSection from "../../components/sections/ServicesSection.astro";
+import ClientsSection from "../../components/sections/ClientsSection.astro";
+import InstagramSection from "../../components/sections/InstagramSection.astro";
+import UnitsSection from "../../components/sections/UnitsSection.astro";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const t = useTranslations(getLangFromUrl(Astro.url));
+---
+
+<Layout title={t("meta.home.title")} description={t("meta.home.description")}>
+  <HeroSection />
+  <AboutSection />
+  <NumbersSection />
+  <ServicesSection />
+  <ClientsSection />
+  <InstagramSection />
+  <UnitsSection />
+</Layout>

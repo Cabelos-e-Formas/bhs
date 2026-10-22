@@ -1,70 +1,52 @@
 ---
 import { Image } from "astro:assets";
-import RandomGirl from "../../assets/random-girl.jpg";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import pillA from "../../assets/stock/sunlit-blonde.jpg";
+import pillB from "../../assets/stock/curling-styling.jpg";
+import { getLangFromUrl, useTranslations, localePath } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+// A pill-shaped photo sits inline after the serif phrase and inside the sans phrase
+const [restFirst, ...restOthers] = (t("about.heading.rest") as string).split(" ");
 ---
 
-<section
-  id="about-section"
-  class="flex max-sm:flex-col border-accent-dark border-b-3 max-h-screen"
->
-  <!-- Image -->
-  <div class="sm:w-5/12 sm:border-r-3 max-sm:border-b-3 border-accent-dark about-img overflow-hidden relative">
-    <Image
-      src={RandomGirl}
-      alt="Brazilian Hair Studio"
-      class="w-full h-full object-cover object-center max-sm:hidden"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-linear-to-t from-accent-dark/30 to-transparent pointer-events-none"></div>
-  </div>
+<section id="about-section" class="border-b-3 border-accent-dark px-10 max-sm:px-6 pt-28 max-sm:pt-16 pb-24 max-sm:pb-14">
+  <h2 class="text-accent-dark font-light leading-[1.02] tracking-[-0.01em] text-[clamp(2.6rem,7.4vw,8.25rem)]" data-reveal>
+    <span class="block">
+      <span class="font-serif italic">{t("about.heading.serif")}</span>
+      <span class="pill w-[2.1em]" aria-hidden="true">
+        <Image src={pillA} alt="" widths={[240, 480]} sizes="18vw" loading="lazy" class="w-full h-full object-cover" />
+      </span>
+    </span>
+    <span class="block lg:pl-[1.2em]">
+      {restFirst}
+      <span class="pill w-[1.6em]" aria-hidden="true">
+        <Image src={pillB} alt="" widths={[200, 400]} sizes="14vw" loading="lazy" class="w-full h-full object-cover object-[50%_35%]" />
+      </span>
+      {restOthers.join(" ")}
+    </span>
+  </h2>
 
-  <!-- Content -->
-  <div class="sm:w-7/12 px-14 py-20 max-sm:px-8 max-sm:py-14 flex flex-col justify-center gap-8 bg-beige-500">
-    <div class="about-eyebrow flex items-center gap-4">
-      <span class="block w-10 h-px bg-accent-dark opacity-50"></span>
-      <span class="text-xs uppercase tracking-[0.2em] text-accent-dark/60 font-sans">Brazilian Hair Studio</span>
+  <div class="mt-20 max-sm:mt-12 grid md:grid-cols-[1fr_1fr] gap-x-16 gap-y-8 border-t border-accent-dark pt-10" data-reveal style="--d: 150ms">
+    <p class="text-xs uppercase tracking-widest text-beige-700" translate="no">Brazilian Hair Studio</p>
+    <div class="flex flex-col gap-8 max-w-[36rem]">
+      <p class="text-accent-dark text-lg font-light leading-relaxed">{t("about.body")}</p>
+      <a href={localePath(lang, "/about")} class="w-fit text-accent-dark font-serif italic text-2xl underline underline-offset-[6px] decoration-1 hover:decoration-2">
+        {t("about.link")}
+      </a>
     </div>
-
-    <h2 class="about-heading text-4xl max-sm:text-3xl font-serif italic text-accent-dark leading-tight">
-      {t("about.heading")}
-    </h2>
-
-    <p class="about-text text-beige-700 leading-relaxed text-[0.95rem] max-w-prose">
-      {t("about.body")}
-    </p>
   </div>
 </section>
 
-<script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.from(".about-img", {
-    scrollTrigger: {
-      trigger: "#about-section",
-      start: "top 80%",
-    },
-    opacity: 0,
-    x: -60,
-    duration: 1,
-    ease: "power3.out",
-  });
-
-  gsap.from([".about-eyebrow", ".about-heading", ".about-text"], {
-    scrollTrigger: {
-      trigger: "#about-section",
-      start: "top 75%",
-    },
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
-    stagger: 0.15,
-    ease: "power3.out",
-  });
-</script>
+<style>
+  .pill {
+    display: inline-block;
+    height: 0.78em;
+    margin: 0 0.06em;
+    vertical-align: -0.02em;
+    border-radius: 999px;
+    overflow: hidden;
+    background: #0e3b31;
+  }
+</style>

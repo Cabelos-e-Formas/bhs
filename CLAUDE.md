@@ -7,304 +7,166 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run dev       # Start dev server (localhost:4321)
 npm run build     # Build for production
-npm run preview   # Preview production build
+npm run preview   # Not supported by the Vercel adapter — inspect .vercel/output/static instead
 ```
 
 ---
 
 ## Architecture Overview
 
-Static marketing site for **Brazilian Hair Studio** (hair salon, Naples FL + 4 units in Criciúma, Brazil). Built to be fast, trilingual, and editable by non-developers via a CMS.
+Static marketing site for **Brazilian Hair Studio** (hair salon, 2950 Winkler Ave, Fort Myers FL, with a 25-year salon history in Criciúma, Brazil). Built to be fast, trilingual and search-friendly. No CMS: content lives in YAML files in the repo.
 
 **Data flow:**
 
 ```
-src/content/**/*.yaml  ──► Keystatic reader  ──► Astro component (.astro frontmatter)
+src/content/**/*.yaml  ──► Astro content collections (src/content.config.ts) ──► getCollection() in frontmatter
 src/i18n/ui.ts         ──► useTranslations()  ──► template expressions
+src/data/contact.ts    ──► phone, address, social links (language-agnostic)
 ```
 
-**Request flow:**
+**Routes:**
 
 ```
-/         → redirect → /home   (index.astro just does Astro.redirect)
-/home     → Layout.astro wraps → [7 section components in order]
-/services → Layout.astro wraps → ServicesPageSection
-/team     → Layout.astro wraps → TeamPageSection
-/about    → Layout.astro wraps → AboutUsSection
-/pt/*     → same pages, PT locale prefix
-/sp/*     → same pages, SP locale prefix
+/            → Home (src/pages/index.astro)
+/services    → ServicesPageSection
+/about       → AboutUsSection
+/appointment → AppointmentSection
+/linktree    → standalone link-in-bio page (noindex)
+/404         → 404.html, served with a real 404 status
+/pt/*  /es/* → same pages per locale
 ```
 
-**Deployment:** Vercel (adapter: `@astrojs/vercel`), static output.
+Redirects (301) in `astro.config.mjs`: `/home → /`, `/pt/home → /pt`, `/sp/* → /es/*` (Spanish moved from `/sp` to `/es`).
+
+**Deployment:** Vercel (`@astrojs/vercel`), fully static. A move to Cloudflare is planned — the redirects and trailing-slash rule are currently emitted as Vercel config by the adapter, so re-create them (`public/_redirects`) when switching.
 
 ---
 
 ## Full Tech Stack
 
-| Layer | Tool | Version / Notes |
+| Layer | Tool | Notes |
 |---|---|---|
-| Framework | Astro | v5, file-based routing |
+| Framework | Astro | v5, file-based routing, static output |
 | Styling | Tailwind CSS | v4 via `@tailwindcss/vite` (no PostCSS) |
-| Animations | GSAP + ScrollTrigger | registered per-component |
-| Smooth scroll | Lenis | initialized in `Layout.astro` script |
-| CMS | Keystatic | local storage, collections + singletons |
+| Content | Astro content collections | YAML + Zod schemas in `src/content.config.ts` |
+| Animations | CSS + one small IntersectionObserver | `[data-reveal]` / `[data-count]` in `Layout.astro`; no GSAP/Lenis |
 | Icons | astro-icon | `material-symbols-light` iconify set |
-| Adapter | @astrojs/vercel | static site deployment |
-| Integrations | @astrojs/react, @astrojs/markdoc | for Keystatic UI |
-| Fonts | Baskerville (self-hosted) + Lato (Google Fonts) | |
-| Language | TypeScript | strict, `tsconfig.json` |
+| SEO | `@astrojs/sitemap` | i18n alternates; `public/robots.txt` |
+| Adapter | @astrojs/vercel | static deployment |
+| Fonts | Lato (`@fontsource/lato`, 300/400/700) + Baskerville (local, else self-hosted BT) | Lato preloaded in `Layout.astro` |
+| Language | TypeScript | strict |
 
 ---
 
 ## Environment Variables
 
-This project uses **Keystatic local storage** — no database or external CMS API. No `.env` required for local dev.
+None required for local dev.
 
-For production (Vercel), no env vars are currently wired. If Keystatic is ever switched to GitHub/Cloud storage mode, these would be added:
-
-```
-KEYSTATIC_GITHUB_CLIENT_ID
-KEYSTATIC_GITHUB_CLIENT_SECRET
-KEYSTATIC_SECRET
-```
+Optional: `INSTAGRAM_ACCESS_TOKEN` (long-lived Instagram API token for @brazilian.hairstudio). Read at **build time** by `src/lib/instagram.ts`; post images are downloaded and optimized by `astro:assets`. Without it, `InstagramSection` shows only the handles and social links. Posts refresh only when the site rebuilds. See `.env.example`.
 
 ---
 
-## Content Directory Structure
+## Content
 
 ```
 src/content/
-  services/                  # 2×2 grid on home + full list on /services
-    producao-de-noiva.yaml   # order: '01', dark: false
-    producao-de-madrinha.yaml
-    debutante.yaml
-    producao-de-formatura.yaml
-
-  team/                      # Cards on home TeamSection + /team page
-    mirela-de-bem.yaml       # initials, name, role_{en|pt|sp}, bio_{en|pt|sp}, experience
-    gezi-soares.yaml
-    francieli-asmin.yaml
-
-  clients/                   # Testimonials on home ClientsSection
-    amanda-r.yaml            # name, quote_{en|pt|sp}, occasion_{en|pt|sp}
-    patricia-m.yaml
-    julia-s.yaml
-
-  history/                   # Brand history timeline (AboutUs page)
-    cabelos-e-formas-by-mirela.yaml
-    cabelos-e-formas-by-sil.yaml
-    cabelos-e-formas-centro.yaml
-    cabelos-e-formas-icara.yaml
-
-  linktree/                  # Linktree singleton (link-in-bio page)
-    index.yaml               # profile_name, tagline_{en|pt|sp}, links[]
-
-  i18n/                      # Keystatic singletons for editable UI text
-    en/                      # mirrors src/i18n/ui.ts keys, editable via CMS
-    pt/
-    sp/
+  services/        # Home services index — order, title_{en|pt|es}, desc_{en|pt|es}
+  clients/         # Reviews — quote_{en|pt|es}, occasion_{en|pt|es}
+  history/         # About-page timeline — year, title_*, desc_*, image?
+  linktree/        # index.yaml — profile_name, tagline_*
+  linktree-links/  # order, label_*, url, icon, subtitle, highlight
 ```
 
----
+- Schemas live in `src/content.config.ts`; the build fails if a YAML file is missing a field.
+- Entry `id` = file name (e.g. `brazilian-smoothing`). `ServicesSection` maps service ids to photos.
+- Read localized fields with `localized(data, "title", lang)` from `src/i18n/utils.ts` (falls back to EN).
 
-## Collections & Models (Keystatic)
-
-Defined in `keystatic.config.ts`. All collections read via `createReader(process.cwd(), keystaticConfig)`.
-
-### `services` collection
-
-```yaml
-order: '01'           # sort key — string comparison, zero-pad
-dark: false           # true = bg-accent-dark card, false = bg-beige-500
-title_en / title_pt / title_sp
-desc_en / desc_pt / desc_sp
-```
-
-Read in: `ServicesSection.astro`, sorted by `order`.
-
-### `team` collection
-
-```yaml
-name: Mirela De Bem
-initials: MB          # displayed as large italic placeholder (no photo yet)
-role_en / role_pt / role_sp
-bio_en / bio_pt / bio_sp
-experience: "25 years"
-```
-
-Read in: `TeamSection.astro`, `TeamPageSection.astro`.
-
-### `clients` collection
-
-```yaml
-name: Amanda R.
-quote_en / quote_pt / quote_sp
-occasion_en / occasion_pt / occasion_sp
-```
-
-Read in: `ClientsSection.astro`.
-
-### `history` collection
-
-```yaml
-year: "1999"
-title_en / title_pt / title_sp
-desc_en / desc_pt / desc_sp
-image:                # stored in public/images/history/
-```
-
-Read in: `AboutUsSection.astro`.
-
-### `linktree` singleton
-
-```yaml
-profile_name: "Brazilian Hair Studio"   # used in <title> only, logo shows the name visually
-tagline_en / tagline_pt / tagline_sp
-links[]:
-  label_en / label_pt / label_sp
-  url             # tel:, https:// — language-agnostic
-  icon            # calendar | whatsapp | google | website | instagram | facebook
-  subtitle        # phone number, @handle, address — language-agnostic
-  highlight       # true = filled beige button (primary CTA), false = outline
-```
-
-Read in: `src/pages/linktree.astro`, `src/pages/pt/linktree.astro`, `src/pages/sp/linktree.astro`.
-Standalone pages — no Layout.astro, no nav/footer. Route: `/linktree`, `/pt/linktree`, `/sp/linktree`.
-
-### Keystatic Singletons (`en`, `pt`, `sp`)
-
-Editable versions of `src/i18n/ui.ts` keys — flat fields mapping `nav_home`, `hero_highlight`, etc. Currently, components read from `ui.ts` directly (not from Keystatic singletons). The singletons exist for future CMS-driven copy editing.
+To edit content: change the YAML, run `npm run build`, push.
 
 ---
 
 ## i18n
 
-- Locales: `en` (default, no prefix), `pt` (`/pt/...`), `sp` (`/sp/...`)
-- Config: `astro.config.mjs` → `i18n.routing.prefixDefaultLocale: false`
+- Locales: `en` (default, no prefix), `pt` (`/pt/...`), `es` (`/es/...`)
 - Translation source: `src/i18n/ui.ts` — flat key-value object, all 3 locales
-- Key pattern: `section.key` (e.g. `hero.title`, `team.mb.bio`, `services.01.desc`)
 - Helpers in `src/i18n/utils.ts`:
-  - `getLangFromUrl(url)` — extracts locale from pathname first segment
-  - `useTranslations(lang)` — returns `t(key)` function with EN fallback
-  - `localePath(lang, path)` — prefixes path with lang (skips prefix for EN)
-  - `switchLangPath(url, targetLang)` — computes equivalent URL in target locale
+  - `getLangFromUrl(url)`, `useTranslations(lang)`, `localized(data, field, lang)`
+  - `localePath(lang, path)` — prefixes path with lang (none for EN), never a trailing slash
+  - `switchLangPath(url, lang)` / `unlocalizedPath(url)` — equivalent URL in another locale
+  - `langTags` — BCP 47 tags (`en`, `pt-BR`, `es`) for `html[lang]`, hreflang and `Intl`
 
-**Adding a new translation key:** add to all 3 locales in `ui.ts`, then use `t("key")` in the component. TypeScript will error if key is missing in `defaultLang` locale.
+**Adding a translation key:** add it to all 3 locales in `ui.ts`, then use `t("key")`.
 
 ---
 
-## Page Sections (render order in `/home`)
+## SEO
 
-1. `HeroSection` — full-viewport hero, parallax zoom on `backgroundSize`, CTA → `tel:+12393188366`
-2. `AboutSection` — image + text block
-3. `NumbersSection` — 4 stats (years / brides / units / specialists)
-4. `ServicesSection` — reads `services` collection, 2×2 grid, staggered scroll animation
-5. `TeamSection` — reads `team` collection, auto-fit grid, staggered scroll animation
-6. `ClientsSection` — reads `clients` collection, testimonial cards
-7. `UnitsSection` — hardcoded USA + Brazil unit info
+All handled in `src/layouts/Layout.astro` — every page passes `title` and `description`:
+
+- Per-page meta from `meta.<page>.title` / `meta.<page>.description` keys (title ≤ ~60 chars, description ≤ ~160)
+- Self-referencing canonical + reciprocal hreflang (`en`, `pt-BR`, `es`, `x-default` → EN)
+- Open Graph / Twitter card with a generated 1200×630 share image
+- `HairSalon` JSON-LD (NAP, hours, sameAs). Do **not** add a self-serving `aggregateRating`.
+- `noindex` prop for utility pages (404); linktree sets its own `noindex`
+- `site` + `trailingSlash: 'never'` in `astro.config.mjs`; sitemap at `/sitemap-index.xml`
+
+Audit and open items: `docs/seo-audit.md`.
+
+---
+
+## Page Sections (render order on `/`)
+
+1. `HeroSection` — oversized pairing headline crossing a portrait photo (load wipe, scroll drift), specialties ledger + CTA
+2. `AboutSection` — statement headline with inline pill photos + intro
+3. `NumbersSection` — ledger of 4 oversized stats (count-up)
+4. `ServicesSection` — `services` collection; index rows with fill-sweep hover and a cursor-following photo preview
+5. `ClientsSection` — forest band, horizontal scroll-snap track of quotes, "325+" links to Google reviews
+6. `InstagramSection` — Instagram + Facebook handle marquee, social link cells, latest posts (build time)
+7. `UnitsSection` — oversized city line, photo + info ledger (no reveal animations)
 
 ---
 
 ## Design Patterns
 
-1. **i18n in every component** — Always `getLangFromUrl(Astro.url)` then `useTranslations(lang)` in frontmatter. Never hardcode copy.
-
-2. **Lang-keyed field access for content** — Multilingual YAML fields are accessed as `entry[\`title_${lang}\`]`. TypeScript cast needed: `entry[\`role_${lang}\` as keyof typeof entry]`.
-
-3. **Keystatic reader in frontmatter** — `createReader(process.cwd(), keystaticConfig)` is instantiated at component build time. All `await reader.collections.X.all()` calls happen in the Astro frontmatter (`---` block).
-
-4. **Sort content by `order` field** — Services are sorted via `.sort((a, b) => a.entry.order.localeCompare(b.entry.order))`. Keep `order` zero-padded strings (`'01'`, `'02'`) for correct string sort.
-
-5. **Dark/light card variant via boolean** — Content items carry a `dark: boolean` field. Components apply `bg-accent-dark` vs `bg-beige-500` (and matching text colors) based on it.
-
-6. **Section-based page composition** — Pages are thin: import Layout + section components, render in order. No logic in page files.
-
-7. **GSAP scroll animations per component** — Each section owns its own `<script>` block, imports gsap + ScrollTrigger, calls `gsap.registerPlugin(ScrollTrigger)`. Never share a global GSAP context across components.
-
-8. **Lenis smooth scroll + custom event** — Initialized once in `Layout.astro`. Emits `lenis-scroll` CustomEvent on the window so other scripts can listen without importing Lenis directly.
-
-9. **Button polymorphism** — `Button.astro` renders `<a>` when `href` is set, `<button>` otherwise. Variants: `dark` / `light`. Sizes: `sm` / `md` / `lg`.
-
-10. **Noise overlay via CSS pseudo-element** — `.noise` class on `<html>` adds SVG fractal noise via `::before` pseudo-element. Defined in `global.css`.
-
-11. **Per-page `global.css` import** — Each `*.astro` page imports `"../styles/global.css"` directly, NOT in `Layout.astro`. This is intentional — Astro deduplicates it; keeping it in pages makes the dependency explicit.
-
-12. **Tailwind config via `@config` directive** — `global.css` uses `@config "../../tailwind.config.ts"` to reference the shared Tailwind theme. Do not use PostCSS — Tailwind v4 runs via the Vite plugin.
-
-13. **Redirect entry point** — `/` (`src/pages/index.astro`) only contains `return Astro.redirect("/home")`. The real home is `/home` (`src/pages/home.astro`). Same pattern for `/pt/` → `/pt/home` and `/sp/` → `/sp/home`.
-
-14. **Initials as image placeholder** — Team cards use large italic serif initials (opacity 0.35) instead of `<img>` tags. When real photos are added, replace the initials `<div>` with an Astro `<Image>` imported from `src/assets/`.
-
----
-
-## Content Update Workflow
-
-When updating content (typical for this project):
-
-1. **Add/edit YAML files** in `src/content/{services,team,clients,history}/`
-2. **Run dev server** — Keystatic admin is at `localhost:4321/keystatic` for visual editing
-3. **Update `src/i18n/ui.ts`** if adding new UI text keys (add to all 3 locales)
-4. **Build & preview** before shipping: `npm run build && npm run preview`
-5. **Deploy** — push to `main`, Vercel auto-deploys
+1. **Design system** — follow `docs/design-system.md` (linen/forest bands, 3px rules, 1px ledger grid, Lato Light + Baskerville italic pairing, pill buttons). The nav bar is the reference implementation; it inverts to forest while the page is at the top.
+2. **i18n in every component** — `getLangFromUrl(Astro.url)` then `useTranslations(lang)` in frontmatter. Never hardcode copy.
+3. **Content in frontmatter** — `await getCollection(...)` and all mapping happen in the `---` block; templates receive plain values.
+4. **Sort content by `order`** — zero-padded strings (`'01'`, `'02'`).
+5. **Section-based pages** — pages are thin: Layout (with title/description) + section components.
+6. **Motion** — no animation libraries. `data-reveal` (fade-up), `data-reveal="mask"` + `.line-mask` (line rise), `data-reveal="wipe"` (image wipe). Content is only hidden once `html.js` is set. Put reveals on cell *content*, not on ledger cells, or the forest grid shows through. Respect `prefers-reduced-motion`.
+7. **Images through `astro:assets`** — photos in `src/assets/` (stock in `src/assets/stock/`, credits in `CREDITS.md`). Use `<Image>` with `widths` + `sizes`; only the hero image is `loading="eager"`.
+8. **Button** — `<a>` with `href`, `<button>` otherwise. Variants `dark` / `light`, sizes `sm` / `md` / `lg`; extra attributes pass through.
+9. **Logo** — SVGs in `public/logo/`, rendered by `ui/Logo.astro` as a CSS mask tinted with `currentColor`.
+10. **Per-page `global.css` import** — each page imports `global.css` directly.
+11. **Tailwind via `@config`** — `global.css` uses `@config "../../tailwind.config.ts"`. No PostCSS.
 
 ---
 
 ## Post-Implementation Checklist
 
-- [ ] All 3 locales (`en`, `pt`, `sp`) updated in `src/i18n/ui.ts` for any new copy
-- [ ] New content YAML files have all required `_en`, `_pt`, `_sp` fields
-- [ ] New section components call `getLangFromUrl` + `useTranslations` in frontmatter
-- [ ] GSAP scripts register `ScrollTrigger` locally (not assumed to be global)
-- [ ] New pages import `global.css` at the page level
-- [ ] New pages have locale variants under `src/pages/pt/` and `src/pages/sp/`
-- [ ] `npm run build` passes with no type errors before shipping
+- [ ] All 3 locales (`en`, `pt`, `es`) updated in `src/i18n/ui.ts` for any new copy
+- [ ] New YAML content has all `_en`, `_pt`, `_es` fields (the schema enforces it)
+- [ ] New pages: locale variants under `src/pages/pt/` and `src/pages/es/`, `meta.<page>.*` keys, `title`/`description` passed to `Layout`
+- [ ] New sections call `getLangFromUrl` + `useTranslations`
+- [ ] `npm run build` passes
 
 ---
 
 ## Common Hurdles
 
-> **Note:** This section should be filled in as real problems are encountered. When a non-obvious bug or integration issue is solved, document it here with the symptom, root cause, and fix.
+### TypeScript generics inside Astro templates cause parse errors
 
-### Keystatic `slugField` returns `null` for that field in entry data
+**Symptom:** `Expected ";" but found "<string, unknown"` when using a generic cast (e.g. `as Record<string, unknown>`) in the template part of an `.astro` file.
 
-**Symptom:** A multilingual label field (e.g. `label_en`) reads as `null` at runtime even though the YAML file contains a value. Other locales (`label_pt`, `label_sp`) work fine.
+**Cause:** The parser reads `<string` as a JSX element.
 
-**Root cause:** Whichever field is set as `slugField` in the Keystatic collection schema is **excluded from the `entry` object** returned by `reader.collections.X.all()`. Keystatic encodes that field's value as the file slug (filename) instead of storing it in the entry data, so it always comes back `null`.
+**Fix:** Do the cast/mapping in the frontmatter and pass plain values to the template.
 
-**Fix:** Never use a content field you need to read as the `slugField`. Add a dedicated `id` field to the schema (`fields.text(...)`) and set `slugField: 'id'`. Add the corresponding `id` value to each YAML file (matching the filename). All other fields, including `label_en`, will then be regular fields and return their YAML values normally.
+### Dynamic redirect patterns fail in a static build
 
-```ts
-// keystatic.config.ts
-collection({
-  slugField: 'id',   // dedicated slug — never used for display
-  schema: {
-    id: fields.text({ label: 'ID (slug)' }),
-    label_en: fields.text({ label: 'Label (EN)' }),  // now a regular field ✓
-    // ...
-  }
-})
-```
+**Symptom:** `Failed to call getStaticPaths for /sp/[...path]`.
 
-### TypeScript generic syntax inside Astro JSX template causes parse error
-
-**Symptom:** Build error like `Expected ";" but found "<string, unknown"` when using a TypeScript type cast with generics (e.g. `as Record<string, unknown>`) inside the template section of an `.astro` file.
-
-**Root cause:** The Astro/JSX parser treats `<string` as the start of a JSX element, not a TypeScript generic.
-
-**Fix:** Move any logic involving TypeScript generics or casts into the frontmatter (`---` block), where it's plain TypeScript. Pre-compute derived values there and pass them as simple variables into the template.
-
-```ts
-// ✅ In frontmatter — TS generics work fine
-const links = rawLinks.map(({ entry }) => {
-  const label = entry[`label_${lang}` as keyof typeof entry] as string ?? entry.label_en;
-  return { entry, label };
-});
-```
-
-```astro
-<!-- ✅ In template — just use the pre-computed value -->
-{links.map(({ entry, label }) => <li>{label}</li>)}
-```
+**Fix:** List each redirected URL explicitly in `astro.config.mjs` `redirects`.
 
 ---
 
@@ -312,46 +174,29 @@ const links = rawLinks.map(({ entry }) => {
 
 ```
 src/
-  assets/          # Images (bhs-logo.png, random-girl.jpg, sun-ray.png, background.svg)
+  assets/            # random-girl.jpg, sun-ray.png, stock/ (Unsplash + CREDITS.md)
   components/
-    sections/      # HeroSection, AboutSection, NumbersSection, ServicesSection,
-                   # TeamSection, ClientsSection, UnitsSection,
-                   # ServicesPageSection, TeamPageSection, AboutUsSection
-    ui/            # Button.astro, PageHero.astro
-    Header.astro   # Sticky header, desktop nav, mobile hamburger, language switcher
-    Footer.astro   # Logo, nav links, contact info
-  content/         # YAML data files (see Content Directory Structure above)
-  i18n/
-    ui.ts          # All translation strings for en/pt/sp
-    utils.ts       # getLangFromUrl, useTranslations, localePath, switchLangPath
-  layouts/
-    Layout.astro   # HTML shell — sets html[lang], Lenis init, Header + slot + Footer
-  pages/
-    index.astro    # → redirect to /home
-    home.astro     # Home page (all 7 sections)
-    services.astro # Services page
-    team.astro     # Team page
-    about.astro    # About Us page
-    linktree.astro # Linktree page (standalone, no Layout)
-    pt/            # Same pages under /pt/ prefix
-    sp/            # Same pages under /sp/ prefix
-  styles/
-    global.css     # Tailwind import, Baskerville @font-face, .noise utility
+    sections/        # Hero, About, Numbers, Services, Clients, Instagram, Units,
+                     # ServicesPageSection, AboutUsSection, AppointmentSection
+    ui/              # Button, Logo, SectionHeader, CardGrid, PageHero, ClosingBand
+    Header.astro     # Fixed nav, full-screen overlay menu, language switch
+    Footer.astro
+    LinktreeLayout.astro
+  content/           # YAML content (see Content)
+  content.config.ts  # Collection schemas
+  data/contact.ts    # Phone, address, maps, reviews and social URLs
+  i18n/              # ui.ts (copy), utils.ts (helpers)
+  layouts/Layout.astro  # <head> SEO, JSON-LD, font preloads, reveal script, Header/Footer
+  lib/instagram.ts   # Build-time Instagram fetch
+  pages/             # index, services, about, appointment, linktree, 404 + pt/ + es/
+  styles/global.css  # Tailwind, fonts, .noise, .logo-mask, reveal utilities
 public/
-  fonts/           # Self-hosted Baskerville woff files
-  favicon.ico / favicon.svg
-astro.config.mjs   # Astro config: i18n routing, vite plugins, Vercel adapter
-keystatic.config.ts # CMS collections + singletons schema
-tailwind.config.ts  # Theme: colors (beige-500, beige-700, accent-dark), fonts
+  fonts/  logo/  favicon.svg  favicon.ico  robots.txt
+docs/
+  design-system.md   # Visual rules
+  seo-audit.md       # SEO audit + owner checklist
 ```
 
-**Custom color tokens:**
+**Color tokens:** `beige-300` #f5f4f0 (paper) · `beige-500` #edebdf (background) · `beige-700` #686464 (muted text, linen only) · `accent-dark` #0e3b31 (brand green)
 
-- `beige-500` → `#edebdf` (main background)
-- `beige-700` → `#686464` (muted text)
-- `accent-dark` → `#0e3b31` (dark green, primary brand color)
-
-**Font families:**
-
-- `font-sans` → Lato (Google Fonts)
-- `font-serif` → Baskerville (self-hosted, used for italic display text)
+**Fonts:** `font-sans` Lato · `font-serif` Baskerville (italic display voice)

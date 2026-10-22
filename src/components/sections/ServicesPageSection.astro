@@ -1,31 +1,31 @@
 ---
-import Button from "../ui/Button.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import hairPhoto from "../../assets/stock/ash-blonde-waves.jpg";
+import eventsPhoto from "../../assets/stock/stylist-updo.jpg";
 import PageHero from "../ui/PageHero.astro";
+import ClosingBand from "../ui/ClosingBand.astro";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const categories = [
-  {
-    catKey: "cat1",
-    services: ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"],
-  },
-  {
-    catKey: "cat2",
-    services: ["s9", "s10"],
-  },
-  {
-    catKey: "cat3",
-    services: ["s11"],
-  },
-] as const;
-
-const pullQuote = {
-  en: "Ready to transform? Get in touch and book your appointment.",
-  pt: "Pronta para se transformar? Entre em contato e agende seu horário.",
-  sp: "¿Lista para transformarte? Contáctanos y reserva tu cita.",
-}[lang];
+const categories = (
+  [
+    { id: "hair", catKey: "cat1", photo: hairPhoto, services: ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"] },
+    { id: "events", catKey: "cat2", photo: eventsPhoto, services: ["s9", "s10"] },
+    { id: "nails", catKey: "cat3", services: ["s11"] },
+  ] satisfies { id: string; catKey: string; photo?: ImageMetadata; services: string[] }[]
+).map((c) => ({
+  ...c,
+  label: t(`servicespage.${c.catKey}`) as string,
+  // Long lists get the photo beside them; short ones get it as a wide cell in the ledger
+  photoInLedger: c.services.length < 6,
+  services: c.services.map((key) => ({
+    title: t(`servicespage.${key}.title`) as string,
+    items: t(`servicespage.${key}.items`) as string[],
+  })),
+}));
 ---
 
 <PageHero
@@ -36,113 +36,88 @@ const pullQuote = {
   subtitle={t("servicespage.subtitle")}
 />
 
-<!-- 3 Category sections -->
+<!-- Category index -->
+<nav class="border-b-3 border-accent-dark" aria-label={t("servicespage.jump")}>
+  <ul class="grid grid-cols-3 gap-px bg-accent-dark">
+    {
+      categories.map((c) => (
+        <li class="bg-beige-500">
+          <a
+            href={`#${c.id}`}
+            class="flex items-baseline justify-between gap-4 px-10 max-sm:px-4 py-8 max-sm:py-5 text-accent-dark hover:bg-beige-300 transition-colors"
+          >
+            <span class="font-serif italic text-3xl max-md:text-2xl max-sm:text-lg leading-tight">{c.label}</span>
+            <span class="text-xs text-beige-700 max-sm:hidden tabular-nums" aria-hidden="true">{c.services.length}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
 {
-  categories.map(({ catKey, services }, ci) => {
-    const catLabel = t(`servicespage.${catKey}` as any) as string;
-    const catNum = String(ci + 1).padStart(2, "0");
-    const isDark = ci % 2 !== 0;
-
-    return (
-      <section class={`svcpage-cat border-b-3 border-accent-dark ${isDark ? "bg-accent-dark" : "bg-beige-500"}`}>
-        <div class="flex items-baseline gap-6 px-10 py-8 max-sm:px-8 max-sm:py-6 border-b-3 border-accent-dark">
-          <span class={`font-serif italic text-5xl max-sm:text-4xl leading-none ${isDark ? "text-beige-500" : "text-accent-dark"}`}>
-            {catLabel}
-          </span>
-          <span class={`text-xs uppercase tracking-widest ${isDark ? "text-beige-700" : "text-accent-dark/40"}`}>
-            {catNum}
-          </span>
-        </div>
-
-        <div class={`grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-px ${isDark ? "bg-beige-500/20" : "bg-accent-dark"}`}>
-          {services.map((key) => {
-            const title = t(`servicespage.${key}.title` as any) as string;
-            const items = t(`servicespage.${key}.items` as any) as string[];
-
-            return (
-              <div
-                class={`svcpage-card px-8 py-8 flex flex-col gap-3 cursor-default ${isDark ? "bg-accent-dark" : "bg-beige-500"}`}
-                data-dark={isDark ? "true" : "false"}
-              >
-                <h3 class={`text-base font-light tracking-wide uppercase ${isDark ? "text-beige-500" : "text-accent-dark"}`}>
-                  {title}
-                </h3>
-                <p class="text-beige-700 text-sm leading-relaxed">
-                  {items.join(" · ")}
-                </p>
+  categories.map((c) => (
+    <section id={c.id} class="scroll-mt-24 border-b-3 border-accent-dark">
+      <div class="grid lg:grid-cols-[4fr_8fr] gap-px bg-accent-dark">
+        <!-- Category label + photo -->
+        <div class="bg-beige-500 flex flex-col">
+          <div class="lg:sticky lg:top-24 flex flex-col">
+            <h2 class="px-10 max-sm:px-6 py-12 max-sm:py-10 font-serif italic text-accent-dark text-[clamp(3rem,5.5vw,6rem)] leading-[0.95]" data-reveal="mask">
+              <span class="line-mask"><span>{c.label}</span></span>
+            </h2>
+            {"photo" in c && c.photo && !c.photoInLedger && (
+              <div class="border-t border-accent-dark overflow-hidden" data-reveal="wipe">
+              <Image
+                src={c.photo}
+                alt=""
+                widths={[400, 700, 1000]}
+                sizes="(min-width: 1024px) 33vw, 100vw"
+                loading="lazy"
+                class="w-full aspect-[4/5] max-lg:aspect-[16/9] object-cover"
+              />
               </div>
-            );
-          })}
+            )}
+          </div>
         </div>
-      </section>
-    );
-  })
+
+        <!-- Services ledger -->
+        <div class="bg-beige-500">
+        <ul class="grid sm:grid-cols-2 gap-px bg-accent-dark border-b border-accent-dark">
+          {c.services.map((s, i) => (
+            <li
+              class:list={[
+                "bg-beige-500 px-10 max-sm:px-8 py-10 flex flex-col gap-5",
+                c.services.length % 2 === 1 && i === c.services.length - 1 && "sm:col-span-2",
+              ]}
+            >
+              <h3 class="text-accent-dark font-light text-2xl leading-tight" data-reveal style={`--d: ${(i % 2) * 120}ms`}>{s.title}</h3>
+              <ul class="flex flex-col gap-2 text-beige-700 text-sm" data-reveal style={`--d: ${(i % 2) * 120 + 100}ms`}>
+                {s.items.map((item) => (
+                  <li class="flex gap-3 items-baseline">
+                    <span class="w-3 h-px bg-accent-dark/50 shrink-0 translate-y-[-0.25em]" aria-hidden="true" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+          {"photo" in c && c.photo && c.photoInLedger && (
+            <li class="sm:col-span-2 bg-beige-500 overflow-hidden" aria-hidden="true" data-reveal="wipe">
+              <Image
+                src={c.photo}
+                alt=""
+                widths={[640, 1000, 1400]}
+                sizes="(min-width: 1024px) 66vw, 100vw"
+                loading="lazy"
+                class="w-full aspect-[21/9] max-sm:aspect-[4/3] object-cover object-[50%_30%]"
+              />
+            </li>
+          )}
+        </ul>
+        </div>
+      </div>
+    </section>
+  ))
 }
 
-<!-- CTA -->
-<section class="bg-beige-500 px-8 py-24 max-sm:py-16 flex flex-col items-center gap-8 svcpage-cta">
-  <p class="font-serif italic text-2xl max-sm:text-xl text-accent-dark text-center max-w-lg leading-snug">
-    {pullQuote}
-  </p>
-  <Button href="tel:+12393188366" variant="dark" size="lg">
-    {t("servicespage.cta")}
-  </Button>
-</section>
-
-<script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  window.addEventListener("load", () => {
-    // Scroll-in: stagger cards per category
-    document.querySelectorAll<HTMLElement>(".svcpage-cat").forEach((cat) => {
-      gsap.from(cat.querySelectorAll(".svcpage-card"), {
-        scrollTrigger: { trigger: cat, start: "top 85%" },
-        opacity: 0,
-        y: 24,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power3.out",
-      });
-    });
-
-    gsap.from(".svcpage-cta", {
-      scrollTrigger: { trigger: ".svcpage-cta", start: "top 95%" },
-      opacity: 0,
-      scale: 0.97,
-      duration: 0.7,
-      ease: "power3.out",
-    });
-
-    // Hover: lift + brighten
-    document.querySelectorAll<HTMLElement>(".svcpage-card").forEach((card) => {
-      const isDark = card.dataset.dark === "true";
-
-      card.addEventListener("mouseenter", () => {
-        gsap.to(card, {
-          y: -6,
-          scale: 1.02,
-          backgroundColor: isDark ? "#1a5244" : "#f5f3e8",
-          duration: 0.25,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      });
-
-      card.addEventListener("mouseleave", () => {
-        gsap.to(card, {
-          y: 0,
-          scale: 1,
-          backgroundColor: isDark ? "#0e3b31" : "#edebdf",
-          duration: 0.3,
-          ease: "power2.inOut",
-          overwrite: "auto",
-        });
-      });
-    });
-
-    ScrollTrigger.refresh();
-  });
-</script>
+<ClosingBand quote={t("servicespage.pullquote")} />
