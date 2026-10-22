@@ -1,4 +1,5 @@
 import { ui, defaultLang } from './ui';
+import { yearsOfExperience } from '../lib/stats';
 
 export type Lang = keyof typeof ui;
 export const langs = Object.keys(ui) as Lang[];
@@ -13,9 +14,15 @@ export function getLangFromUrl(url: URL) {
   return defaultLang;
 }
 
+/** Values available to every translation as `{name}` placeholders */
+const defaultVars: Record<string, string | number> = { years: yearsOfExperience };
+
 export function useTranslations(lang: Lang) {
-  return function t(key: keyof typeof ui[typeof defaultLang]) {
-    return (ui[lang] as typeof ui[typeof defaultLang])[key] || ui[defaultLang][key];
+  return function t(key: keyof typeof ui[typeof defaultLang], vars: Record<string, string | number> = {}) {
+    const value = (ui[lang] as typeof ui[typeof defaultLang])[key] || ui[defaultLang][key];
+    if (typeof value !== 'string') return value;
+    const all = { ...defaultVars, ...vars };
+    return value.replace(/\{(\w+)\}/g, (match, name) => (name in all ? String(all[name]) : match));
   };
 }
 

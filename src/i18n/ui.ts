@@ -10,11 +10,11 @@ export const ui: Record<keyof typeof languages, any> = {
   en: {
     // Meta (title ≤ ~60 chars, description ≤ ~160)
     "meta.home.title": "Hair Salon in Fort Myers, FL | Brazilian Hair Studio",
-    "meta.home.description": "Blonde specialists in Fort Myers, FL: balayage, color correction, Brazilian blowout and bridal hair. 25+ years of Brazilian expertise. Call (239) 318-8366.",
+    "meta.home.description": "Blonde specialists in Fort Myers, FL: balayage, color correction, Brazilian blowout and bridal hair. {years}+ years of Brazilian expertise. Call (239) 318-8366.",
     "meta.services.title": "Hair Services in Fort Myers | Brazilian Hair Studio",
     "meta.services.description": "Balayage and highlights, color correction, Brazilian blowout and keratin, haircuts, treatments, bridal styling, makeup and nails at our Fort Myers salon.",
     "meta.about.title": "About Mirela de Bem & Our Salon | Brazilian Hair Studio",
-    "meta.about.description": "Founded by Mirela de Bem after 25+ years and four salons in southern Brazil, Brazilian Hair Studio brings Brazilian hair expertise to Fort Myers, FL.",
+    "meta.about.description": "Founded by Mirela de Bem after {years}+ years and four salons in southern Brazil, Brazilian Hair Studio brings Brazilian hair expertise to Fort Myers, FL.",
     "meta.appointment.title": "Book an Appointment in Fort Myers | Brazilian Hair Studio",
     "meta.appointment.description": "Book at Brazilian Hair Studio, 2950 Winkler Ave, Fort Myers. Call (239) 318-8366 or message us on WhatsApp. Open Monday to Saturday, 9 AM to 7 PM.",
     "meta.notfound.title": "Page not found | Brazilian Hair Studio",
@@ -65,12 +65,12 @@ export const ui: Record<keyof typeof languages, any> = {
     // About
     "about.heading": "Beautiful hair creates confidence",
     "about.body":
-      "At Brazilian Hair Studio, we believe beautiful hair creates confidence. For over 25 years, we have helped women transform their image through personalized consultations, advanced color techniques, healthy hair treatments, and luxury salon experiences. Every service is tailored to your unique beauty, lifestyle, and goals.",
+      "At Brazilian Hair Studio, we believe beautiful hair creates confidence. For over {years} years, we have helped women transform their image through personalized consultations, advanced color techniques, healthy hair treatments, and luxury salon experiences. Every service is tailored to your unique beauty, lifestyle, and goals.",
     "about.photoAlt": "Sunlit blonde hair with soft, natural movement",
 
     // About Us (page)
     "aboutus.heading": "Bringing out the best in you",
-    "aboutus.subtitle": "Founded by Mirela de Bem — 25+ years of Brazilian beauty expertise, now in Fort Myers.",
+    "aboutus.subtitle": "Founded by Mirela de Bem — {years}+ years of Brazilian beauty expertise, now in Fort Myers.",
     "aboutus.stats.clients": "clients served",
     "aboutus.stats.new": "new clients in 2021",
     "aboutus.stats.professionals": "professionals",
@@ -80,7 +80,7 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Numbers
     "numbers.years": "years of experience",
-    "numbers.reviews": "five-star reviews",
+    "numbers.reviews": "Google reviews",
     "numbers.clients": "clients served annually",
     "numbers.bridal": "bridal hairstyles created",
 
@@ -155,7 +155,7 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.brazil.state": "SC",
     "units.brazil.country": "Brazil",
     "units.brazil.desc":
-      "Built upon more than 25 years of beauty expertise developed through successful salon operations in Southern Brazil — creativity and advanced techniques we now bring to Fort Myers.",
+      "Built upon more than {years} years of beauty expertise developed through successful salon operations in Southern Brazil — creativity and advanced techniques we now bring to Fort Myers.",
     "units.brazil.footer": "Santa Catarina · Brazil",
 
     // Services Page
@@ -205,23 +205,23 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Footer
     "footer.tagline":
-      "Luxury Brazilian hair transformations — blonde, color and smoothing specialists. Rooted in 25+ years of Brazilian beauty expertise, now in Fort Myers, Florida.",
+      "Luxury Brazilian hair transformations — blonde, color and smoothing specialists. Rooted in {years}+ years of Brazilian beauty expertise, now in Fort Myers, Florida.",
     "footer.nav.title": "Navigate",
     "footer.contact.title": "Contact",
     "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Book Appointment",
-    "footer.est": "Fort Myers, FL · Est. 25+ years",
+    "footer.est": "Fort Myers, FL · Est. {years}+ years",
     "footer.rights": "All rights reserved.",
   },
 
   pt: {
     // Meta (title ≤ ~60 chars, description ≤ ~160)
     "meta.home.title": "Salão Brasileiro em Fort Myers, FL | Brazilian Hair Studio",
-    "meta.home.description": "Especialistas em loiros em Fort Myers, FL: mechas, correção de cor, progressiva brasileira e noivas. Mais de 25 anos de experiência. Ligue (239) 318-8366.",
+    "meta.home.description": "Especialistas em loiros em Fort Myers, FL: mechas, correção de cor, progressiva brasileira e noivas. Mais de {years} anos de experiência. Ligue (239) 318-8366.",
     "meta.services.title": "Serviços de Cabelo em Fort Myers | Brazilian Hair Studio",
     "meta.services.description": "Mechas e balayage, correção de cor, progressiva e queratina, cortes, tratamentos, noivas, maquiagem e unhas no nosso salão brasileiro em Fort Myers, FL.",
     "meta.about.title": "Sobre Mirela de Bem e o Salão | Brazilian Hair Studio",
-    "meta.about.description": "Fundado por Mirela de Bem após 25+ anos e quatro salões no Sul do Brasil, o Brazilian Hair Studio leva a técnica brasileira a Fort Myers, Flórida.",
+    "meta.about.description": "Fundado por Mirela de Bem após {years}+ anos e quatro salões no Sul do Brasil, o Brazilian Hair Studio leva a técnica brasileira a Fort Myers, Flórida.",
     "meta.appointment.title": "Agende seu Horário em Fort Myers | Brazilian Hair Studio",
     "meta.appointment.description": "Agende no Brazilian Hair Studio, 2950 Winkler Ave, Fort Myers. Ligue (239) 318-8366 ou fale pelo WhatsApp. Aberto de segunda a sábado, das 9h às 19h.",
     "meta.notfound.title": "Página não encontrada | Brazilian Hair Studio",
@@ -272,12 +272,12 @@ export const ui: Record<keyof typeof languages, any> = {
     // About
     "about.heading": "Cabelos bonitos geram confiança",
     "about.body":
-      "No Brazilian Hair Studio, acreditamos que cabelos bonitos geram confiança. Há mais de 25 anos, ajudamos mulheres a transformarem sua imagem por meio de consultorias personalizadas, técnicas avançadas de coloração, tratamentos capilares saudáveis e experiências exclusivas de salão. Cada atendimento é desenvolvido de acordo com sua beleza, estilo de vida e objetivos.",
+      "No Brazilian Hair Studio, acreditamos que cabelos bonitos geram confiança. Há mais de {years} anos, ajudamos mulheres a transformarem sua imagem por meio de consultorias personalizadas, técnicas avançadas de coloração, tratamentos capilares saudáveis e experiências exclusivas de salão. Cada atendimento é desenvolvido de acordo com sua beleza, estilo de vida e objetivos.",
     "about.photoAlt": "Cabelo loiro iluminado pelo sol, com movimento natural",
 
     // About Us (page)
     "aboutus.heading": "Revelando o melhor em você",
-    "aboutus.subtitle": "Fundado por Mirela de Bem — mais de 25 anos de expertise brasileira em beleza, agora em Fort Myers.",
+    "aboutus.subtitle": "Fundado por Mirela de Bem — mais de {years} anos de expertise brasileira em beleza, agora em Fort Myers.",
     "aboutus.stats.clients": "clientes atendidos",
     "aboutus.stats.new": "novos clientes em 2021",
     "aboutus.stats.professionals": "profissionais",
@@ -287,7 +287,7 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Numbers
     "numbers.years": "anos de experiência",
-    "numbers.reviews": "avaliações 5 estrelas",
+    "numbers.reviews": "avaliações no Google",
     "numbers.clients": "clientes atendidos por ano",
     "numbers.bridal": "produções de noivas",
 
@@ -362,7 +362,7 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.brazil.state": "SC",
     "units.brazil.country": "Brasil",
     "units.brazil.desc":
-      "Construída sobre mais de 25 anos de experiência desenvolvida através de operações de sucesso no Sul do Brasil — criatividade e técnicas avançadas que agora trazemos para Fort Myers.",
+      "Construída sobre mais de {years} anos de experiência desenvolvida através de operações de sucesso no Sul do Brasil — criatividade e técnicas avançadas que agora trazemos para Fort Myers.",
     "units.brazil.footer": "Santa Catarina · Brasil",
 
     // Services Page
@@ -412,23 +412,23 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Footer
     "footer.tagline":
-      "Transformações capilares brasileiras de luxo — especialistas em loiros, cor e alisamento. Com mais de 25 anos de expertise brasileira em beleza, agora em Fort Myers, Flórida.",
+      "Transformações capilares brasileiras de luxo — especialistas em loiros, cor e alisamento. Com mais de {years} anos de expertise brasileira em beleza, agora em Fort Myers, Flórida.",
     "footer.nav.title": "Navegar",
     "footer.contact.title": "Contato",
     "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Agendar Horário",
-    "footer.est": "Fort Myers, FL · Est. há 25+ anos",
+    "footer.est": "Fort Myers, FL · Est. há {years}+ anos",
     "footer.rights": "Todos os direitos reservados.",
   },
 
   es: {
     // Meta (title ≤ ~60 chars, description ≤ ~160)
     "meta.home.title": "Salón de Belleza en Fort Myers, FL | Brazilian Hair Studio",
-    "meta.home.description": "Especialistas en rubios en Fort Myers, FL: balayage, corrección de color, alisado brasileño y novias. Más de 25 años de experiencia. Llama al (239) 318-8366.",
+    "meta.home.description": "Especialistas en rubios en Fort Myers, FL: balayage, corrección de color, alisado brasileño y novias. Más de {years} años de experiencia. Llama al (239) 318-8366.",
     "meta.services.title": "Servicios de Peluquería en Fort Myers | Brazilian Hair Studio",
     "meta.services.description": "Balayage y mechas, corrección de color, alisado brasileño y keratina, cortes, tratamientos, novias, maquillaje y uñas en nuestro salón de Fort Myers, FL.",
     "meta.about.title": "Sobre Mirela de Bem y el Salón | Brazilian Hair Studio",
-    "meta.about.description": "Fundado por Mirela de Bem tras 25+ años y cuatro salones en el sur de Brasil, Brazilian Hair Studio lleva la técnica brasileña a Fort Myers, Florida.",
+    "meta.about.description": "Fundado por Mirela de Bem tras {years}+ años y cuatro salones en el sur de Brasil, Brazilian Hair Studio lleva la técnica brasileña a Fort Myers, Florida.",
     "meta.appointment.title": "Reserva tu Cita en Fort Myers | Brazilian Hair Studio",
     "meta.appointment.description": "Reserva en Brazilian Hair Studio, 2950 Winkler Ave, Fort Myers. Llama al (239) 318-8366 o escríbenos por WhatsApp. Abierto de lunes a sábado, de 9 a 19 h.",
     "meta.notfound.title": "Página no encontrada | Brazilian Hair Studio",
@@ -479,12 +479,12 @@ export const ui: Record<keyof typeof languages, any> = {
     // About
     "about.heading": "El cabello hermoso genera confianza",
     "about.body":
-      "En Brazilian Hair Studio, creemos que el cabello hermoso genera confianza. Desde hace más de 25 años, ayudamos a las mujeres a transformar su imagen a través de asesorías personalizadas, técnicas avanzadas de coloración, tratamientos capilares saludables y experiencias exclusivas de salón. Cada servicio se adapta a tu belleza, estilo de vida y objetivos únicos.",
+      "En Brazilian Hair Studio, creemos que el cabello hermoso genera confianza. Desde hace más de {years} años, ayudamos a las mujeres a transformar su imagen a través de asesorías personalizadas, técnicas avanzadas de coloración, tratamientos capilares saludables y experiencias exclusivas de salón. Cada servicio se adapta a tu belleza, estilo de vida y objetivos únicos.",
     "about.photoAlt": "Cabello rubio iluminado por el sol, con movimiento natural",
 
     // About Us (page)
     "aboutus.heading": "Sacando lo mejor de ti",
-    "aboutus.subtitle": "Fundado por Mirela de Bem — más de 25 años de experiencia brasileña en belleza, ahora en Fort Myers.",
+    "aboutus.subtitle": "Fundado por Mirela de Bem — más de {years} años de experiencia brasileña en belleza, ahora en Fort Myers.",
     "aboutus.stats.clients": "clientes atendidos",
     "aboutus.stats.new": "nuevos clientes en 2021",
     "aboutus.stats.professionals": "profesionales",
@@ -494,7 +494,7 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Numbers
     "numbers.years": "años de experiencia",
-    "numbers.reviews": "reseñas 5 estrellas",
+    "numbers.reviews": "reseñas en Google",
     "numbers.clients": "clientes atendidos por año",
     "numbers.bridal": "producciones de novias",
 
@@ -569,7 +569,7 @@ export const ui: Record<keyof typeof languages, any> = {
     "units.brazil.state": "SC",
     "units.brazil.country": "Brasil",
     "units.brazil.desc":
-      "Construida sobre más de 25 años de experiencia desarrollada a través de operaciones de salón exitosas en el sur de Brasil — creatividad y técnicas avanzadas que ahora llevamos a Fort Myers.",
+      "Construida sobre más de {years} años de experiencia desarrollada a través de operaciones de salón exitosas en el sur de Brasil — creatividad y técnicas avanzadas que ahora llevamos a Fort Myers.",
     "units.brazil.footer": "Santa Catarina · Brasil",
 
     // Services Page
@@ -619,12 +619,12 @@ export const ui: Record<keyof typeof languages, any> = {
 
     // Footer
     "footer.tagline":
-      "Transformaciones capilares brasileñas de lujo — especialistas en rubios, color y alisado. Con más de 25 años de experiencia brasileña en belleza, ahora en Fort Myers, Florida.",
+      "Transformaciones capilares brasileñas de lujo — especialistas en rubios, color y alisado. Con más de {years} años de experiencia brasileña en belleza, ahora en Fort Myers, Florida.",
     "footer.nav.title": "Navegar",
     "footer.contact.title": "Contacto",
     "footer.contact.address": "2950 Winkler Ave, Unit 301 · Fort Myers, FL 33916",
     "footer.contact.book": "Reservar Cita",
-    "footer.est": "Fort Myers, FL · Est. hace 25+ años",
+    "footer.est": "Fort Myers, FL · Est. hace {years}+ años",
     "footer.rights": "Todos los derechos reservados.",
   },
 } as const;

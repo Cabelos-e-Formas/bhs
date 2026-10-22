@@ -1,8 +1,9 @@
 ---
 import SectionHeader from "../ui/SectionHeader.astro";
 import { getCollection } from "astro:content";
-import { getLangFromUrl, useTranslations, localized } from "../../i18n/utils";
+import { getLangFromUrl, useTranslations, localized, langTags } from "../../i18n/utils";
 import { contact } from "../../data/contact";
+import { getGoogleReviews } from "../../lib/stats";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -15,6 +16,8 @@ const reviews = (await getCollection("clients"))
   }));
 
 const stars = "★★★★★";
+// Google review count, fetched at build time (src/lib/stats.ts)
+const reviewCount = new Intl.NumberFormat(langTags[lang]).format((await getGoogleReviews()).count);
 const arrowClass =
   "w-14 h-14 rounded-full border border-beige-500/40 text-beige-500 flex items-center justify-center hover:bg-beige-500 hover:text-accent-dark transition-colors duration-300 disabled:opacity-30 disabled:pointer-events-none";
 ---
@@ -32,12 +35,12 @@ const arrowClass =
         target="_blank"
         rel="noopener noreferrer"
         class="group flex items-baseline gap-3 text-beige-500"
-        aria-label={`325+ ${t("numbers.reviews")}. ${t("clients.reviewsLink")}`}
+        aria-label={`${reviewCount}+ ${t("numbers.reviews")}. ${t("clients.reviewsLink")}`}
       >
-        <span class="font-serif italic text-7xl max-sm:text-5xl leading-none">325+</span>
+        <span class="font-serif italic text-7xl max-sm:text-5xl leading-none">{reviewCount}+</span>
         <span class="flex flex-col gap-1 text-xs uppercase tracking-widest text-beige-500/70 max-w-36">
           {t("numbers.reviews")}
-          <span class="normal-case tracking-normal text-sm font-serif italic text-beige-500 underline underline-offset-4 decoration-beige-500/40 group-hover:decoration-beige-500">Google</span>
+          <span class="normal-case tracking-normal text-sm font-serif italic text-beige-500 underline underline-offset-4 decoration-beige-500/40 group-hover:decoration-beige-500">{t("clients.reviewsLink")}</span>
         </span>
       </a>
       <div class="flex gap-3 max-sm:hidden">

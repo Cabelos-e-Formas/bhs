@@ -1,14 +1,17 @@
 ---
 import { getLangFromUrl, useTranslations, langTags } from "../../i18n/utils";
+import { yearsOfExperience, getGoogleReviews } from "../../lib/stats";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const fmt = new Intl.NumberFormat(langTags[lang]);
 
 // Data-driven stats — add/remove entries freely; the grid reflows.
+// Years and Google reviews are computed at build time (src/lib/stats.ts)
+const reviews = await getGoogleReviews();
 const stats = [
-  { target: 25, suffix: "+", labelKey: "numbers.years" },
-  { target: 325, suffix: "+", labelKey: "numbers.reviews" },
+  { target: yearsOfExperience, suffix: "+", labelKey: "numbers.years" },
+  { target: reviews.count, suffix: "+", labelKey: "numbers.reviews" },
   { target: 1000, suffix: "+", labelKey: "numbers.clients" },
   { target: 2000, suffix: "+", labelKey: "numbers.bridal" },
 ];
