@@ -14,16 +14,16 @@ const [restFirst, ...restOthers] = (t("about.heading.rest") as string).split(" "
 <section id="about-section" class="border-b-3 border-accent-dark px-10 max-sm:px-6 pt-28 max-sm:pt-16 pb-24 max-sm:pb-14">
   <h2 class="text-accent-dark font-light leading-[1.02] tracking-[-0.01em] text-[clamp(2.6rem,7.4vw,8.25rem)]" data-reveal>
     <span class="block">
-      <span class="font-serif italic">{t("about.heading.serif")}</span>
+      <span class="font-serif italic">{t("about.heading.serif")}</span>{" "}
       <span class="pill w-[2.1em]" aria-hidden="true">
         <Image src={pillA} alt="" widths={[240, 480]} sizes="18vw" loading="lazy" class="w-full h-full object-cover" />
       </span>
     </span>
     <span class="block lg:pl-[1.2em]">
-      {restFirst}
+      {restFirst}{" "}
       <span class="pill w-[1.6em]" aria-hidden="true">
         <Image src={pillB} alt="" widths={[200, 400]} sizes="14vw" loading="lazy" class="w-full h-full object-cover object-[50%_35%]" />
-      </span>
+      </span>{" "}
       {restOthers.join(" ")}
     </span>
   </h2>

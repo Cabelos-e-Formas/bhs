@@ -20,7 +20,10 @@ export default defineConfig({
   // Old-URL redirects live in public/_redirects (Cloudflare static assets)
 
   integrations: [
-    icon(),
+    icon({
+      // Only bundle the icons the site uses
+      include: { 'material-symbols-light': ['call', 'close', 'location-on', 'menu', 'schedule'] },
+    }),
     sitemap({
       // Link-in-bio pages are noindex and stay out of the sitemap
       filter: (page) => !page.includes('/linktree'),
