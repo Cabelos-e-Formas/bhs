@@ -3,7 +3,6 @@
 Free to use under the Unsplash License (https://unsplash.com/license).
 
 - blonde-balayage.jpg — https://unsplash.com/photos/W6cwaL7PMSw
-- ash-blonde-waves.jpg — https://unsplash.com/photos/CIrRI0ujiRo
 - sunlit-blonde.jpg — https://unsplash.com/photos/9nTxnFaSR_Q
 - brunette-balayage.jpg — https://unsplash.com/photos/WCPg9ROZbM0
 - curling-styling.jpg — https://unsplash.com/photos/MMz03PyCOZg
