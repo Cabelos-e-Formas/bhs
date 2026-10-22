@@ -57,7 +57,7 @@
   .noise::before {
     content: "";
     position: fixed;
-    opacity: 0.7;
+    opacity: 0.4;
     inset: 0;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23noise)' opacity='0.3'/%3E%3C/svg%3E");
     background-size: 240px 240px;
@@ -90,8 +90,14 @@ html.js [data-reveal].is-visible {
   opacity: 1;
   transform: none;
 }
-[data-reveal="left"] { --rx: -50px; --ry: 0; }
-[data-reveal="right"] { --rx: 50px; --ry: 0; }
+[data-reveal="left"] {
+  --rx: -50px;
+  --ry: 0;
+}
+[data-reveal="right"] {
+  --rx: 50px;
+  --ry: 0;
+}
 
 /* Masked line rise: <h2 data-reveal="mask"><span class="line-mask"><span>…</span></span></h2>
  * The container stays put; each line slides up out of its own mask (as in the hero). */
@@ -145,7 +151,9 @@ html.js [data-reveal="wipe"].is-visible img {
   animation-play-state: paused;
 }
 @keyframes marquee {
-  to { transform: translateX(-50%); }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* On-load entrance (heroes) */
