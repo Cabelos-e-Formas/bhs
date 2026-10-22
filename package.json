@@ -5,19 +5,23 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^9.0.4",
     "@fontsource/lato": "^5.3.0",
-    "@tailwindcss/vite": "^4.2.0",
-    "astro": "^5.17.1",
-    "astro-icon": "^1.1.5",
-    "tailwindcss": "^4.2.0"
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.4.2",
+    "astro-icon": "^1.2.0",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols-light": "^1.2.57"
+    "@iconify-json/material-symbols-light": "^1.2.96",
+    "wrangler": "^4.151.3"
+  },
+  "engines": {
+    "node": ">=22.23.4"
   }
 }

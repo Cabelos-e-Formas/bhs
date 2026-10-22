@@ -1,0 +1,15 @@
+// Cloudflare Workers — static assets only (no Worker script).
+// Build with `npm run build` (outputs ./dist), deploy with `npx wrangler deploy`.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bhs",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Pages are built as about.html (build.format: 'file'); serve them at /about and
+    // redirect /about/ → /about so every URL has one canonical form
+    "html_handling": "drop-trailing-slash",
+    // Unknown URLs get dist/404.html with a real 404 status (no soft 404s)
+    "not_found_handling": "404-page"
+  }
+}

@@ -4,7 +4,6 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
-import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,20 +12,18 @@ export default defineConfig({
   // One canonical form per URL: /services, never /services/
   trailingSlash: 'never',
 
-  // Old URLs → new ones (home moved to the locale root; Spanish moved from /sp to /es)
-  redirects: {
-    '/home': '/',
-    '/pt/home': '/pt',
-    '/sp': '/es',
-    '/sp/home': '/es',
-    '/sp/about': '/es/about',
-    '/sp/services': '/es/services',
-    '/sp/appointment': '/es/appointment',
-    '/sp/linktree': '/es/linktree',
+  // Build pages as about.html (not about/index.html) so the host serves /about without a slash.
+  build: {
+    format: 'file',
   },
 
+  // Old-URL redirects live in public/_redirects (Cloudflare static assets)
+
   integrations: [
-    icon(),
+    icon({
+      // Only bundle the icons the site uses
+      include: { 'material-symbols-light': ['call', 'close', 'location-on', 'menu', 'schedule'] },
+    }),
     sitemap({
       // Link-in-bio pages are noindex and stay out of the sitemap
       filter: (page) => !page.includes('/linktree'),
@@ -56,6 +53,4 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-
-  adapter: vercel(),
 });

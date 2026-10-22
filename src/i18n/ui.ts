@@ -30,7 +30,7 @@ export const ui: Record<keyof typeof languages, any> = {
     "instagram.follow": "Follow us on Instagram",
 
     // Redesign
-    "hero.photoAlt": "Long, glossy blonde balayage after a salon appointment",
+    "hero.photoAlt": "Shoulder-length brunette hair with soft golden balayage waves, styled at the salon",
     "about.heading.serif": "Beautiful hair",
     "about.heading.rest": "creates confidence",
     "about.link": "Read our story",
@@ -237,7 +237,7 @@ export const ui: Record<keyof typeof languages, any> = {
     "instagram.follow": "Siga-nos no Instagram",
 
     // Redesign
-    "hero.photoAlt": "Loiro balayage longo e brilhante depois de um atendimento no salão",
+    "hero.photoAlt": "Cabelo castanho na altura dos ombros com balayage dourado e ondas suaves, finalizado no salão",
     "about.heading.serif": "Cabelos bonitos",
     "about.heading.rest": "geram confiança",
     "about.link": "Conheça nossa história",
@@ -444,7 +444,7 @@ export const ui: Record<keyof typeof languages, any> = {
     "instagram.follow": "Síguenos en Instagram",
 
     // Redesign
-    "hero.photoAlt": "Balayage rubio largo y brillante después de una cita en el salón",
+    "hero.photoAlt": "Cabello castaño a la altura de los hombros con balayage dorado y ondas suaves, peinado en el salón",
     "about.heading.serif": "El cabello hermoso",
     "about.heading.rest": "genera confianza",
     "about.link": "Conoce nuestra historia",

@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import heroPhoto from "../../assets/stock/blonde-balayage.jpg";
+import heroPhoto from "../../assets/hero-balayage.jpg";
 import Logo from "../ui/Logo.astro";
 import Button from "../ui/Button.astro";
 import { getLangFromUrl, useTranslations, localePath } from "../../i18n/utils";
@@ -29,11 +29,11 @@ const specialties = (t("hero.subline") ?? "").split("·").map((s: string) => s.t
         <Image
           src={heroPhoto}
           alt={t("hero.photoAlt")}
-          widths={[480, 800, 1100]}
+          widths={[480, 800, 1086]}
           sizes="(min-width: 1024px) 27vw, 100vw"
           loading="eager"
           fetchpriority="high"
-          class="w-full h-full object-cover object-[50%_20%]"
+          class="w-full h-full object-cover object-[50%_30%]"
         />
       </div>
       <!-- Darkens the band where the italic line crosses, for contrast -->
