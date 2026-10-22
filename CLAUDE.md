@@ -43,7 +43,7 @@ Redirects (301) in `public/_redirects`: `/home → /`, `/pt/home → /pt`, `/sp/
 - `build.format: 'file'` builds `about.html`; `html_handling: "drop-trailing-slash"` serves it at `/about` and redirects `/about/` and `/about.html` there
 - `not_found_handling: "404-page"` serves `dist/404.html` with a real 404 status
 - `public/_headers` sets long-lived caching for `/_astro/*`, fonts and logos
-- Cloudflare build settings: build command `npm run build`, deploy command `npx wrangler deploy`; set `INSTAGRAM_ACCESS_TOKEN` as a build variable if used
+- Cloudflare build settings: build command `npm run build`, deploy command `npx wrangler deploy`; set `GOOGLE_PLACES_API_KEY` / `INSTAGRAM_ACCESS_TOKEN` as build variables if used. Numbers only refresh when the site rebuilds
 
 ---
 
@@ -66,6 +66,8 @@ Redirects (301) in `public/_redirects`: `/home → /`, `/pt/home → /pt`, `/sp/
 ## Environment Variables
 
 None required for local dev.
+
+Optional: `GOOGLE_PLACES_API_KEY` (+ optional `GOOGLE_PLACE_ID`) — build-time Google review count via the Places API (New), read by `src/lib/stats.ts`. Without it the site uses `GOOGLE_REVIEWS_FALLBACK`. Years of experience are computed from `CAREER_START_YEAR` in the same file; in `ui.ts` write `{years}` instead of a number — `t()` fills it in.
 
 Optional: `INSTAGRAM_ACCESS_TOKEN` (long-lived Instagram API token for @brazilian.hairstudio). Read at **build time** by `src/lib/instagram.ts`; post images are downloaded and optimized by `astro:assets`. Without it, `InstagramSection` shows only the handles and social links. Posts refresh only when the site rebuilds. See `.env.example`.
 
