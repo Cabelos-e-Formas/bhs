@@ -11,5 +11,8 @@
     "html_handling": "drop-trailing-slash",
     // Unknown URLs get dist/404.html with a real 404 status (no soft 404s)
     "not_found_handling": "404-page"
-  }
+  },
+  // Required by `npx wrangler preview`, which Workers Builds runs for non-production
+  // branches (PR previews). Empty is fine: assets and settings above are inherited.
+  "previews": {}
 }
