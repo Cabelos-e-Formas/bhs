@@ -51,9 +51,9 @@ Redirects (301) in `public/_redirects`: `/home → /`, `/pt/home → /pt`, `/sp/
 
 | Layer | Tool | Notes |
 |---|---|---|
-| Framework | Astro | v5, file-based routing, static output |
+| Framework | Astro | v7 (Vite 8, Rust compiler), file-based routing, static output. Node ≥ 22.23.4 |
 | Styling | Tailwind CSS | v4 via `@tailwindcss/vite` (no PostCSS) |
-| Content | Astro content collections | YAML + Zod schemas in `src/content.config.ts` |
+| Content | Astro content collections | YAML + Zod 4 schemas in `src/content.config.ts` (`z` from `astro/zod`) |
 | Animations | CSS + one small IntersectionObserver | `[data-reveal]` / `[data-count]` in `Layout.astro`; no GSAP/Lenis |
 | Icons | astro-icon | `material-symbols-light` iconify set |
 | SEO | `@astrojs/sitemap` | i18n alternates; `public/robots.txt` |
@@ -168,11 +168,19 @@ Audit and open items: `docs/seo-audit.md`.
 
 **Fix:** Do the cast/mapping in the frontmatter and pass plain values to the template.
 
+### Spaces between inline elements disappear (Astro 7)
+
+**Symptom:** Words run into inline elements, e.g. the pill photos in the About headline touch the text.
+
+**Cause:** Astro 7 defaults to `compressHTML: 'jsx'`, which drops whitespace that spans a line break between elements.
+
+**Fix:** Add an explicit `{" "}` where a space matters (see `AboutSection.astro`).
+
 ### Dynamic redirect patterns fail in a static build
 
 **Symptom:** `Failed to call getStaticPaths for /sp/[...path]`.
 
-**Fix:** List each redirected URL explicitly in `astro.config.mjs` `redirects`.
+**Fix:** List each redirected URL explicitly in `public/_redirects`.
 
 ---
 
